@@ -90,54 +90,55 @@ const Login = () => {
           }}
         >
           <div />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              minWidth: "300px",
-            }}
-          >
-            <Grid container justify="center">
-              <img src={LogoG} alt="logo" />
-            </Grid>
-            <InputLabel shrink>Nombre de usuario</InputLabel>
-            <TextField
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              name="username"
-              fullWidth
-              margin="normal"
-            />
-            <InputLabel shrink>Password</InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={password}
-              fullWidth
-              onChange={(e) => setPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <div style={{ height: 20 }} />
-            <Button
-              color="primary"
-              variant="contained"
-              type="submit"
-              size="small"
-              onClick={HandleSubmit}
+          <form onSubmit={HandleSubmit}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                minWidth: "300px",
+              }}
             >
-              Entrar
-            </Button>
-          </div>
+              <Grid container justify="center">
+                <img src={LogoG} alt="logo" />
+              </Grid>
+              <InputLabel shrink>Nombre de usuario</InputLabel>
+              <TextField
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                name="username"
+                fullWidth
+                margin="normal"
+              />
+              <InputLabel shrink>Password</InputLabel>
+              <Input
+                id="standard-adornment-password"
+                type={values.showPassword ? "text" : "password"}
+                value={password}
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <div style={{ height: 20 }} />
+              <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                size="small"
+              >
+                Entrar
+              </Button>
+            </div>
+          </form>
           <Snackbar
             anchorOrigin={{
               vertical: "bottom",

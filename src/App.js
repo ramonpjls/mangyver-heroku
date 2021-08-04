@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/login";
 import Header from "./components/Header";
-import CreacionAviso from "./components/CreacionAviso";
 import ShowAvisos from "./components/ShowAvisos";
 import Home from "./components/notice_mx/home";
 
@@ -14,7 +13,6 @@ function App() {
           <Route path="/" exact component={Login} />
           <Route path="/Login" exact component={Login} />
           <Route path="/" component={Header} />
-          <Route path="/Formulario" component={CreacionAviso} />
           <Route path="/ShowAvisos" component={ShowAvisos} />
           <Route path="/Home" component={Home} />
         </Switch>
