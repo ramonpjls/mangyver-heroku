@@ -5,19 +5,53 @@ import {
   TextField,
   Select,
   Button,
-  LinearProgress,
   MenuItem,
 } from "@material-ui/core";
-import { useForm } from "react-hook-form";
+import { useLocalStorage } from "./useLocalStorage";
+import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
-const Fields = () => {
+const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
-  const { watch, register } = useForm();
 
-  const watchAllFields = watch();
+  const [tarea, setTarea] = useLocalStorage("tarea", "");
+  const [departamento, setDepartamento] = useLocalStorage("departamento", "");
+  const [falla, setFalla] = useLocalStorage("falla", "");
+  const [codigoEquipo, setCodigoEquipo] = useLocalStorage("codigoEquipo", "");
+  const [linea, setLinea] = useLocalStorage("linea", "");
+  const [tipoEquipo, setTipoEquipo] = useLocalStorage("tipoEquipo", "");
+  const [consecutivo, setConsecutivo] = useLocalStorage("consecutivo", "");
+
+  const [tipoTarjeta, setTipoTarjeta] = useLocalStorage("tipoTarjeta", "");
+  const [tituloTarjeta, setTituloTarjeta] = useLocalStorage(
+    "tituloTarjeta",
+    ""
+  );
+  const [prioridad, setPrioridad] = useLocalStorage("prioridad", "");
+  const [componenteDanado, setComponenteDanado] = useLocalStorage(
+    "componenteDanado",
+    ""
+  );
+  const [causaAveria, setCausaAveria] = useLocalStorage("causaAveria", "");
+  const [tipoFalla, setTipoFalla] = useLocalStorage("tipoFalla", "");
+  const [descTarjeta, setDescTarjeta] = useLocalStorage("descTarjeta", "");
+  const [afecta, setAfecta] = useLocalStorage("afecta", "");
+  const [afectaFile, setAfectaFile] = useLocalStorage("afectaFile", "");
+
+  const history = useHistory();
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+  };
+
+  const submitForm = () => {
+    Swal.fire({
+      text: "Aviso creado exitosamente",
+      icon: "success",
+      showConfirmButton: false,
+    });
+    history.push("/ShowAvisos");
+    localStorage.clear();
   };
 
   const backBtn = () => {
@@ -46,21 +80,6 @@ const Fields = () => {
     marginTop: "1rem",
   };
 
-  const barStyle = {
-    height: 20,
-    borderRadius: 5,
-    marginTop: "1rem",
-    marginBottom: "2rem",
-    backgroundColor: "#d0d6e1",
-  };
-
-  const contStyle = {
-    Maxwidth: "50rem",
-    display: "flex",
-    flexDirection: "column",
-    marginTop: "10rem",
-  };
-
   const btnContStyle = {
     display: "flex",
     flexDirection: "row",
@@ -74,7 +93,7 @@ const Fields = () => {
           Back
         </Button>
       );
-    } else if (formStep > 7) {
+    } else if (formStep > 2) {
       return undefined;
     } else {
       return (
@@ -86,15 +105,15 @@ const Fields = () => {
   };
 
   const renderBtn = () => {
-    if (formStep > 3) {
+    if (formStep > 2) {
       return undefined;
-    } else if (formStep === 3) {
+    } else if (formStep === 2) {
       return (
         <Button
           style={btnNxtStyle}
           variant="outlined"
           color="primary"
-          onClick={completeFormStep}
+          onSubmit={submitForm}
         >
           Submit Form
         </Button>
@@ -113,23 +132,24 @@ const Fields = () => {
   };
 
   const rndrFalla = () => {
-    if (watchAllFields.Tarea === "si") {
+    if (tarea === "si") {
       return (
         <TextField
-          {...register("OT")}
           variant="outlined"
           style={gnrStyle}
+          onChange={(e) => setFalla(e.target.value)}
+          value={falla}
           fullWidth
           size="small"
           type="number"
-          placeholder="Duracion de falla"
+          placeholder="Duracion de falla en minutos"
         ></TextField>
       );
     }
   };
 
   const renderCodigoEquipo = () => {
-    if (watchAllFields.codigoEquipo === "otras areas") {
+    if (departamento === "otras areas") {
       return (
         <div style={gnrStyle}>
           <Typography variant="overline">Codigo de Equipo</Typography>
@@ -138,16 +158,17 @@ const Fields = () => {
             variant="outlined"
             fullWidth
             size="small"
+            onChange={(e) => setCodigoEquipo(e.target.value)}
+            value={codigoEquipo}
             style={gnrStyle}
-            {...register("codigoEquipo")}
           >
-            <MenuItem value="RD-0515">RD-0515</MenuItem>
-            <MenuItem value="RD-0895">RD-0895</MenuItem>
-            <MenuItem value="RD-0445">RD-0445</MenuItem>
+            <MenuItem value={"RD-0515"}>RD-0515</MenuItem>
+            <MenuItem value={"RD-0895"}>RD-0895</MenuItem>
+            <MenuItem value={"RD-0445"}>RD-0445</MenuItem>
           </Select>
         </div>
       );
-    } else if (watchAllFields.codigoEquipo === "envasado") {
+    } else if (departamento === "envasado") {
       return (
         <div style={gnrStyle}>
           <Typography variant="overline">Linea</Typography>
@@ -157,24 +178,26 @@ const Fields = () => {
             fullWidth
             size="small"
             style={gnrStyle}
-            {...register("Linea")}
+            onChange={(e) => setLinea(e.target.value)}
+            value={linea}
           >
-            <MenuItem value="linea1">Linea 1</MenuItem>
-            <MenuItem value="linea2">Linea 2</MenuItem>
-            <MenuItem value="linea3">Linea 3</MenuItem>
+            <MenuItem value={"linea1"}>Linea 1</MenuItem>
+            <MenuItem value={"linea2"}>Linea 2</MenuItem>
+            <MenuItem value={"linea3"}>Linea 3</MenuItem>
           </Select>
           <Typography variant="overline">Tipo de Equipo</Typography>
           <Select
-            id="Linea"
+            id="tipoEquipo"
             variant="outlined"
             fullWidth
             size="small"
             style={gnrStyle}
-            {...register("TipoEquipo")}
+            onChange={(e) => setTipoEquipo(e.target.value)}
+            value={tipoEquipo}
           >
-            <MenuItem value="Tipo1">Tipo 1</MenuItem>
-            <MenuItem value="Tipo2">Tipo 2</MenuItem>
-            <MenuItem value="Tipo3">Tipo 3</MenuItem>
+            <MenuItem value={"Tipo1"}>Tipo 1</MenuItem>
+            <MenuItem value={"Tipo2"}>Tipo 2</MenuItem>
+            <MenuItem value={"Tipo3"}>Tipo 3</MenuItem>
           </Select>
           <Typography variant="overline">Consecutivo</Typography>
           <Select
@@ -183,78 +206,30 @@ const Fields = () => {
             fullWidth
             size="small"
             style={gnrStyle}
-            {...register("Consecutivo")}
+            onChange={(e) => setConsecutivo(e.target.value)}
+            value={consecutivo}
           >
-            <MenuItem value="Consecutivo1">Consecutivo 1</MenuItem>
-            <MenuItem value="Consecutivo2">Consecutivo 2</MenuItem>
-            <MenuItem value="Consecutivo3">Consecutivo 3</MenuItem>
+            <MenuItem value={"Consecutivo1"}>Consecutivo 1</MenuItem>
+            <MenuItem value={"Consecutivo2"}>Consecutivo 2</MenuItem>
+            <MenuItem value={"Consecutivo3"}>Consecutivo 3</MenuItem>
           </Select>
         </div>
       );
     }
   };
 
-  const renderNOT = () => {
-    if (watchAllFields.Proceso === "M3") {
-      return (
-        <div style={gnrStyle}>
-          <Typography variant="overline">Numero de OT</Typography>
-          <TextField
-            variant="outlined"
-            {...register("OT")}
-            fullWidth
-            style={gnrStyle}
-            size="small"
-            label="Numero de OT"
-          ></TextField>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
-  };
-
   return (
     <div>
-      <Container style={contStyle}>
+      <Container>
         {formStep === 0 && (
-          <section id="1">
-            <LinearProgress
-              variant="determinate"
-              style={barStyle}
-              value={15}
-            ></LinearProgress>
-            <Typography style={gnrStyle} align="center" variant="h5">
-              Elige el Proceso
-            </Typography>
-            <Select
-              id="Proceso"
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={gnrStyle}
-              {...register("Proceso")}
-            >
-              <MenuItem value="M1">Crear Tarjeta (M1)</MenuItem>
-              <MenuItem value="M2">Notificación de falla (M2)</MenuItem>
-              <MenuItem value="M3">Aviso derivado de una orden (M3)</MenuItem>
-            </Select>
-            {renderNOT()}
-          </section>
-        )}
-        {formStep === 1 && (
-          <section id="5">
-            <LinearProgress
-              variant="determinate"
-              style={barStyle}
-              value={35}
-            ></LinearProgress>
-            <Typography style={gnrStyle} align="center" variant="h5">
+          <section style={gnrStyle} id="5">
+            <Typography style={gnrStyle} align="left" variant="h5">
               Se realizo la tarea
             </Typography>
             <Select
-              {...register("Tarea")}
               variant="outlined"
+              onChange={(e) => setTarea(e.target.value)}
+              value={tarea}
               fullWidth
               size="small"
             >
@@ -264,37 +239,28 @@ const Fields = () => {
             {rndrFalla()}
           </section>
         )}
-        {formStep === 2 && (
-          <section id="7">
-            <LinearProgress
-              variant="determinate"
-              style={barStyle}
-              value={55}
-            ></LinearProgress>
-            <Typography align="center" variant="h5">
+        {formStep === 1 && (
+          <section style={gnrStyle} id="7">
+            <Typography align="left" variant="h5">
               Departamento
             </Typography>
             <Select
-              id="codigoEquipo"
+              id="departamento"
               variant="outlined"
               fullWidth
+              onChange={(e) => setDepartamento(e.target.value)}
+              value={departamento}
               size="small"
               style={gnrStyle}
-              {...register("codigoEquipo")}
             >
-              <MenuItem value="envasado">Envasado</MenuItem>
-              <MenuItem value="otras areas">Otras areas</MenuItem>
+              <MenuItem value={"envasado"}>Envasado</MenuItem>
+              <MenuItem value={"otras areas"}>Otras areas</MenuItem>
             </Select>
             {renderCodigoEquipo()}
           </section>
         )}
-        {formStep === 3 && (
-          <section id="6">
-            <LinearProgress
-              variant="determinate"
-              style={barStyle}
-              value={95}
-            ></LinearProgress>
+        {formStep === 2 && (
+          <section style={gnrStyle} id="6">
             <Typography variant="overline" style={gnrStyle}>
               Tipo de tarjeta
             </Typography>
@@ -303,13 +269,14 @@ const Fields = () => {
               variant="outlined"
               fullWidth
               size="small"
+              onChange={(e) => setTipoTarjeta(e.target.value)}
+              value={tipoTarjeta}
               style={gnrStyle}
-              {...register("Tarjeta")}
             >
-              <MenuItem value="AM">Amarillo</MenuItem>
-              <MenuItem value="RJ">Rojo</MenuItem>
-              <MenuItem value="VD">verde</MenuItem>
-              <MenuItem value="AZ">Azul</MenuItem>
+              <MenuItem value={"AM"}>Amarillo</MenuItem>
+              <MenuItem value={"RJ"}>Rojo</MenuItem>
+              <MenuItem value={"VD"}>verde</MenuItem>
+              <MenuItem value={"AZ"}>Azul</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Titulo de la tarjeta
@@ -318,8 +285,9 @@ const Fields = () => {
               variant="outlined"
               fullWidth
               style={gnrStyle}
-              {...register("tituloTarjeta")}
               size="small"
+              onChange={(e) => setTituloTarjeta(e.target.value)}
+              value={tituloTarjeta}
             ></TextField>
             <Typography variant="overline" style={gnrStyle}>
               Prioridad
@@ -330,12 +298,13 @@ const Fields = () => {
               fullWidth
               size="small"
               style={gnrStyle}
-              {...register("prioridad")}
+              onChange={(e) => setPrioridad(e.target.value)}
+              value={prioridad}
             >
-              <MenuItem value="1">Muy Elevado</MenuItem>
-              <MenuItem value="2">Elevado</MenuItem>
-              <MenuItem value="3">Medio</MenuItem>
-              <MenuItem value="4">Bajo</MenuItem>
+              <MenuItem value={"1"}>Muy Elevado</MenuItem>
+              <MenuItem value={"2"}>Elevado</MenuItem>
+              <MenuItem value={"3"}>Medio</MenuItem>
+              <MenuItem value={"4"}>Bajo</MenuItem>
             </Select>
 
             <Typography variant="overline" style={gnrStyle}>
@@ -347,22 +316,25 @@ const Fields = () => {
               fullWidth
               size="small"
               style={gnrStyle}
-              {...register("componente")}
+              onChange={(e) => setComponenteDanado(e.target.value)}
+              value={componenteDanado}
             >
-              <MenuItem value="1">componente 010</MenuItem>
-              <MenuItem value="2">componente 012</MenuItem>
-              <MenuItem value="3">componente 015</MenuItem>
-              <MenuItem value="4">componente 019</MenuItem>
+              <MenuItem value={"1"}>componente 010</MenuItem>
+              <MenuItem value={"2"}>componente 012</MenuItem>
+              <MenuItem value={"3"}>componente 015</MenuItem>
+              <MenuItem value={"4"}>componente 019</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Causa de la averia
             </Typography>
             <TextField
+              id="causaAveria"
               variant="outlined"
               fullWidth
               style={gnrStyle}
               size="small"
-              {...register("causaAveria")}
+              onChange={(e) => setCausaAveria(e.target.value)}
+              value={causaAveria}
             ></TextField>
             <Typography variant="overline" style={gnrStyle}>
               Tipo de falla
@@ -373,20 +345,27 @@ const Fields = () => {
               fullWidth
               size="small"
               style={gnrStyle}
-              {...register("tipoFalla")}
+              onChange={(e) => setTipoFalla(e.target.value)}
+              value={tipoFalla}
             >
-              <MenuItem value="Planeador PRED ENV">Planeador PRED ENV</MenuItem>
-              <MenuItem value="Planeador MEC MNG">Planeador MEC MNG</MenuItem>
-              <MenuItem value="Planeador ELE MNG">Planeador ELE MNG</MenuItem>
-              <MenuItem value="Planeador ELO MNG">Planeador ELO MNG</MenuItem>
-              <MenuItem value="Planeador MEC ENV">Planeador MEC ENV</MenuItem>
-              <MenuItem value="Planeador ELO ENV">Planeador ELO ENV</MenuItem>
-              <MenuItem value="Planeador ELE ENV">Planeador ELE ENV</MenuItem>
-              <MenuItem value="Planeador MTO PRED">Planeador MTO PRED</MenuItem>
-              <MenuItem value="Planeador  CIV MNG">Planeador CIV MNG</MenuItem>
-              <MenuItem value="Planeador SYE">Planeador SYE</MenuItem>
-              <MenuItem value="Planeador LCE">Planeador LCE</MenuItem>
-              <MenuItem value="Planeador LTAG">Planeador LTAG</MenuItem>
+              <MenuItem value={"Planeador PRED ENV"}>
+                Planeador PRED ENV
+              </MenuItem>
+              <MenuItem value={"Planeador MEC MNG"}>Planeador MEC MNG</MenuItem>
+              <MenuItem value={"Planeador ELE MNG"}>Planeador ELE MNG</MenuItem>
+              <MenuItem value={"Planeador ELO MNG"}>Planeador ELO MNG</MenuItem>
+              <MenuItem value={"Planeador MEC ENV"}>Planeador MEC ENV</MenuItem>
+              <MenuItem value={"Planeador ELO ENV"}>Planeador ELO ENV</MenuItem>
+              <MenuItem value={"Planeador ELE ENV"}>Planeador ELE ENV</MenuItem>
+              <MenuItem value={"Planeador MTO PRED"}>
+                Planeador MTO PRED
+              </MenuItem>
+              <MenuItem value={"Planeador  CIV MNG"}>
+                Planeador CIV MNG
+              </MenuItem>
+              <MenuItem value={"Planeador SYE"}>Planeador SYE</MenuItem>
+              <MenuItem value={"Planeador LCE"}>Planeador LCE</MenuItem>
+              <MenuItem value={"Planeador LTAG"}>Planeador LTAG</MenuItem>
             </Select>
 
             <Typography variant="overline" style={gnrStyle}>
@@ -396,7 +375,8 @@ const Fields = () => {
               variant="outlined"
               fullWidth
               size="small"
-              {...register("descTarjeta")}
+              onChange={(e) => setDescTarjeta(e.target.value)}
+              value={descTarjeta}
               style={gnrStyle}
               multiline
               rows="6"
@@ -410,11 +390,12 @@ const Fields = () => {
               fullWidth
               size="small"
               style={gnrStyle}
-              {...register("Afecta1")}
+              onChange={(e) => setAfecta(e.target.value)}
+              value={afecta}
             >
-              <MenuItem value="Afecta a equipo">Afecta a equipo</MenuItem>
-              <MenuItem value="Afecta la planta">Afecta la planta</MenuItem>
-              <MenuItem value="Afecta a personas">Afecta a personas</MenuItem>
+              <MenuItem value={"Afecta a equipo"}>Afecta a equipo</MenuItem>
+              <MenuItem value={"Afecta la planta"}>Afecta la planta</MenuItem>
+              <MenuItem value={"Afecta a personas"}>Afecta a personas</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Afecta a
@@ -425,6 +406,8 @@ const Fields = () => {
               fullWidth
               size="small"
               type="File"
+              onChange={(e) => setAfectaFile(e.target.value)}
+              value={afectaFile}
             ></TextField>
           </section>
         )}
@@ -436,5 +419,4 @@ const Fields = () => {
     </div>
   );
 };
-
-export default Fields;
+export default Step1;

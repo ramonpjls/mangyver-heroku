@@ -4,6 +4,7 @@ import Login from "./components/login";
 import Header from "./components/Header";
 import CreacionAviso from "./components/CreacionAviso";
 import ShowAvisos from "./components/ShowAvisos";
+import Home from "./components/notice_mx/home";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" component={Header} />
           <Route path="/Formulario" component={CreacionAviso} />
           <Route path="/ShowAvisos" component={ShowAvisos} />
+          <Route path="/Home" component={Home} />
         </Switch>
       </div>
     </BrowserRouter>

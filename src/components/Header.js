@@ -24,7 +24,7 @@ import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import AddCommentIcon from "@material-ui/icons/AddComment";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import CreacionAviso from "./CreacionAviso";
+import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
 
@@ -122,6 +122,7 @@ export default function MiniDrawer() {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
+            backgroundColor: "#3f51b5",
           }}
         >
           <IconButton
@@ -182,15 +183,15 @@ export default function MiniDrawer() {
           <Link to="/ShowAvisos">
             <ListItem>
               <ListItemIcon>
-                <ModeCommentIcon style={{ color: "gray", fontSize: 40 }} />
+                <ModeCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
               </ListItemIcon>
               <ListItemText primary="Avisos" />
             </ListItem>
           </Link>
-          <Link to="/Formulario">
+          <Link to="/Home">
             <ListItem>
               <ListItemIcon>
-                <AddCommentIcon style={{ color: "gray", fontSize: 40 }} />
+                <AddCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
               </ListItemIcon>
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
@@ -199,7 +200,7 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Route path="/Formulario" component={CreacionAviso} />
+        <Route path="/Home" component={Home} />
         <Route path="/ShowAvisos" component={ShowAvisos} />
       </main>
     </div>
