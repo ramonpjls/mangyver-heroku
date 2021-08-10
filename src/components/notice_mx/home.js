@@ -12,7 +12,7 @@ class DropDown extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={{ marginTop: "30px" }}>
         <Typography align="left" variant="h5">
           Elige el Proceso
         </Typography>
@@ -21,6 +21,7 @@ class DropDown extends Component {
           variant="outlined"
           fullWidth
           size="small"
+          defaultValue=""
           onChange={this.onChange}
         >
           <MenuItem value={"Step1"}>Crear Tarjeta (M1)</MenuItem>
@@ -35,13 +36,22 @@ class DropDown extends Component {
 const Menu = withRouter(DropDown);
 
 const Home = () => {
+  const Header = {
+    backgroundColor: "#79A9D1",
+    color: "white",
+    borderRadius: "3px",
+    padding: "10px",
+  };
+
   return (
     <BrowserRouter>
       <div className="App">
-        <Typography align="left" variant="h5" raised="true">
-          Creacion de Aviso
-        </Typography>
-        <Container maxWidth="sm">
+        <Container className="header" style={Header}>
+          <Typography align="left" variant="h6">
+            Creacion de Aviso
+          </Typography>
+        </Container>
+        <Container className="formContainer" maxWidth="sm">
           <Menu />
           <Route path="/Step1" component={Step1} />
           <Route path="/Step2" component={Step2} />

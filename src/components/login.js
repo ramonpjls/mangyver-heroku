@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Grid,
-  TextField,
   Button,
   InputAdornment,
   InputLabel,
@@ -35,6 +34,13 @@ const Login = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   const HandleSubmit = (e) => {
@@ -96,24 +102,27 @@ const Login = () => {
                 display: "flex",
                 flexDirection: "column",
                 minWidth: "300px",
+                rowGap: "1rem",
               }}
             >
               <Grid container justify="center">
                 <img src={LogoG} alt="logo" />
               </Grid>
               <InputLabel shrink>Nombre de usuario</InputLabel>
-              <TextField
+              <Input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 name="username"
+                required
                 fullWidth
-                margin="normal"
               />
               <InputLabel shrink>Password</InputLabel>
               <Input
+                name="password"
                 id="standard-adornment-password"
                 type={values.showPassword ? "text" : "password"}
                 value={password}
+                required
                 fullWidth
                 onChange={(e) => setPassword(e.target.value)}
                 endAdornment={
@@ -145,6 +154,8 @@ const Login = () => {
               horizontal: "right",
             }}
             open={open}
+            autoHideDuration={5000}
+            onClose={handleClose}
           >
             <Alert severity="error">Contraseña incoreccta</Alert>
           </Snackbar>

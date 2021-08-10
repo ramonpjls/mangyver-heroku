@@ -55,12 +55,14 @@ const Step2 = () => {
     });
     history.push("/ShowAvisos");
     localStorage.clear();
+    window.location.reload();
   };
 
   const btnBckStyle = {
     textTransform: "none",
     marginTop: "1rem",
     fontSize: 16,
+    marginBottom: "1rem",
     lineHeight: 1.5,
     backgroundColor: "#d06345",
     color: "#fff",
@@ -69,6 +71,7 @@ const Step2 = () => {
   const btnNxtStyle = {
     textTransform: "none",
     marginTop: "1rem",
+    marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#2760B7",
@@ -77,6 +80,7 @@ const Step2 = () => {
 
   const gnrStyle = {
     marginTop: "1rem",
+    marginBottom: "1rem",
   };
 
   const btnContStyle = {
@@ -113,7 +117,7 @@ const Step2 = () => {
           style={btnNxtStyle}
           variant="outlined"
           color="primary"
-          onSubmit={submitForm}
+          onClick={submitForm}
         >
           Submit Form
         </Button>
@@ -140,6 +144,7 @@ const Step2 = () => {
             id="codigoEquipo"
             variant="outlined"
             fullWidth
+            required
             size="small"
             onChange={(e) => setCodigoEquipo(e.target.value)}
             value={codigoEquipo}
@@ -159,6 +164,7 @@ const Step2 = () => {
             id="Linea"
             variant="outlined"
             fullWidth
+            required
             size="small"
             style={gnrStyle}
             onChange={(e) => setLinea(e.target.value)}
@@ -173,6 +179,7 @@ const Step2 = () => {
             id="tipoEquipo"
             variant="outlined"
             fullWidth
+            required="true"
             size="small"
             style={gnrStyle}
             onChange={(e) => setTipoEquipo(e.target.value)}
@@ -187,6 +194,7 @@ const Step2 = () => {
             id="Consecutivo"
             variant="outlined"
             fullWidth
+            required
             size="small"
             style={gnrStyle}
             onChange={(e) => setConsecutivo(e.target.value)}
@@ -215,6 +223,7 @@ const Step2 = () => {
               onChange={(e) => setFalla(e.target.value)}
               value={falla}
               size="small"
+              required
               style={gnrStyle}
               label="Cual a sido la duracion de la falla en minutos"
               type="number"
@@ -230,6 +239,7 @@ const Step2 = () => {
               id="departamento"
               variant="outlined"
               fullWidth
+              required
               onChange={(e) => setDepartamento(e.target.value)}
               value={departamento}
               size="small"
@@ -250,6 +260,7 @@ const Step2 = () => {
               id="Tarjeta"
               variant="outlined"
               fullWidth
+              required
               size="small"
               onChange={(e) => setTipoTarjeta(e.target.value)}
               value={tipoTarjeta}
@@ -266,6 +277,7 @@ const Step2 = () => {
             <TextField
               variant="outlined"
               fullWidth
+              required
               style={gnrStyle}
               size="small"
               onChange={(e) => setTituloTarjeta(e.target.value)}
@@ -278,6 +290,7 @@ const Step2 = () => {
               id="prioridad"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setPrioridad(e.target.value)}
@@ -296,6 +309,7 @@ const Step2 = () => {
               id="componente"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setComponenteDanado(e.target.value)}
@@ -313,6 +327,7 @@ const Step2 = () => {
               id="causaAveria"
               variant="outlined"
               fullWidth
+              required
               style={gnrStyle}
               size="small"
               onChange={(e) => setCausaAveria(e.target.value)}
@@ -325,6 +340,7 @@ const Step2 = () => {
               id="tipoFalla"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setTipoFalla(e.target.value)}
@@ -356,6 +372,7 @@ const Step2 = () => {
             <TextField
               variant="outlined"
               fullWidth
+              required
               size="small"
               onChange={(e) => setDescTarjeta(e.target.value)}
               value={descTarjeta}
@@ -370,6 +387,7 @@ const Step2 = () => {
               id="Afecta1"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setAfecta(e.target.value)}
@@ -386,6 +404,7 @@ const Step2 = () => {
               variant="outlined"
               style={gnrStyle}
               fullWidth
+              required
               size="small"
               type="File"
               onChange={(e) => setAfectaFile(e.target.value)}
@@ -393,10 +412,10 @@ const Step2 = () => {
             ></TextField>
           </section>
         )}
-        <Container style={btnContStyle}>
-          {renderBckBtn()}
-          {renderBtn()}
-        </Container>
+      </Container>
+      <Container style={btnContStyle}>
+        {renderBckBtn()}
+        {renderBtn()}
       </Container>
     </div>
   );

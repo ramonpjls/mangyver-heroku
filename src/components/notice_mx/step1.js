@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 
 const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
-
   const [tarea, setTarea] = useLocalStorage("tarea", "");
   const [departamento, setDepartamento] = useLocalStorage("departamento", "");
   const [falla, setFalla] = useLocalStorage("falla", "");
@@ -52,6 +51,7 @@ const Step1 = () => {
     });
     history.push("/ShowAvisos");
     localStorage.clear();
+    window.location.reload();
   };
 
   const backBtn = () => {
@@ -61,6 +61,7 @@ const Step1 = () => {
   const btnBckStyle = {
     textTransform: "none",
     marginTop: "1rem",
+    marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#d06345",
@@ -70,6 +71,7 @@ const Step1 = () => {
   const btnNxtStyle = {
     textTransform: "none",
     marginTop: "1rem",
+    marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#2760B7",
@@ -78,6 +80,7 @@ const Step1 = () => {
 
   const gnrStyle = {
     marginTop: "1rem",
+    marginBottom: "1rem",
   };
 
   const btnContStyle = {
@@ -113,7 +116,7 @@ const Step1 = () => {
           style={btnNxtStyle}
           variant="outlined"
           color="primary"
-          onSubmit={submitForm}
+          onClick={submitForm}
         >
           Submit Form
         </Button>
@@ -140,6 +143,7 @@ const Step1 = () => {
           onChange={(e) => setFalla(e.target.value)}
           value={falla}
           fullWidth
+          required
           size="small"
           type="number"
           placeholder="Duracion de falla en minutos"
@@ -152,12 +156,13 @@ const Step1 = () => {
     if (departamento === "otras areas") {
       return (
         <div style={gnrStyle}>
-          <Typography variant="overline">Codigo de Equipo</Typography>
+          <Typography>Codigo de Equipo</Typography>
           <Select
             id="codigoEquipo"
             variant="outlined"
             fullWidth
             size="small"
+            required
             onChange={(e) => setCodigoEquipo(e.target.value)}
             value={codigoEquipo}
             style={gnrStyle}
@@ -171,11 +176,12 @@ const Step1 = () => {
     } else if (departamento === "envasado") {
       return (
         <div style={gnrStyle}>
-          <Typography variant="overline">Linea</Typography>
+          <Typography>Linea</Typography>
           <Select
             id="Linea"
             variant="outlined"
             fullWidth
+            required
             size="small"
             style={gnrStyle}
             onChange={(e) => setLinea(e.target.value)}
@@ -185,11 +191,12 @@ const Step1 = () => {
             <MenuItem value={"linea2"}>Linea 2</MenuItem>
             <MenuItem value={"linea3"}>Linea 3</MenuItem>
           </Select>
-          <Typography variant="overline">Tipo de Equipo</Typography>
+          <Typography>Tipo de Equipo</Typography>
           <Select
             id="tipoEquipo"
             variant="outlined"
             fullWidth
+            required
             size="small"
             style={gnrStyle}
             onChange={(e) => setTipoEquipo(e.target.value)}
@@ -199,12 +206,13 @@ const Step1 = () => {
             <MenuItem value={"Tipo2"}>Tipo 2</MenuItem>
             <MenuItem value={"Tipo3"}>Tipo 3</MenuItem>
           </Select>
-          <Typography variant="overline">Consecutivo</Typography>
+          <Typography>Consecutivo</Typography>
           <Select
             id="Consecutivo"
             variant="outlined"
             fullWidth
             size="small"
+            required
             style={gnrStyle}
             onChange={(e) => setConsecutivo(e.target.value)}
             value={consecutivo}
@@ -230,6 +238,7 @@ const Step1 = () => {
               variant="outlined"
               onChange={(e) => setTarea(e.target.value)}
               value={tarea}
+              required
               fullWidth
               size="small"
             >
@@ -248,6 +257,7 @@ const Step1 = () => {
               id="departamento"
               variant="outlined"
               fullWidth
+              required
               onChange={(e) => setDepartamento(e.target.value)}
               value={departamento}
               size="small"
@@ -261,14 +271,13 @@ const Step1 = () => {
         )}
         {formStep === 2 && (
           <section style={gnrStyle} id="6">
-            <Typography variant="overline" style={gnrStyle}>
-              Tipo de tarjeta
-            </Typography>
+            <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
             <Select
               id="Tarjeta"
               variant="outlined"
               fullWidth
               size="small"
+              required
               onChange={(e) => setTipoTarjeta(e.target.value)}
               value={tipoTarjeta}
               style={gnrStyle}
@@ -278,23 +287,21 @@ const Step1 = () => {
               <MenuItem value={"VD"}>verde</MenuItem>
               <MenuItem value={"AZ"}>Azul</MenuItem>
             </Select>
-            <Typography variant="overline" style={gnrStyle}>
-              Titulo de la tarjeta
-            </Typography>
+            <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
               variant="outlined"
               fullWidth
               style={gnrStyle}
+              required
               size="small"
               onChange={(e) => setTituloTarjeta(e.target.value)}
               value={tituloTarjeta}
             ></TextField>
-            <Typography variant="overline" style={gnrStyle}>
-              Prioridad
-            </Typography>
+            <Typography style={gnrStyle}>Prioridad</Typography>
             <Select
               id="prioridad"
               variant="outlined"
+              required
               fullWidth
               size="small"
               style={gnrStyle}
@@ -307,13 +314,12 @@ const Step1 = () => {
               <MenuItem value={"4"}>Bajo</MenuItem>
             </Select>
 
-            <Typography variant="overline" style={gnrStyle}>
-              Componente dañado
-            </Typography>
+            <Typography style={gnrStyle}>Componente dañado</Typography>
             <Select
               id="componente"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setComponenteDanado(e.target.value)}
@@ -324,26 +330,24 @@ const Step1 = () => {
               <MenuItem value={"3"}>componente 015</MenuItem>
               <MenuItem value={"4"}>componente 019</MenuItem>
             </Select>
-            <Typography variant="overline" style={gnrStyle}>
-              Causa de la averia
-            </Typography>
+            <Typography style={gnrStyle}>Causa de la averia</Typography>
             <TextField
               id="causaAveria"
               variant="outlined"
               fullWidth
               style={gnrStyle}
               size="small"
+              required
               onChange={(e) => setCausaAveria(e.target.value)}
               value={causaAveria}
             ></TextField>
-            <Typography variant="overline" style={gnrStyle}>
-              Tipo de falla
-            </Typography>
+            <Typography style={gnrStyle}>Tipo de falla</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"
               fullWidth
               size="small"
+              required
               style={gnrStyle}
               onChange={(e) => setTipoFalla(e.target.value)}
               value={tipoFalla}
@@ -368,12 +372,11 @@ const Step1 = () => {
               <MenuItem value={"Planeador LTAG"}>Planeador LTAG</MenuItem>
             </Select>
 
-            <Typography variant="overline" style={gnrStyle}>
-              Descripcion de la tarjeta
-            </Typography>
+            <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
               variant="outlined"
               fullWidth
+              required
               size="small"
               onChange={(e) => setDescTarjeta(e.target.value)}
               value={descTarjeta}
@@ -381,14 +384,13 @@ const Step1 = () => {
               multiline
               rows="6"
             ></TextField>
-            <Typography variant="overline" style={gnrStyle}>
-              Afecta a
-            </Typography>
+            <Typography style={gnrStyle}>Afecta a</Typography>
             <Select
               id="Afecta1"
               variant="outlined"
               fullWidth
               size="small"
+              required
               style={gnrStyle}
               onChange={(e) => setAfecta(e.target.value)}
               value={afecta}
@@ -397,24 +399,23 @@ const Step1 = () => {
               <MenuItem value={"Afecta la planta"}>Afecta la planta</MenuItem>
               <MenuItem value={"Afecta a personas"}>Afecta a personas</MenuItem>
             </Select>
-            <Typography variant="overline" style={gnrStyle}>
-              Afecta a
-            </Typography>
+            <Typography style={gnrStyle}>Afecta a</Typography>
             <TextField
               variant="outlined"
               style={gnrStyle}
               fullWidth
               size="small"
+              required
               type="File"
               onChange={(e) => setAfectaFile(e.target.value)}
               value={afectaFile}
             ></TextField>
           </section>
         )}
-        <Container style={btnContStyle}>
-          {renderBckBtn()}
-          {renderBtn()}
-        </Container>
+      </Container>
+      <Container style={btnContStyle}>
+        {renderBckBtn()}
+        {renderBtn()}
       </Container>
     </div>
   );

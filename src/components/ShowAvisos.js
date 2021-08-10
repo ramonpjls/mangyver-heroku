@@ -207,7 +207,7 @@ export default function CustomPaginationActionsTable() {
     <div style={{ display: "flex", flexDirection: "row" }}>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
-          <TableHead style={{ background: "#3f51b5" }}>
+          <TableHead style={{ background: "#79A9D1" }}>
             <TableRow>
               <TableCell style={{ fontSize: 18, color: "white" }} align="left">
                 Aviso

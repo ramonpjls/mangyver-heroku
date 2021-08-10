@@ -55,6 +55,7 @@ const Step3 = () => {
   const btnBckStyle = {
     textTransform: "none",
     marginTop: "1rem",
+    marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#d06345",
@@ -64,6 +65,7 @@ const Step3 = () => {
   const btnNxtStyle = {
     textTransform: "none",
     marginTop: "1rem",
+    marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#2760B7",
@@ -72,6 +74,7 @@ const Step3 = () => {
 
   const gnrStyle = {
     marginTop: "1rem",
+    marginBottom: "1rem",
   };
 
   const btnContStyle = {
@@ -139,6 +142,7 @@ const Step3 = () => {
               onChange={(e) => setOt(e.target.value)}
               value={ot}
               type="number"
+              required
               fullWidth
               style={gnrStyle}
               size="small"
@@ -155,6 +159,7 @@ const Step3 = () => {
               id="Tarjeta"
               variant="outlined"
               fullWidth
+              required
               size="small"
               onChange={(e) => setTipoTarjeta(e.target.value)}
               value={tipoTarjeta}
@@ -171,6 +176,7 @@ const Step3 = () => {
             <TextField
               variant="outlined"
               fullWidth
+              required
               style={gnrStyle}
               size="small"
               onChange={(e) => setTituloTarjeta(e.target.value)}
@@ -183,6 +189,7 @@ const Step3 = () => {
               id="prioridad"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setPrioridad(e.target.value)}
@@ -201,6 +208,7 @@ const Step3 = () => {
               id="componente"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setComponenteDanado(e.target.value)}
@@ -218,6 +226,7 @@ const Step3 = () => {
               id="causaAveria"
               variant="outlined"
               fullWidth
+              required
               style={gnrStyle}
               size="small"
               onChange={(e) => setCausaAveria(e.target.value)}
@@ -230,6 +239,7 @@ const Step3 = () => {
               id="tipoFalla"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setTipoFalla(e.target.value)}
@@ -261,6 +271,7 @@ const Step3 = () => {
             <TextField
               variant="outlined"
               fullWidth
+              required
               size="small"
               onChange={(e) => setDescTarjeta(e.target.value)}
               value={descTarjeta}
@@ -275,6 +286,7 @@ const Step3 = () => {
               id="Afecta1"
               variant="outlined"
               fullWidth
+              required
               size="small"
               style={gnrStyle}
               onChange={(e) => setAfecta(e.target.value)}
@@ -291,6 +303,7 @@ const Step3 = () => {
               variant="outlined"
               style={gnrStyle}
               fullWidth
+              required
               size="small"
               type="File"
               onChange={(e) => setAfectaFile(e.target.value)}
@@ -298,10 +311,10 @@ const Step3 = () => {
             ></TextField>
           </section>
         )}
-        <Container style={btnContStyle}>
-          {renderBckBtn()}
-          {renderBtn()}
-        </Container>
+      </Container>
+      <Container style={btnContStyle}>
+        {renderBckBtn()}
+        {renderBtn()}
       </Container>
     </div>
   );
