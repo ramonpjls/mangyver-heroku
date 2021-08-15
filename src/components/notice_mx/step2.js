@@ -185,9 +185,9 @@ const Step2 = () => {
             onChange={(e) => setTipoEquipo(e.target.value)}
             value={tipoEquipo}
           >
-            <MenuItem value={"Tipo1"}>Tipo 1</MenuItem>
-            <MenuItem value={"Tipo2"}>Tipo 2</MenuItem>
-            <MenuItem value={"Tipo3"}>Tipo 3</MenuItem>
+            <MenuItem value={"Tipo1"}>Tipo A</MenuItem>
+            <MenuItem value={"Tipo2"}>Tipo B</MenuItem>
+            <MenuItem value={"Tipo3"}>Tipo C</MenuItem>
           </Select>
           <Typography variant="overline">Consecutivo</Typography>
           <Select
@@ -266,10 +266,9 @@ const Step2 = () => {
               value={tipoTarjeta}
               style={gnrStyle}
             >
-              <MenuItem value={"AM"}>Amarillo</MenuItem>
-              <MenuItem value={"RJ"}>Rojo</MenuItem>
-              <MenuItem value={"VD"}>verde</MenuItem>
-              <MenuItem value={"AZ"}>Azul</MenuItem>
+              <MenuItem value={"AM"}>Tipo 1</MenuItem>
+              <MenuItem value={"RJ"}>Tipo 2</MenuItem>
+              <MenuItem value={"VD"}>Tipo 3</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Titulo de la tarjeta
@@ -296,10 +295,10 @@ const Step2 = () => {
               onChange={(e) => setPrioridad(e.target.value)}
               value={prioridad}
             >
-              <MenuItem value={"1"}>Muy Elevado</MenuItem>
-              <MenuItem value={"2"}>Elevado</MenuItem>
-              <MenuItem value={"3"}>Medio</MenuItem>
-              <MenuItem value={"4"}>Bajo</MenuItem>
+              <MenuItem value={"1"}>Muy alta</MenuItem>
+              <MenuItem value={"2"}>Alta</MenuItem>
+              <MenuItem value={"3"}>Media</MenuItem>
+              <MenuItem value={"4"}>Baja</MenuItem>
             </Select>
 
             <Typography variant="overline" style={gnrStyle}>
@@ -315,10 +314,9 @@ const Step2 = () => {
               onChange={(e) => setComponenteDanado(e.target.value)}
               value={componenteDanado}
             >
-              <MenuItem value={"1"}>componente 010</MenuItem>
-              <MenuItem value={"2"}>componente 012</MenuItem>
-              <MenuItem value={"3"}>componente 015</MenuItem>
-              <MenuItem value={"4"}>componente 019</MenuItem>
+              <MenuItem value={"1"}>componente rojo</MenuItem>
+              <MenuItem value={"2"}>componente azul</MenuItem>
+              <MenuItem value={"3"}>componente amarillo</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Causa de la averia
@@ -346,24 +344,9 @@ const Step2 = () => {
               onChange={(e) => setTipoFalla(e.target.value)}
               value={tipoFalla}
             >
-              <MenuItem value={"Planeador PRED ENV"}>
-                Planeador PRED ENV
-              </MenuItem>
-              <MenuItem value={"Planeador MEC MNG"}>Planeador MEC MNG</MenuItem>
-              <MenuItem value={"Planeador ELE MNG"}>Planeador ELE MNG</MenuItem>
-              <MenuItem value={"Planeador ELO MNG"}>Planeador ELO MNG</MenuItem>
-              <MenuItem value={"Planeador MEC ENV"}>Planeador MEC ENV</MenuItem>
-              <MenuItem value={"Planeador ELO ENV"}>Planeador ELO ENV</MenuItem>
-              <MenuItem value={"Planeador ELE ENV"}>Planeador ELE ENV</MenuItem>
-              <MenuItem value={"Planeador MTO PRED"}>
-                Planeador MTO PRED
-              </MenuItem>
-              <MenuItem value={"Planeador  CIV MNG"}>
-                Planeador CIV MNG
-              </MenuItem>
-              <MenuItem value={"Planeador SYE"}>Planeador SYE</MenuItem>
-              <MenuItem value={"Planeador LCE"}>Planeador LCE</MenuItem>
-              <MenuItem value={"Planeador LTAG"}>Planeador LTAG</MenuItem>
+              <MenuItem value={"1"}>Tipo 1</MenuItem>
+              <MenuItem value={"2"}>Tipo 2</MenuItem>
+              <MenuItem value={"3"}>Tipo 3</MenuItem>
             </Select>
 
             <Typography variant="overline" style={gnrStyle}>

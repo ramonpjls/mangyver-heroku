@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, withRouter } from "react-router-dom";
+import { BrowserRouter, Route, withRouter, Switch } from "react-router-dom";
 import { MenuItem, Select, Typography, Container } from "@material-ui/core";
 import Step1 from "./step1";
 import Step2 from "./step2";
@@ -24,9 +24,9 @@ class DropDown extends Component {
           defaultValue=""
           onChange={this.onChange}
         >
-          <MenuItem value={"Step1"}>Crear Tarjeta (M1)</MenuItem>
-          <MenuItem value={"Step2"}>Notificación de falla (M2)</MenuItem>
-          <MenuItem value={"Step3"}>Aviso derivado de una orden (M3)</MenuItem>
+          <MenuItem value={"Step1"}>M1-Crear tarjeta</MenuItem>
+          <MenuItem value={"Step2"}>M2-Notificación de falla</MenuItem>
+          <MenuItem value={"Step3"}>M3-Aviso deribado de una orden</MenuItem>
         </Select>
       </Container>
     );
@@ -41,6 +41,7 @@ const Home = () => {
     color: "white",
     borderRadius: "3px",
     padding: "10px",
+    maxWidth: "100%",
   };
 
   return (
@@ -53,9 +54,11 @@ const Home = () => {
         </Container>
         <Container className="formContainer" maxWidth="sm">
           <Menu />
-          <Route path="/Step1" component={Step1} />
-          <Route path="/Step2" component={Step2} />
-          <Route path="/Step3" component={Step3} />
+          <Switch>
+            <Route path="/Step1" component={Step1} />
+            <Route path="/Step2" component={Step2} />
+            <Route path="/Step3" component={Step3} />
+          </Switch>
         </Container>
       </div>
     </BrowserRouter>
