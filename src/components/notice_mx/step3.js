@@ -214,9 +214,8 @@ const Step3 = () => {
               onChange={(e) => setComponenteDanado(e.target.value)}
               value={componenteDanado}
             >
-              <MenuItem value={"1"}>componente rojo</MenuItem>
-              <MenuItem value={"2"}>componente azul</MenuItem>
-              <MenuItem value={"3"}>componente amarillo</MenuItem>
+              <MenuItem value={"1"}>Cadena</MenuItem>
+              <MenuItem value={"2"}>Motoreductor</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Causa de la averia
@@ -244,9 +243,16 @@ const Step3 = () => {
               onChange={(e) => setTipoFalla(e.target.value)}
               value={tipoFalla}
             >
-              <MenuItem value={"1"}>Tipo 1</MenuItem>
-              <MenuItem value={"2"}>Tipo 2</MenuItem>
-              <MenuItem value={"3"}>Tipo 3</MenuItem>
+              <MenuItem value={"1"}>Lubricación de espreas</MenuItem>
+              <MenuItem value={"2"}>Luve Drive</MenuItem>
+              <MenuItem value={"3"}>Producción</MenuItem>
+              <MenuItem value={"1"}>Mecánica</MenuItem>
+              <MenuItem value={"2"}>Eléctrica</MenuItem>
+              <MenuItem value={"3"}>Electrónica</MenuItem>
+              <MenuItem value={"1"}>Civil</MenuItem>
+              <MenuItem value={"2"}>Climas</MenuItem>
+              <MenuItem value={"3"}>Predictivo</MenuItem>
+              <MenuItem value={"3"}>Lubricación ToolKits</MenuItem>
             </Select>
 
             <Typography variant="overline" style={gnrStyle}>
