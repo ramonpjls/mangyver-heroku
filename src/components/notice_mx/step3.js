@@ -165,9 +165,10 @@ const Step3 = () => {
               value={tipoTarjeta}
               style={gnrStyle}
             >
-              <MenuItem value={"AM"}>Tipo 1</MenuItem>
-              <MenuItem value={"RJ"}>Tipo 2</MenuItem>
-              <MenuItem value={"VD"}>Tipo 3</MenuItem>
+              <MenuItem value={"AM"}>Amarillo</MenuItem>
+              <MenuItem value={"RJ"}>Rojo</MenuItem>
+              <MenuItem value={"VD"}>Verde</MenuItem>
+              <MenuItem value={"AZ"}>Azul</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Titulo de la tarjeta

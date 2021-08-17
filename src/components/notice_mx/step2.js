@@ -185,9 +185,10 @@ const Step2 = () => {
             onChange={(e) => setTipoEquipo(e.target.value)}
             value={tipoEquipo}
           >
-            <MenuItem value={"Tipo1"}>Tipo A</MenuItem>
-            <MenuItem value={"Tipo2"}>Tipo B</MenuItem>
-            <MenuItem value={"Tipo3"}>Tipo C</MenuItem>
+            <MenuItem value={"Tipo1"}>Despaletizador</MenuItem>
+            <MenuItem value={"Tipo2"}>Trans de carton vacío</MenuItem>
+            <MenuItem value={"Tipo3"}>Stewart de vacío</MenuItem>
+            <MenuItem value={"Tipo3"}>Abridora</MenuItem>
           </Select>
           <Typography variant="overline">Consecutivo</Typography>
           <Select
@@ -200,9 +201,9 @@ const Step2 = () => {
             onChange={(e) => setConsecutivo(e.target.value)}
             value={consecutivo}
           >
-            <MenuItem value={"Consecutivo1"}>Consecutivo 1</MenuItem>
-            <MenuItem value={"Consecutivo2"}>Consecutivo 2</MenuItem>
-            <MenuItem value={"Consecutivo3"}>Consecutivo 3</MenuItem>
+            <MenuItem value={"Consecutivo1"}>A</MenuItem>
+            <MenuItem value={"Consecutivo2"}>B</MenuItem>
+            <MenuItem value={"Consecutivo3"}>C</MenuItem>
           </Select>
         </div>
       );
@@ -266,9 +267,10 @@ const Step2 = () => {
               value={tipoTarjeta}
               style={gnrStyle}
             >
-              <MenuItem value={"AM"}>Tipo 1</MenuItem>
-              <MenuItem value={"RJ"}>Tipo 2</MenuItem>
-              <MenuItem value={"VD"}>Tipo 3</MenuItem>
+              <MenuItem value={"AM"}>Amarillo</MenuItem>
+              <MenuItem value={"RJ"}>Rojo</MenuItem>
+              <MenuItem value={"VD"}>Verde</MenuItem>
+              <MenuItem value={"AZ"}>Azul</MenuItem>
             </Select>
             <Typography variant="overline" style={gnrStyle}>
               Titulo de la tarjeta
