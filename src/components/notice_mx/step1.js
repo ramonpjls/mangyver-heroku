@@ -386,9 +386,8 @@ const Step1 = () => {
               onChange={(e) => setAfecta(e.target.value)}
               value={afecta}
             >
-              <MenuItem value={"Afecta a equipo"}>Afecta a equipo</MenuItem>
-              <MenuItem value={"Afecta la planta"}>Afecta la planta</MenuItem>
-              <MenuItem value={"Afecta a personas"}>Afecta a personas</MenuItem>
+              <MenuItem value={"Afecta a equipo"}>Calidad</MenuItem>
+              <MenuItem value={"Afecta la planta"}>GLY/LEF</MenuItem>
             </Select>
             <Typography style={gnrStyle}>Afecta a</Typography>
             <TextField
