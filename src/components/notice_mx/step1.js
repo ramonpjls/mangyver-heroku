@@ -7,51 +7,85 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-import { useLocalStorage } from "./useLocalStorage";
+//import { useLocalStorage } from "./useLocalStorage";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
+//import { useForm } from "react-hook-form";
 
 const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
-  const [tarea, setTarea] = useLocalStorage("tarea", "");
-  const [departamento, setDepartamento] = useLocalStorage("departamento", "");
-  const [falla, setFalla] = useLocalStorage("falla", "");
-  const [codigoEquipo, setCodigoEquipo] = useLocalStorage("codigoEquipo", "");
-  const [linea, setLinea] = useLocalStorage("linea", "");
-  const [tipoEquipo, setTipoEquipo] = useLocalStorage("tipoEquipo", "");
-  const [consecutivo, setConsecutivo] = useLocalStorage("consecutivo", "");
-
-  const [tipoTarjeta, setTipoTarjeta] = useLocalStorage("tipoTarjeta", "");
-  const [tituloTarjeta, setTituloTarjeta] = useLocalStorage(
-    "tituloTarjeta",
-    ""
-  );
-  const [prioridad, setPrioridad] = useLocalStorage("prioridad", "");
-  const [componenteDanado, setComponenteDanado] = useLocalStorage(
-    "componenteDanado",
-    ""
-  );
-  const [causaAveria, setCausaAveria] = useLocalStorage("causaAveria", "");
-  const [tipoFalla, setTipoFalla] = useLocalStorage("tipoFalla", "");
-  const [descTarjeta, setDescTarjeta] = useLocalStorage("descTarjeta", "");
-  const [afecta, setAfecta] = useLocalStorage("afecta", "");
-  const [afectaFile, setAfectaFile] = useLocalStorage("afectaFile", "");
+  const [tarjeta, setTarjeta] = useState("");
+  const [failureTimes, setFailureTimes] = useState("");
+  const [departamento, setDepartamento] = useState("");
+  const [codigoEquipo, setCodigoEquipo] = useState("");
+  const [linea, setLinea] = useState("");
+  const [tipoEquipo, setTipoEquipo] = useState("");
+  const [consecutivo, setConsecutivo] = useState("");
+  const [tarjetaTipo, setTarjetaTipo] = useState("");
+  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
+  const [prioridad, setPrioridad] = useState("");
+  const [componente, setComponente] = useState("");
+  const [causaAveria, setCausaAveria] = useState("");
+  const [tipoFalla, setTipoFalla] = useState("");
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
+  const [afecta, setAfecta] = useState("");
+  //const { watch, register } = useForm();
 
   const history = useHistory();
+
+  //const watchAllFields = watch();
+
+  //console.log(watchAllFields);
+
+  const m1 = [
+    {
+      id: "CD2B8484-0901-EC11-B563-2818780EF919",
+      didCard: tarjeta,
+      failureTime: failureTimes,
+      department: departamento,
+      equipmentCode: codigoEquipo,
+      line: linea,
+      equipmentType: tipoEquipo,
+      consecutive: consecutivo,
+      cardType: tarjetaTipo,
+      cardTittle: tarjetaTitulo,
+      priority: prioridad,
+      components: componente,
+      breakdown: causaAveria,
+      failureType: tipoFalla,
+      cardDescription: descripcionTarjeta,
+      affects: afecta,
+    },
+  ];
+
+  //console.log(m1[0]);
+  //console.log(localStorage.token);
+
+  const auth = localStorage.token;
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
   };
 
   const submitForm = () => {
-    Swal.fire({
-      text: "Aviso creado exitosamente",
-      icon: "success",
-      showConfirmButton: false,
-    });
-    history.push("/ShowAvisos");
-    localStorage.clear();
-    window.location.reload();
+    axios
+      .post("https://mangyver.herokuapp.com/api/v1/notices", m1[0], {
+        headers: { auth },
+      })
+      .then((res) => {
+        console.log(res);
+        Swal.fire({
+          text: "Aviso creado exitosamente",
+          icon: "success",
+          showConfirmButton: false,
+        });
+        history.push("/ShowAvisos");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const backBtn = () => {
@@ -90,7 +124,7 @@ const Step1 = () => {
   };
 
   const renderBckBtn = () => {
-    if (formStep === 0) {
+    if (formStep < 0) {
       return (
         <Button style={gnrStyle} variant="outlined" disabled>
           Back
@@ -135,15 +169,16 @@ const Step1 = () => {
   };
 
   const rndrFalla = () => {
-    if (tarea === "si") {
+    if (tarjeta === "si") {
       return (
         <TextField
           variant="outlined"
           style={gnrStyle}
-          onChange={(e) => setFalla(e.target.value)}
-          value={falla}
           fullWidth
           required
+          id="failureTimes"
+          value={failureTimes}
+          onChange={(e) => setFailureTimes(e.target.value)}
           size="small"
           type="number"
           placeholder="Duracion de falla en minutos"
@@ -157,20 +192,17 @@ const Step1 = () => {
       return (
         <div style={gnrStyle}>
           <Typography>Codigo de Equipo</Typography>
-          <Select
+          <TextField
             id="codigoEquipo"
             variant="outlined"
             fullWidth
             size="small"
+            type="number"
             required
-            onChange={(e) => setCodigoEquipo(e.target.value)}
-            value={codigoEquipo}
             style={gnrStyle}
-          >
-            <MenuItem value={"RD-0515"}>RD-0515</MenuItem>
-            <MenuItem value={"RD-0895"}>RD-0895</MenuItem>
-            <MenuItem value={"RD-0445"}>RD-0445</MenuItem>
-          </Select>
+            value={codigoEquipo}
+            onChange={(e) => setCodigoEquipo(e.target.value)}
+          ></TextField>
         </div>
       );
     } else if (departamento === "envasado") {
@@ -184,12 +216,13 @@ const Step1 = () => {
             required
             size="small"
             style={gnrStyle}
-            onChange={(e) => setLinea(e.target.value)}
             value={linea}
+            onChange={(e) => setLinea(e.target.value)}
           >
-            <MenuItem value={"linea1"}>Linea 1</MenuItem>
             <MenuItem value={"linea2"}>Linea 2</MenuItem>
             <MenuItem value={"linea3"}>Linea 3</MenuItem>
+            <MenuItem value={"linea4"}>Linea 4</MenuItem>
+            <MenuItem value={"linea5"}>Linea 5</MenuItem>
           </Select>
           <Typography>Tipo de Equipo</Typography>
           <Select
@@ -199,28 +232,31 @@ const Step1 = () => {
             required
             size="small"
             style={gnrStyle}
-            onChange={(e) => setTipoEquipo(e.target.value)}
             value={tipoEquipo}
+            onChange={(e) => setTipoEquipo(e.target.value)}
           >
-            <MenuItem value={"Tipo1"}>Despaletizador</MenuItem>
-            <MenuItem value={"Tipo2"}>Trans de carton vacío</MenuItem>
-            <MenuItem value={"Tipo3"}>Stewart de vacío</MenuItem>
-            <MenuItem value={"Tipo3"}>Abridora</MenuItem>
+            <MenuItem value={"Despaletizador"}>Despaletizador</MenuItem>
+            <MenuItem value={"Trans de carton vacio"}>
+              Trans de carton vacío
+            </MenuItem>
+            <MenuItem value={"Stewart de vacio"}>Stewart de vacío</MenuItem>
+            <MenuItem value={"Abridora"}>Abridora</MenuItem>
           </Select>
           <Typography>Consecutivo</Typography>
           <Select
-            id="Consecutivo"
+            id="consecutivo"
             variant="outlined"
             fullWidth
             size="small"
             required
             style={gnrStyle}
-            onChange={(e) => setConsecutivo(e.target.value)}
             value={consecutivo}
+            onChange={(e) => setConsecutivo(e.target.value)}
           >
-            <MenuItem value={"Consecutivo1"}>A</MenuItem>
-            <MenuItem value={"Consecutivo2"}>B</MenuItem>
-            <MenuItem value={"Consecutivo3"}>C</MenuItem>
+            <MenuItem value={"A"}>A</MenuItem>
+            <MenuItem value={"B"}>B</MenuItem>
+            <MenuItem value={"C"}>C</MenuItem>
+            <MenuItem value={"no aplica"}>No Aplica</MenuItem>
           </Select>
         </div>
       );
@@ -230,16 +266,17 @@ const Step1 = () => {
   return (
     <div>
       <Container>
-        {formStep === 0 && (
-          <section style={gnrStyle} id="5">
+        {formStep >= 0 && (
+          <section style={formStep === 0 ? {} : { display: "none" }} id="5">
             <Typography style={gnrStyle} align="left" variant="h5">
-              Se realizo la tarea
+              Se realizo la tarjeta
             </Typography>
             <Select
               variant="outlined"
-              onChange={(e) => setTarea(e.target.value)}
-              value={tarea}
               required
+              id="tarjeta"
+              value={tarjeta}
+              onChange={(e) => setTarjeta(e.target.value)}
               fullWidth
               size="small"
             >
@@ -249,8 +286,8 @@ const Step1 = () => {
             {rndrFalla()}
           </section>
         )}
-        {formStep === 1 && (
-          <section style={gnrStyle} id="7">
+        {formStep >= 1 && (
+          <section style={formStep === 1 ? {} : { display: "none" }} id="7">
             <Typography align="left" variant="h5">
               Departamento
             </Typography>
@@ -259,8 +296,8 @@ const Step1 = () => {
               variant="outlined"
               fullWidth
               required
-              onChange={(e) => setDepartamento(e.target.value)}
               value={departamento}
+              onChange={(e) => setDepartamento(e.target.value)}
               size="small"
               style={gnrStyle}
             >
@@ -270,33 +307,34 @@ const Step1 = () => {
             {renderCodigoEquipo()}
           </section>
         )}
-        {formStep === 2 && (
-          <section style={gnrStyle} id="6">
+        {formStep >= 2 && (
+          <section style={formStep === 2 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
             <Select
-              id="Tarjeta"
+              id="tarjetaTipo"
               variant="outlined"
               fullWidth
               size="small"
               required
-              onChange={(e) => setTipoTarjeta(e.target.value)}
-              value={tipoTarjeta}
               style={gnrStyle}
+              value={tarjetaTipo}
+              onChange={(e) => setTarjetaTipo(e.target.value)}
             >
-              <MenuItem value={"AM"}>Amarillo</MenuItem>
-              <MenuItem value={"RJ"}>Rojo</MenuItem>
-              <MenuItem value={"VD"}>Verde</MenuItem>
-              <MenuItem value={"AZ"}>Azul</MenuItem>
+              <MenuItem value={"Amarillo"}>Amarillo</MenuItem>
+              <MenuItem value={"Rojo"}>Rojo</MenuItem>
+              <MenuItem value={"Verde"}>Verde</MenuItem>
+              <MenuItem value={"Azul"}>Azul</MenuItem>
             </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
+              id="tarjetaTitulo"
               variant="outlined"
               fullWidth
               style={gnrStyle}
               required
               size="small"
-              onChange={(e) => setTituloTarjeta(e.target.value)}
-              value={tituloTarjeta}
+              value={tarjetaTitulo}
+              onChange={(e) => setTarjetaTitulo(e.target.value)}
             ></TextField>
             <Typography style={gnrStyle}>Prioridad</Typography>
             <Select
@@ -305,16 +343,15 @@ const Step1 = () => {
               required
               fullWidth
               size="small"
-              style={gnrStyle}
-              onChange={(e) => setPrioridad(e.target.value)}
               value={prioridad}
+              onChange={(e) => setPrioridad(e.target.value)}
+              style={gnrStyle}
             >
-              <MenuItem value={"1"}>Muy alta</MenuItem>
-              <MenuItem value={"2"}>Alta</MenuItem>
-              <MenuItem value={"3"}>Media</MenuItem>
-              <MenuItem value={"4"}>Baja</MenuItem>
+              <MenuItem value={"Muy alta"}>Muy alta</MenuItem>
+              <MenuItem value={"Alta"}>Alta</MenuItem>
+              <MenuItem value={"Media"}>Media</MenuItem>
+              <MenuItem value={"Baja"}>Baja</MenuItem>
             </Select>
-
             <Typography style={gnrStyle}>Componente dañado</Typography>
             <Select
               id="componente"
@@ -323,23 +360,31 @@ const Step1 = () => {
               required
               size="small"
               style={gnrStyle}
-              onChange={(e) => setComponenteDanado(e.target.value)}
-              value={componenteDanado}
+              value={componente}
+              onChange={(e) => setComponente(e.target.value)}
             >
-              <MenuItem value={"1"}>Cadena</MenuItem>
-              <MenuItem value={"2"}>Motoreductor</MenuItem>
+              <MenuItem value={"cadena"}>Cadena</MenuItem>
+              <MenuItem value={"motoreductor"}>Motoreductor</MenuItem>
             </Select>
             <Typography style={gnrStyle}>Causa de la averia</Typography>
-            <TextField
+            <Select
               id="causaAveria"
               variant="outlined"
               fullWidth
               style={gnrStyle}
               size="small"
               required
-              onChange={(e) => setCausaAveria(e.target.value)}
               value={causaAveria}
-            ></TextField>
+              onChange={(e) => setCausaAveria(e.target.value)}
+            >
+              <MenuItem value={"Tapad@"}>Tapad@</MenuItem>
+              <MenuItem value={"Desgatad@"}>Desgatad@</MenuItem>
+              <MenuItem value={"Desgranad@"}>Desgranad@</MenuItem>
+              <MenuItem value={"Holgad@"}>Holgad@</MenuItem>
+              <MenuItem value={"Reventad@"}>Reventad@</MenuItem>
+              <MenuItem value={"Vibration"}>Vibration</MenuItem>
+              <MenuItem value={"Desajustad@"}>Desajustad@</MenuItem>
+            </Select>
             <Typography style={gnrStyle}>Tipo de falla</Typography>
             <Select
               id="tipoFalla"
@@ -348,58 +393,51 @@ const Step1 = () => {
               size="small"
               required
               style={gnrStyle}
-              onChange={(e) => setTipoFalla(e.target.value)}
               value={tipoFalla}
+              onChange={(e) => setTipoFalla(e.target.value)}
             >
-              <MenuItem value={"1"}>Lubricación de espreas</MenuItem>
-              <MenuItem value={"2"}>Luve Drive</MenuItem>
-              <MenuItem value={"3"}>Producción</MenuItem>
-              <MenuItem value={"1"}>Mecánica</MenuItem>
-              <MenuItem value={"2"}>Eléctrica</MenuItem>
-              <MenuItem value={"3"}>Electrónica</MenuItem>
-              <MenuItem value={"1"}>Civil</MenuItem>
-              <MenuItem value={"2"}>Climas</MenuItem>
-              <MenuItem value={"3"}>Predictivo</MenuItem>
-              <MenuItem value={"3"}>Lubricación ToolKits</MenuItem>
+              <MenuItem value={"Lubricación de espreas"}>
+                Lubricación de espreas
+              </MenuItem>
+              <MenuItem value={"Luve Drive"}>Luve Drive</MenuItem>
+              <MenuItem value={"Producción"}>Producción</MenuItem>
+              <MenuItem value={"Mecánica"}>Mecánica</MenuItem>
+              <MenuItem value={"Eléctrica"}>Eléctrica</MenuItem>
+              <MenuItem value={"Electrónica"}>Electrónica</MenuItem>
+              <MenuItem value={"Civil"}>Civil</MenuItem>
+              <MenuItem value={"Climas"}>Climas</MenuItem>
+              <MenuItem value={"Predictivo"}>Predictivo</MenuItem>
+              <MenuItem value={"Lubricación ToolKits"}>
+                Lubricación ToolKits
+              </MenuItem>
             </Select>
-
             <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
               variant="outlined"
               fullWidth
               required
               size="small"
-              onChange={(e) => setDescTarjeta(e.target.value)}
-              value={descTarjeta}
               style={gnrStyle}
               multiline
               rows="6"
+              id={descripcionTarjeta}
+              value={descripcionTarjeta}
+              onChange={(e) => setDescripcionTarjeta(e.target.value)}
             ></TextField>
             <Typography style={gnrStyle}>Afecta a</Typography>
             <Select
-              id="Afecta1"
+              id="afecta"
               variant="outlined"
               fullWidth
               size="small"
               required
               style={gnrStyle}
-              onChange={(e) => setAfecta(e.target.value)}
               value={afecta}
+              onChange={(e) => setAfecta(e.target.value)}
             >
-              <MenuItem value={"Afecta a equipo"}>Calidad</MenuItem>
-              <MenuItem value={"Afecta la planta"}>GLY/LEF</MenuItem>
+              <MenuItem value={"calidad"}>Calidad</MenuItem>
+              <MenuItem value={"GLY/LEF"}>GLY/LEF</MenuItem>
             </Select>
-            <Typography style={gnrStyle}>Afecta a</Typography>
-            <TextField
-              variant="outlined"
-              style={gnrStyle}
-              fullWidth
-              size="small"
-              required
-              type="File"
-              onChange={(e) => setAfectaFile(e.target.value)}
-              value={afectaFile}
-            ></TextField>
           </section>
         )}
       </Container>

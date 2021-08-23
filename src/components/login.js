@@ -88,7 +88,6 @@ const Login = () => {
           item
           alignItems="center"
           direction="column"
-          justify="space-around"
           style={{
             justifyContent: "center",
             placeContent: "center",
@@ -105,7 +104,7 @@ const Login = () => {
                 rowGap: "1rem",
               }}
             >
-              <Grid container justify="center">
+              <Grid container>
                 <img src={LogoG} alt="logo" />
               </Grid>
               <InputLabel shrink>Nombre de usuario</InputLabel>

@@ -7,37 +7,49 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-import { useLocalStorage } from "./useLocalStorage";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Step2 = () => {
   const [formStep, setFormStep] = useState(0);
-
-  const [departamento, setDepartamento] = useLocalStorage("departamento", "");
-  const [falla, setFalla] = useLocalStorage("falla", "");
-  const [codigoEquipo, setCodigoEquipo] = useLocalStorage("codigoEquipo", "");
-  const [linea, setLinea] = useLocalStorage("linea", "");
-  const [tipoEquipo, setTipoEquipo] = useLocalStorage("tipoEquipo", "");
-  const [consecutivo, setConsecutivo] = useLocalStorage("consecutivo", "");
-
-  const [tipoTarjeta, setTipoTarjeta] = useLocalStorage("tipoTarjeta", "");
-  const [tituloTarjeta, setTituloTarjeta] = useLocalStorage(
-    "tituloTarjeta",
-    ""
-  );
-  const [prioridad, setPrioridad] = useLocalStorage("prioridad", "");
-  const [componenteDanado, setComponenteDanado] = useLocalStorage(
-    "componenteDanado",
-    ""
-  );
-  const [causaAveria, setCausaAveria] = useLocalStorage("causaAveria", "");
-  const [tipoFalla, setTipoFalla] = useLocalStorage("tipoFalla", "");
-  const [descTarjeta, setDescTarjeta] = useLocalStorage("descTarjeta", "");
-  const [afecta, setAfecta] = useLocalStorage("afecta", "");
-  const [afectaFile, setAfectaFile] = useLocalStorage("afectaFile", "");
+  const [failureTimes, setFailureTimes] = useState("");
+  const [departamento, setDepartamento] = useState("");
+  const [codigoEquipo, setCodigoEquipo] = useState("");
+  const [linea, setLinea] = useState("");
+  const [tipoEquipo, setTipoEquipo] = useState("");
+  const [consecutivo, setConsecutivo] = useState("");
+  const [tarjetaTipo, setTarjetaTipo] = useState("");
+  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
+  const [prioridad, setPrioridad] = useState("");
+  const [componente, setComponente] = useState("");
+  const [causaAveria, setCausaAveria] = useState("");
+  const [tipoFalla, setTipoFalla] = useState("");
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
+  const [afecta, setAfecta] = useState("");
 
   const history = useHistory();
+
+  const m2 = [
+    {
+      id: "CE2B8484-0901-EC11-B563-2818780EF919",
+      failureTime: failureTimes,
+      department: departamento,
+      equipmentCode: codigoEquipo,
+      line: linea,
+      equipmentType: tipoEquipo,
+      consecutive: consecutivo,
+      cardType: tarjetaTipo,
+      cardTittle: tarjetaTitulo,
+      priority: prioridad,
+      components: componente,
+      breakdown: causaAveria,
+      failureType: tipoFalla,
+      cardDescription: descripcionTarjeta,
+      affects: afecta,
+    },
+  ];
+
+  console.log(m2[0]);
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
@@ -48,14 +60,23 @@ const Step2 = () => {
   };
 
   const submitForm = () => {
-    Swal.fire({
-      text: "Aviso creado exitosamente",
-      icon: "success",
-      showConfirmButton: false,
-    });
-    history.push("/ShowAvisos");
-    localStorage.clear();
-    window.location.reload();
+    axios
+      .post("https://mangyver.herokuapp.com/api/v1/notices", m2[0], {
+        headers: { auth },
+      })
+      .then((res) => {
+        console.log(res);
+        Swal.fire({
+          text: "Aviso creado exitosamente",
+          icon: "success",
+          showConfirmButton: false,
+        });
+        history.push("/ShowAvisos");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const btnBckStyle = {
@@ -139,27 +160,24 @@ const Step2 = () => {
     if (departamento === "otras areas") {
       return (
         <div style={gnrStyle}>
-          <Typography variant="overline">Codigo de Equipo</Typography>
-          <Select
+          <Typography>Codigo de Equipo</Typography>
+          <TextField
             id="codigoEquipo"
             variant="outlined"
             fullWidth
-            required
             size="small"
-            onChange={(e) => setCodigoEquipo(e.target.value)}
-            value={codigoEquipo}
+            required
+            type="number"
             style={gnrStyle}
-          >
-            <MenuItem value={"RD-0515"}>RD-0515</MenuItem>
-            <MenuItem value={"RD-0895"}>RD-0895</MenuItem>
-            <MenuItem value={"RD-0445"}>RD-0445</MenuItem>
-          </Select>
+            value={codigoEquipo}
+            onChange={(e) => setCodigoEquipo(e.target.value)}
+          ></TextField>
         </div>
       );
     } else if (departamento === "envasado") {
       return (
         <div style={gnrStyle}>
-          <Typography variant="overline">Linea</Typography>
+          <Typography>Linea</Typography>
           <Select
             id="Linea"
             variant="outlined"
@@ -167,43 +185,47 @@ const Step2 = () => {
             required
             size="small"
             style={gnrStyle}
-            onChange={(e) => setLinea(e.target.value)}
             value={linea}
+            onChange={(e) => setLinea(e.target.value)}
           >
-            <MenuItem value={"linea1"}>Linea 1</MenuItem>
             <MenuItem value={"linea2"}>Linea 2</MenuItem>
             <MenuItem value={"linea3"}>Linea 3</MenuItem>
+            <MenuItem value={"linea4"}>Linea 4</MenuItem>
+            <MenuItem value={"linea5"}>Linea 5</MenuItem>
           </Select>
-          <Typography variant="overline">Tipo de Equipo</Typography>
+          <Typography>Tipo de Equipo</Typography>
           <Select
             id="tipoEquipo"
-            variant="outlined"
-            fullWidth
-            required="true"
-            size="small"
-            style={gnrStyle}
-            onChange={(e) => setTipoEquipo(e.target.value)}
-            value={tipoEquipo}
-          >
-            <MenuItem value={"Tipo1"}>Despaletizador</MenuItem>
-            <MenuItem value={"Tipo2"}>Trans de carton vacío</MenuItem>
-            <MenuItem value={"Tipo3"}>Stewart de vacío</MenuItem>
-            <MenuItem value={"Tipo3"}>Abridora</MenuItem>
-          </Select>
-          <Typography variant="overline">Consecutivo</Typography>
-          <Select
-            id="Consecutivo"
             variant="outlined"
             fullWidth
             required
             size="small"
             style={gnrStyle}
-            onChange={(e) => setConsecutivo(e.target.value)}
-            value={consecutivo}
+            value={tipoEquipo}
+            onChange={(e) => setTipoEquipo(e.target.value)}
           >
-            <MenuItem value={"Consecutivo1"}>A</MenuItem>
-            <MenuItem value={"Consecutivo2"}>B</MenuItem>
-            <MenuItem value={"Consecutivo3"}>C</MenuItem>
+            <MenuItem value={"Despaletizador"}>Despaletizador</MenuItem>
+            <MenuItem value={"Trans de carton vacio"}>
+              Trans de carton vacío
+            </MenuItem>
+            <MenuItem value={"Stewart de vacio"}>Stewart de vacío</MenuItem>
+            <MenuItem value={"Abridora"}>Abridora</MenuItem>
+          </Select>
+          <Typography>Consecutivo</Typography>
+          <Select
+            id="consecutivo"
+            variant="outlined"
+            fullWidth
+            size="small"
+            required
+            style={gnrStyle}
+            value={consecutivo}
+            onChange={(e) => setConsecutivo(e.target.value)}
+          >
+            <MenuItem value={"A"}>A</MenuItem>
+            <MenuItem value={"B"}>B</MenuItem>
+            <MenuItem value={"C"}>C</MenuItem>
+            <MenuItem value={"no aplica"}>No Aplica</MenuItem>
           </Select>
         </div>
       );
@@ -213,16 +235,16 @@ const Step2 = () => {
   return (
     <div>
       <Container>
-        {formStep === 0 && (
-          <section style={gnrStyle} id="9">
+        {formStep >= 0 && (
+          <section style={formStep === 0 ? {} : { display: "none" }} id="9">
             <Typography align="left" variant="h5">
               Duracion de la falla
             </Typography>
             <TextField
               variant="outlined"
               fullWidth
-              onChange={(e) => setFalla(e.target.value)}
-              value={falla}
+              onChange={(e) => setFailureTimes(e.target.value)}
+              value={failureTimes}
               size="small"
               required
               style={gnrStyle}
@@ -231,8 +253,8 @@ const Step2 = () => {
             ></TextField>
           </section>
         )}
-        {formStep === 1 && (
-          <section style={gnrStyle} id="7">
+        {formStep >= 1 && (
+          <section style={formStep === 1 ? {} : { display: "none" }} id="7">
             <Typography align="left" variant="h5">
               Departamento
             </Typography>
@@ -241,8 +263,8 @@ const Step2 = () => {
               variant="outlined"
               fullWidth
               required
-              onChange={(e) => setDepartamento(e.target.value)}
               value={departamento}
+              onChange={(e) => setDepartamento(e.target.value)}
               size="small"
               style={gnrStyle}
             >
@@ -252,60 +274,52 @@ const Step2 = () => {
             {renderCodigoEquipo()}
           </section>
         )}
-        {formStep === 2 && (
-          <section style={gnrStyle} id="6">
-            <Typography variant="overline" style={gnrStyle}>
-              Tipo de tarjeta
-            </Typography>
+        {formStep >= 2 && (
+          <section style={formStep === 2 ? {} : { display: "none" }} id="6">
+            <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
             <Select
-              id="Tarjeta"
+              id="tarjetaTipo"
               variant="outlined"
               fullWidth
-              required
               size="small"
-              onChange={(e) => setTipoTarjeta(e.target.value)}
-              value={tipoTarjeta}
+              required
               style={gnrStyle}
+              value={tarjetaTipo}
+              onChange={(e) => setTarjetaTipo(e.target.value)}
             >
-              <MenuItem value={"AM"}>Amarillo</MenuItem>
-              <MenuItem value={"RJ"}>Rojo</MenuItem>
-              <MenuItem value={"VD"}>Verde</MenuItem>
-              <MenuItem value={"AZ"}>Azul</MenuItem>
+              <MenuItem value={"Amarillo"}>Amarillo</MenuItem>
+              <MenuItem value={"Rojo"}>Rojo</MenuItem>
+              <MenuItem value={"Verde"}>Verde</MenuItem>
+              <MenuItem value={"Azul"}>Azul</MenuItem>
             </Select>
-            <Typography variant="overline" style={gnrStyle}>
-              Titulo de la tarjeta
-            </Typography>
+            <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
+              id="tarjetaTitulo"
               variant="outlined"
               fullWidth
-              required
               style={gnrStyle}
+              required
               size="small"
-              onChange={(e) => setTituloTarjeta(e.target.value)}
-              value={tituloTarjeta}
+              value={tarjetaTitulo}
+              onChange={(e) => setTarjetaTitulo(e.target.value)}
             ></TextField>
-            <Typography variant="overline" style={gnrStyle}>
-              Prioridad
-            </Typography>
+            <Typography style={gnrStyle}>Prioridad</Typography>
             <Select
               id="prioridad"
               variant="outlined"
-              fullWidth
               required
+              fullWidth
               size="small"
-              style={gnrStyle}
-              onChange={(e) => setPrioridad(e.target.value)}
               value={prioridad}
+              onChange={(e) => setPrioridad(e.target.value)}
+              style={gnrStyle}
             >
-              <MenuItem value={"1"}>Muy alta</MenuItem>
-              <MenuItem value={"2"}>Alta</MenuItem>
-              <MenuItem value={"3"}>Media</MenuItem>
-              <MenuItem value={"4"}>Baja</MenuItem>
+              <MenuItem value={"Muy alta"}>Muy alta</MenuItem>
+              <MenuItem value={"Alta"}>Alta</MenuItem>
+              <MenuItem value={"Media"}>Media</MenuItem>
+              <MenuItem value={"Baja"}>Baja</MenuItem>
             </Select>
-
-            <Typography variant="overline" style={gnrStyle}>
-              Componente dañado
-            </Typography>
+            <Typography style={gnrStyle}>Componente dañado</Typography>
             <Select
               id="componente"
               variant="outlined"
@@ -313,93 +327,84 @@ const Step2 = () => {
               required
               size="small"
               style={gnrStyle}
-              onChange={(e) => setComponenteDanado(e.target.value)}
-              value={componenteDanado}
+              value={componente}
+              onChange={(e) => setComponente(e.target.value)}
             >
-              <MenuItem value={"1"}>Cadena</MenuItem>
-              <MenuItem value={"2"}>Motoreductor</MenuItem>
+              <MenuItem value={"cadena"}>Cadena</MenuItem>
+              <MenuItem value={"motoreductor"}>Motoreductor</MenuItem>
             </Select>
-            <Typography variant="overline" style={gnrStyle}>
-              Causa de la averia
-            </Typography>
-            <TextField
+            <Typography style={gnrStyle}>Causa de la averia</Typography>
+            <Select
               id="causaAveria"
               variant="outlined"
               fullWidth
-              required
               style={gnrStyle}
               size="small"
-              onChange={(e) => setCausaAveria(e.target.value)}
+              required
               value={causaAveria}
-            ></TextField>
-            <Typography variant="overline" style={gnrStyle}>
-              Tipo de falla
-            </Typography>
+              onChange={(e) => setCausaAveria(e.target.value)}
+            >
+              <MenuItem value={"Tapad@"}>Tapad@</MenuItem>
+              <MenuItem value={"Desgatad@"}>Desgatad@</MenuItem>
+              <MenuItem value={"Desgranad@"}>Desgranad@</MenuItem>
+              <MenuItem value={"Holgad@"}>Holgad@</MenuItem>
+              <MenuItem value={"Reventad@"}>Reventad@</MenuItem>
+              <MenuItem value={"Vibration"}>Vibration</MenuItem>
+              <MenuItem value={"Desajustad@"}>Desajustad@</MenuItem>
+            </Select>
+            <Typography style={gnrStyle}>Tipo de falla</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"
               fullWidth
-              required
               size="small"
+              required
               style={gnrStyle}
-              onChange={(e) => setTipoFalla(e.target.value)}
               value={tipoFalla}
+              onChange={(e) => setTipoFalla(e.target.value)}
             >
-              <MenuItem value={"1"}>Lubricación de espreas</MenuItem>
-              <MenuItem value={"2"}>Luve Drive</MenuItem>
-              <MenuItem value={"3"}>Producción</MenuItem>
-              <MenuItem value={"1"}>Mecánica</MenuItem>
-              <MenuItem value={"2"}>Eléctrica</MenuItem>
-              <MenuItem value={"3"}>Electrónica</MenuItem>
-              <MenuItem value={"1"}>Civil</MenuItem>
-              <MenuItem value={"2"}>Climas</MenuItem>
-              <MenuItem value={"3"}>Predictivo</MenuItem>
-              <MenuItem value={"3"}>Lubricación ToolKits</MenuItem>
+              <MenuItem value={"Lubricación de espreas"}>
+                Lubricación de espreas
+              </MenuItem>
+              <MenuItem value={"Luve Drive"}>Luve Drive</MenuItem>
+              <MenuItem value={"Producción"}>Producción</MenuItem>
+              <MenuItem value={"Mecánica"}>Mecánica</MenuItem>
+              <MenuItem value={"Eléctrica"}>Eléctrica</MenuItem>
+              <MenuItem value={"Electrónica"}>Electrónica</MenuItem>
+              <MenuItem value={"Civil"}>Civil</MenuItem>
+              <MenuItem value={"Climas"}>Climas</MenuItem>
+              <MenuItem value={"Predictivo"}>Predictivo</MenuItem>
+              <MenuItem value={"Lubricación ToolKits"}>
+                Lubricación ToolKits
+              </MenuItem>
             </Select>
-
-            <Typography variant="overline" style={gnrStyle}>
-              Descripcion de la tarjeta
-            </Typography>
+            <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
               variant="outlined"
               fullWidth
               required
               size="small"
-              onChange={(e) => setDescTarjeta(e.target.value)}
-              value={descTarjeta}
               style={gnrStyle}
               multiline
               rows="6"
+              id={descripcionTarjeta}
+              value={descripcionTarjeta}
+              onChange={(e) => setDescripcionTarjeta(e.target.value)}
             ></TextField>
-            <Typography variant="overline" style={gnrStyle}>
-              Afecta a
-            </Typography>
+            <Typography style={gnrStyle}>Afecta a</Typography>
             <Select
-              id="Afecta1"
+              id="afecta"
               variant="outlined"
               fullWidth
-              required
               size="small"
+              required
               style={gnrStyle}
-              onChange={(e) => setAfecta(e.target.value)}
               value={afecta}
+              onChange={(e) => setAfecta(e.target.value)}
             >
-              <MenuItem value={"Afecta a equipo"}>Calidad</MenuItem>
-              <MenuItem value={"Afecta la planta"}>GLY/LEF</MenuItem>
+              <MenuItem value={"calidad"}>Calidad</MenuItem>
+              <MenuItem value={"GLY/LEF"}>GLY/LEF</MenuItem>
             </Select>
-            <Typography variant="overline" style={gnrStyle}>
-              Afecta a
-            </Typography>
-            <TextField
-              variant="outlined"
-              style={gnrStyle}
-              fullWidth
-              required
-              size="small"
-              type="File"
-              onChange={(e) => setAfectaFile(e.target.value)}
-              value={afectaFile}
-            ></TextField>
           </section>
         )}
       </Container>

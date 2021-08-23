@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  Avatar,
 } from "@material-ui/core";
 
 import { ExitToApp } from "@material-ui/icons";
@@ -22,7 +23,6 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import AddCommentIcon from "@material-ui/icons/AddComment";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
@@ -176,7 +176,7 @@ export default function MiniDrawer() {
               alignItems: "center",
             }}
           >
-            <AccountCircleIcon />
+            <Avatar alt="Avatar" src="./" />
             <Typography variant="caption">ADMIN</Typography>
           </div>
           <Divider />
