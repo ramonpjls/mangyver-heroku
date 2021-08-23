@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Step2 = () => {
   const [formStep, setFormStep] = useState(0);
@@ -50,6 +51,8 @@ const Step2 = () => {
   ];
 
   console.log(m2[0]);
+
+  const auth = localStorage.token;
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
