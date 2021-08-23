@@ -79,6 +79,11 @@ const Step2 = () => {
       })
       .catch((err) => {
         console.log(err);
+        Swal.fire({
+          text: "Hubo un error en el proceso",
+          icon: "error",
+          showConfirmButton: false,
+        });
       });
   };
 
