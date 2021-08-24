@@ -52,7 +52,6 @@ const Login = () => {
       .post("https://mangyver.herokuapp.com/api/v1/auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
-        console.log(res);
         setRedirect(true);
       })
       .catch((err) => {

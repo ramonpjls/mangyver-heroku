@@ -7,11 +7,9 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-//import { useLocalStorage } from "./useLocalStorage";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
-//import { useForm } from "react-hook-form";
 
 const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
@@ -30,17 +28,12 @@ const Step1 = () => {
   const [tipoFalla, setTipoFalla] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afecta, setAfecta] = useState("");
-  //const { watch, register } = useForm();
 
-  const history = useHistory();
-
-  //const watchAllFields = watch();
-
-  //console.log(watchAllFields);
+  //const history = useHistory();
 
   const m1 = [
     {
-      id: "CD2B8484-0901-EC11-B563-2818780EF919",
+      Process: "Aviso",
       didCard: tarjeta,
       failureTime: failureTimes,
       department: departamento,
@@ -48,19 +41,16 @@ const Step1 = () => {
       line: linea,
       equipmentType: tipoEquipo,
       consecutive: consecutivo,
-      cardType: tarjetaTipo,
-      cardTittle: tarjetaTitulo,
+      cardtype: tarjetaTipo,
+      cardTitle: tarjetaTitulo,
       priority: prioridad,
-      components: componente,
+      component: componente,
       breakdown: causaAveria,
-      failureType: tipoFalla,
+      failuretype: tipoFalla,
       cardDescription: descripcionTarjeta,
-      affects: afecta,
+      Affect: afecta,
     },
   ];
-
-  console.log(JSON.stringify(m1[0]));
-  //console.log(localStorage.token);
 
   const auth = localStorage.token;
 
@@ -68,15 +58,13 @@ const Step1 = () => {
     setFormStep((cur) => cur + 1);
   };
 
+  console.log(m1[0]);
+
   const submitForm = () => {
     axios
-      .post(
-        "https://mangyver.herokuapp.com/api/v1/notices",
-        JSON.stringify(m1[0]),
-        {
-          headers: { auth },
-        }
-      )
+      .post("https://mangyver.herokuapp.com/api/v1/notices", m1[0], {
+        headers: { auth },
+      })
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -84,8 +72,8 @@ const Step1 = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        history.push("/ShowAvisos");
-        window.location.reload();
+        //history.push("/ShowAvisos");
+        //window.location.reload();
       })
       .catch((err) => {
         console.log(err);

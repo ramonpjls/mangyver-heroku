@@ -7,7 +7,7 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -23,19 +23,20 @@ const Step3 = () => {
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afecta, setAfecta] = useState("");
 
-  const history = useHistory();
+  //const history = useHistory();
 
   const m3 = [
     {
-      OTCode: nOt,
-      cardType: tarjetaTipo,
-      cardTittle: tarjetaTitulo,
+      Process: "Aviso derivado de una orden",
+      otcode: nOt,
+      cardtype: tarjetaTipo,
+      cardTitle: tarjetaTitulo,
       priority: prioridad,
-      components: componente,
+      component: componente,
       breakdown: causaAveria,
-      failureType: tipoFalla,
+      failuretype: tipoFalla,
       cardDescription: descripcionTarjeta,
-      affects: afecta,
+      Affect: afecta,
     },
   ];
 
@@ -47,13 +48,9 @@ const Step3 = () => {
 
   const submitForm = () => {
     axios
-      .post(
-        "https://mangyver.herokuapp.com/api/v1/notices",
-        JSON.stringify(m3[0]),
-        {
-          headers: { auth },
-        }
-      )
+      .post("https://mangyver.herokuapp.com/api/v1/notices", m3, {
+        headers: { auth },
+      })
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -61,8 +58,8 @@ const Step3 = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        history.push("/ShowAvisos");
-        window.location.reload();
+        //history.push("/ShowAvisos");
+        //window.location.reload();
       })
       .catch((err) => {
         console.log(err);

@@ -7,7 +7,7 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -28,29 +28,27 @@ const Step2 = () => {
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afecta, setAfecta] = useState("");
 
-  const history = useHistory();
+  //const history = useHistory();
 
   const m2 = [
     {
-      id: "CE2B8484-0901-EC11-B563-2818780EF919",
+      Process: "Notificacion de falla",
       failureTime: failureTimes,
       department: departamento,
       equipmentCode: codigoEquipo,
       line: linea,
       equipmentType: tipoEquipo,
       consecutive: consecutivo,
-      cardType: tarjetaTipo,
-      cardTittle: tarjetaTitulo,
+      cardtype: tarjetaTipo,
+      cardTitle: tarjetaTitulo,
       priority: prioridad,
-      components: componente,
+      component: componente,
       breakdown: causaAveria,
-      failureType: tipoFalla,
+      failuretype: tipoFalla,
       cardDescription: descripcionTarjeta,
-      affects: afecta,
+      Affect: afecta,
     },
   ];
-
-  console.log(m2[0]);
 
   const auth = localStorage.token;
 
@@ -64,13 +62,9 @@ const Step2 = () => {
 
   const submitForm = () => {
     axios
-      .post(
-        "https://mangyver.herokuapp.com/api/v1/notices",
-        JSON.stringify(m2[0]),
-        {
-          headers: { auth },
-        }
-      )
+      .post("https://mangyver.herokuapp.com/api/v1/notices", m2, {
+        headers: { auth },
+      })
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -78,8 +72,8 @@ const Step2 = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        history.push("/ShowAvisos");
-        window.location.reload();
+        //history.push("/ShowAvisos");
+        //window.location.reload();
       })
       .catch((err) => {
         console.log(err);
