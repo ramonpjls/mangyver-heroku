@@ -15,6 +15,7 @@ import {
   ListItemText,
   Typography,
   Avatar,
+  Grid,
 } from "@material-ui/core";
 
 import { ExitToApp } from "@material-ui/icons";
@@ -23,7 +24,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import AddCommentIcon from "@material-ui/icons/AddComment";
+import ArchiveIcon from "@material-ui/icons/Archive";
+import axios from "axios";
 
+import Getavisos from "./get-avisos";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
@@ -92,7 +96,25 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(0.5),
   },
+  large: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+  },
 }));
+
+const auth = localStorage.token;
+let userInfo = "";
+
+axios
+  .get("https://mangyver.herokuapp.com/api/v1/profiles", {
+    headers: { auth },
+  })
+  .then((res) => {
+    return (userInfo = res.data.profile.name);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 export default function MiniDrawer() {
   const classes = useStyles();
@@ -168,17 +190,26 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          <div
-            className="container"
+          <Grid
+            container
+            spacing={3}
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Avatar alt="Avatar" src="./" />
-            <Typography variant="caption">ADMIN</Typography>
-          </div>
+            <Grid item>
+              <Avatar className={classes.large} alt={userInfo} src="./" />
+            </Grid>
+            {open !== false ? (
+              <Grid item>
+                <Typography variant="h6" gutterBottom>
+                  {userInfo}
+                </Typography>
+              </Grid>
+            ) : null}
+          </Grid>
           <Divider />
           <Link to="/ShowAvisos">
             <ListItem>
@@ -196,10 +227,19 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
+          <Link to="/Getavisos">
+            <ListItem>
+              <ListItemIcon>
+                <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+              </ListItemIcon>
+              <ListItemText primary="Descargar Avisos" />
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        <Route path="/Getavisos" component={Getavisos} />
         <Route path="/Home" component={Home} />
         <Route path="/ShowAvisos" component={ShowAvisos} />
       </main>

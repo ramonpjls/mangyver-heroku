@@ -47,9 +47,13 @@ const Step3 = () => {
 
   const submitForm = () => {
     axios
-      .post("https://mangyver.herokuapp.com/api/v1/notices", m3[0], {
-        headers: { auth },
-      })
+      .post(
+        "https://mangyver.herokuapp.com/api/v1/notices",
+        JSON.stringify(m3[0]),
+        {
+          headers: { auth },
+        }
+      )
       .then((res) => {
         console.log(res);
         Swal.fire({

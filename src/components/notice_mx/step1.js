@@ -59,7 +59,7 @@ const Step1 = () => {
     },
   ];
 
-  //console.log(m1[0]);
+  console.log(JSON.stringify(m1[0]));
   //console.log(localStorage.token);
 
   const auth = localStorage.token;
@@ -70,9 +70,13 @@ const Step1 = () => {
 
   const submitForm = () => {
     axios
-      .post("https://mangyver.herokuapp.com/api/v1/notices", m1[0], {
-        headers: { auth },
-      })
+      .post(
+        "https://mangyver.herokuapp.com/api/v1/notices",
+        JSON.stringify(m1[0]),
+        {
+          headers: { auth },
+        }
+      )
       .then((res) => {
         console.log(res);
         Swal.fire({

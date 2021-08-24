@@ -54,7 +54,6 @@ axios
     headers: { auth },
   })
   .then((res) => {
-    console.log(res);
     return (notice = res.data);
   })
   .catch((err) => {
@@ -63,11 +62,11 @@ axios
 
 for (let i = 0; i < 14; i++) {
   notice[i] = {
-    id: notice.id,
-    cardTittle: notice.cardTittle,
+    Process: notice.Process,
+    cardTitle: notice.cardTitle,
     cardType: notice.cardType,
     cardDescription: notice.cardDescription,
-    failureType: notice.failureType,
+    failureType: notice.ubication_tecnica,
     priority: notice.priority,
   };
 }
@@ -104,7 +103,7 @@ function ShowAvisos() {
               Descripcion
             </TableCell>
             <TableCell className={classes.tableHeaderCell}>
-              Tipo de falla
+              Causa de la averia
             </TableCell>
             <TableCell className={classes.tableHeaderCell}>Prioridad</TableCell>
           </TableRow>
@@ -115,29 +114,29 @@ function ShowAvisos() {
             .map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <Typography>{row.id}</Typography>
+                  <Typography>{row.Process}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{row.cardTittle}</Typography>
+                  <Typography>{row.ubication_tecnica}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{row.cardType}</Typography>
+                  <Typography>{row.cardtype}</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography>{row.cardDescription}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{row.failureType}</Typography>
+                  <Typography>{row.breakdown}</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
                     className={classes.status}
                     style={{
                       backgroundColor:
-                        (row.priority === "Muy elevado" && "red") ||
-                        (row.priority === "Alto" && "orange") ||
-                        (row.priority === "Medio" && "blue") ||
-                        (row.priority === "Bajo" && "green"),
+                        (row.priority === "Muy elevado" && "#B855E5") ||
+                        (row.priority === "Alto" && "#E05E54") ||
+                        (row.priority === "Medio" && "#E8AB51") ||
+                        (row.priority === "Bajo" && "#86A9E1"),
                     }}
                   >
                     {row.priority}
