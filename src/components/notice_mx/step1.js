@@ -7,50 +7,48 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-//import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
-  const [tarjeta, setTarjeta] = useState("");
-  const [failureTimes, setFailureTimes] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [codigoEquipo, setCodigoEquipo] = useState("");
-  const [linea, setLinea] = useState("");
-  const [tipoEquipo, setTipoEquipo] = useState("");
-  const [consecutivo, setConsecutivo] = useState("");
-  const [tarjetaTipo, setTarjetaTipo] = useState("");
-  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
-  const [prioridad, setPrioridad] = useState("");
-  const [componente, setComponente] = useState("");
-  const [causaAveria, setCausaAveria] = useState("");
-  const [tipoFalla, setTipoFalla] = useState("");
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
-  const [afecta, setAfecta] = useState("");
+  const [tarjeta, setTarjeta] = useState(null);
+  const [failureTimes, setFailureTimes] = useState(null);
+  const [departamento, setDepartamento] = useState(null);
+  const [codigoEquipo, setCodigoEquipo] = useState(null);
+  const [linea, setLinea] = useState(null);
+  const [tipoEquipo, setTipoEquipo] = useState(null);
+  const [consecutivo, setConsecutivo] = useState(null);
+  const [tarjetaTipo, setTarjetaTipo] = useState(null);
+  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
+  const [prioridad, setPrioridad] = useState(null);
+  const [componente, setComponente] = useState(null);
+  const [causaAveria, setCausaAveria] = useState(null);
+  const [tipoFalla, setTipoFalla] = useState(null);
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
+  const [afecta, setAfecta] = useState(null);
 
-  //const history = useHistory();
+  const history = useHistory();
 
-  const m1 = [
-    {
-      Process: "Aviso",
-      didCard: tarjeta,
-      failureTime: failureTimes,
-      department: departamento,
-      equipmentCode: codigoEquipo,
-      line: linea,
-      equipmentType: tipoEquipo,
-      consecutive: consecutivo,
-      cardtype: tarjetaTipo,
-      cardTitle: tarjetaTitulo,
-      priority: prioridad,
-      component: componente,
-      breakdown: causaAveria,
-      failuretype: tipoFalla,
-      cardDescription: descripcionTarjeta,
-      Affect: afecta,
-    },
-  ];
+  const data = {
+    process: "CD2B8484-0901-EC11-B563-2818780EF919",
+    didCard: tarjeta,
+    failureTime: failureTimes,
+    department: departamento,
+    equipmentCode: codigoEquipo,
+    line: linea,
+    equipmentType: tipoEquipo,
+    consecutive: consecutivo,
+    cardType: tarjetaTipo,
+    cardTitle: tarjetaTitulo,
+    priority: prioridad,
+    components: componente,
+    breakdown: causaAveria,
+    failureType: tipoFalla,
+    cardDescription: descripcionTarjeta,
+    affects: afecta,
+  };
 
   const auth = localStorage.token;
 
@@ -58,11 +56,9 @@ const Step1 = () => {
     setFormStep((cur) => cur + 1);
   };
 
-  console.log(m1[0]);
-
   const submitForm = () => {
     axios
-      .post("https://mangyver.herokuapp.com/api/v1/notices", m1, {
+      .post("https://mangyver.herokuapp.com/api/v1/notices", data, {
         headers: { auth },
       })
       .then((res) => {
@@ -72,8 +68,8 @@ const Step1 = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        //history.push("/ShowAvisos");
-        //window.location.reload();
+        history.push("/ShowAvisos");
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -185,7 +181,7 @@ const Step1 = () => {
   };
 
   const renderCodigoEquipo = () => {
-    if (departamento === "otras areas") {
+    if (departamento === "2245A12E-0101-EC11-B563-2818780EF919") {
       return (
         <div style={gnrStyle}>
           <Typography>Codigo de Equipo</Typography>
@@ -202,7 +198,7 @@ const Step1 = () => {
           ></TextField>
         </div>
       );
-    } else if (departamento === "envasado") {
+    } else if (departamento === "EFA4C628-35FC-EB11-B563-2818780EF919") {
       return (
         <div style={gnrStyle}>
           <Typography>Linea</Typography>
@@ -216,10 +212,18 @@ const Step1 = () => {
             value={linea}
             onChange={(e) => setLinea(e.target.value)}
           >
-            <MenuItem value={"linea2"}>Linea 2</MenuItem>
-            <MenuItem value={"linea3"}>Linea 3</MenuItem>
-            <MenuItem value={"linea4"}>Linea 4</MenuItem>
-            <MenuItem value={"linea5"}>Linea 5</MenuItem>
+            <MenuItem value={"EB2B8484-0901-EC11-B563-2818780EF919"}>
+              Linea 2
+            </MenuItem>
+            <MenuItem value={"EC2B8484-0901-EC11-B563-2818780EF919"}>
+              Linea 3
+            </MenuItem>
+            <MenuItem value={"ED2B8484-0901-EC11-B563-2818780EF919"}>
+              Linea 4
+            </MenuItem>
+            <MenuItem value={"EE2B8484-0901-EC11-B563-2818780EF919"}>
+              Linea 5
+            </MenuItem>
           </Select>
           <Typography>Tipo de Equipo</Typography>
           <Select
@@ -232,12 +236,18 @@ const Step1 = () => {
             value={tipoEquipo}
             onChange={(e) => setTipoEquipo(e.target.value)}
           >
-            <MenuItem value={"Despaletizador"}>Despaletizador</MenuItem>
-            <MenuItem value={"Trans de carton vacio"}>
+            <MenuItem value={"E02B8484-0901-EC11-B563-2818780EF919"}>
+              Despaletizador
+            </MenuItem>
+            <MenuItem value={"E12B8484-0901-EC11-B563-2818780EF919"}>
               Trans de carton vacío
             </MenuItem>
-            <MenuItem value={"Stewart de vacio"}>Stewart de vacío</MenuItem>
-            <MenuItem value={"Abridora"}>Abridora</MenuItem>
+            <MenuItem value={"E22B8484-0901-EC11-B563-2818780EF919"}>
+              Stewart de vacío
+            </MenuItem>
+            <MenuItem value={"E32B8484-0901-EC11-B563-2818780EF919"}>
+              Abridora
+            </MenuItem>
           </Select>
           <Typography>Consecutivo</Typography>
           <Select
@@ -250,10 +260,24 @@ const Step1 = () => {
             value={consecutivo}
             onChange={(e) => setConsecutivo(e.target.value)}
           >
-            <MenuItem value={"A"}>A</MenuItem>
-            <MenuItem value={"B"}>B</MenuItem>
-            <MenuItem value={"C"}>C</MenuItem>
-            <MenuItem value={"no aplica"}>No Aplica</MenuItem>
+            <MenuItem value={"E62B8484-0901-EC11-B563-2818780EF919"}>
+              A
+            </MenuItem>
+            <MenuItem value={"E72B8484-0901-EC11-B563-2818780EF919"}>
+              B
+            </MenuItem>
+            <MenuItem value={"E82B8484-0901-EC11-B563-2818780EF919"}>
+              C
+            </MenuItem>
+            <MenuItem value={"E92B8484-0901-EC11-B563-2818780EF919"}>
+              D
+            </MenuItem>
+            <MenuItem value={"2815988C-CE03-EC11-B563-2818780EF919"}>
+              H
+            </MenuItem>
+            <MenuItem value={"EA2B8484-0901-EC11-B563-2818780EF919"}>
+              No Aplica
+            </MenuItem>
           </Select>
         </div>
       );
@@ -298,8 +322,12 @@ const Step1 = () => {
               size="small"
               style={gnrStyle}
             >
-              <MenuItem value={"envasado"}>Envasado</MenuItem>
-              <MenuItem value={"otras areas"}>Otras areas</MenuItem>
+              <MenuItem value={"EFA4C628-35FC-EB11-B563-2818780EF919"}>
+                Envasado
+              </MenuItem>
+              <MenuItem value={"2245A12E-0101-EC11-B563-2818780EF919"}>
+                Otras areas
+              </MenuItem>
             </Select>
             {renderCodigoEquipo()}
           </section>
@@ -317,10 +345,21 @@ const Step1 = () => {
               value={tarjetaTipo}
               onChange={(e) => setTarjetaTipo(e.target.value)}
             >
-              <MenuItem value={"Amarillo"}>Amarillo</MenuItem>
-              <MenuItem value={"Rojo"}>Rojo</MenuItem>
-              <MenuItem value={"Verde"}>Verde</MenuItem>
-              <MenuItem value={"Azul"}>Azul</MenuItem>
+              <MenuItem value={"DD2B8484-0901-EC11-B563-2818780EF919"}>
+                Amarillo
+              </MenuItem>
+              <MenuItem value={"DE2B8484-0901-EC11-B563-2818780EF919"}>
+                Rojo
+              </MenuItem>
+              <MenuItem value={"DF2B8484-0901-EC11-B563-2818780EF919"}>
+                Verde
+              </MenuItem>
+              <MenuItem value={"70417E6D-CA03-EC11-B563-2818780EF919"}>
+                Negro
+              </MenuItem>
+              <MenuItem value={"DC2B8484-0901-EC11-B563-2818780EF919"}>
+                Azul
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
@@ -344,10 +383,18 @@ const Step1 = () => {
               onChange={(e) => setPrioridad(e.target.value)}
               style={gnrStyle}
             >
-              <MenuItem value={"Muy alta"}>Muy alta</MenuItem>
-              <MenuItem value={"Alta"}>Alta</MenuItem>
-              <MenuItem value={"Media"}>Media</MenuItem>
-              <MenuItem value={"Baja"}>Baja</MenuItem>
+              <MenuItem value={"EF2B8484-0901-EC11-B563-2818780EF919"}>
+                Muy elevado
+              </MenuItem>
+              <MenuItem value={"F02B8484-0901-EC11-B563-2818780EF919"}>
+                Alto
+              </MenuItem>
+              <MenuItem value={"F12B8484-0901-EC11-B563-2818780EF919"}>
+                Medio
+              </MenuItem>
+              <MenuItem value={"F22B8484-0901-EC11-B563-2818780EF919"}>
+                Bajo
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Componente dañado</Typography>
             <Select
@@ -360,8 +407,12 @@ const Step1 = () => {
               value={componente}
               onChange={(e) => setComponente(e.target.value)}
             >
-              <MenuItem value={"cadena"}>Cadena</MenuItem>
-              <MenuItem value={"motoreductor"}>Motoreductor</MenuItem>
+              <MenuItem value={"E42B8484-0901-EC11-B563-2818780EF919"}>
+                Cadena
+              </MenuItem>
+              <MenuItem value={"E52B8484-0901-EC11-B563-2818780EF919"}>
+                Motoreductor
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Causa de la averia</Typography>
             <Select
@@ -374,13 +425,27 @@ const Step1 = () => {
               value={causaAveria}
               onChange={(e) => setCausaAveria(e.target.value)}
             >
-              <MenuItem value={"Tapad@"}>Tapad@</MenuItem>
-              <MenuItem value={"Desgatad@"}>Desgatad@</MenuItem>
-              <MenuItem value={"Desgranad@"}>Desgranad@</MenuItem>
-              <MenuItem value={"Holgad@"}>Holgad@</MenuItem>
-              <MenuItem value={"Reventad@"}>Reventad@</MenuItem>
-              <MenuItem value={"Vibration"}>Vibration</MenuItem>
-              <MenuItem value={"Desajustad@"}>Desajustad@</MenuItem>
+              <MenuItem value={"B63E7187-0F01-EC11-B563-2818780EF919"}>
+                Tapad@
+              </MenuItem>
+              <MenuItem value={"B73E7187-0F01-EC11-B563-2818780EF919"}>
+                Desgatad@
+              </MenuItem>
+              <MenuItem value={"1BC8DA91-0F01-EC11-B563-2818780EF919"}>
+                Desgranad@
+              </MenuItem>
+              <MenuItem value={"1CC8DA91-0F01-EC11-B563-2818780EF919"}>
+                Holgad@
+              </MenuItem>
+              <MenuItem value={"82913C9A-0F01-EC11-B563-2818780EF919"}>
+                Reventad@
+              </MenuItem>
+              <MenuItem value={"83913C9A-0F01-EC11-B563-2818780EF919"}>
+                Vibration
+              </MenuItem>
+              <MenuItem value={"967F4BA4-0F01-EC11-B563-2818780EF919"}>
+                Desajustad@
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Tipo de falla</Typography>
             <Select
@@ -396,15 +461,31 @@ const Step1 = () => {
               <MenuItem value={"Lubricación de espreas"}>
                 Lubricación de espreas
               </MenuItem>
-              <MenuItem value={"Luve Drive"}>Luve Drive</MenuItem>
-              <MenuItem value={"Producción"}>Producción</MenuItem>
-              <MenuItem value={"Mecánica"}>Mecánica</MenuItem>
-              <MenuItem value={"Eléctrica"}>Eléctrica</MenuItem>
-              <MenuItem value={"Electrónica"}>Electrónica</MenuItem>
-              <MenuItem value={"Civil"}>Civil</MenuItem>
-              <MenuItem value={"Climas"}>Climas</MenuItem>
-              <MenuItem value={"Predictivo"}>Predictivo</MenuItem>
-              <MenuItem value={"Lubricación ToolKits"}>
+              <MenuItem value={"FC2B8484-0901-EC11-B563-2818780EF919"}>
+                Luve Drive
+              </MenuItem>
+              <MenuItem value={"FD2B8484-0901-EC11-B563-2818780EF919"}>
+                Producción
+              </MenuItem>
+              <MenuItem value={"F42B8484-0901-EC11-B563-2818780EF919"}>
+                Mecánica
+              </MenuItem>
+              <MenuItem value={"F52B8484-0901-EC11-B563-2818780EF919"}>
+                Eléctrica
+              </MenuItem>
+              <MenuItem value={"F62B8484-0901-EC11-B563-2818780EF919"}>
+                Electrónica
+              </MenuItem>
+              <MenuItem value={"F72B8484-0901-EC11-B563-2818780EF919"}>
+                Civil
+              </MenuItem>
+              <MenuItem value={"F82B8484-0901-EC11-B563-2818780EF919"}>
+                Climas
+              </MenuItem>
+              <MenuItem value={"F92B8484-0901-EC11-B563-2818780EF919"}>
+                Predictivo
+              </MenuItem>
+              <MenuItem value={"FA2B8484-0901-EC11-B563-2818780EF919"}>
                 Lubricación ToolKits
               </MenuItem>
             </Select>
@@ -432,8 +513,12 @@ const Step1 = () => {
               value={afecta}
               onChange={(e) => setAfecta(e.target.value)}
             >
-              <MenuItem value={"calidad"}>Calidad</MenuItem>
-              <MenuItem value={"GLY/LEF"}>GLY/LEF</MenuItem>
+              <MenuItem value={"FE2B8484-0901-EC11-B563-2818780EF919"}>
+                Calidad
+              </MenuItem>
+              <MenuItem value={"FF2B8484-0901-EC11-B563-2818780EF919"}>
+                GLY/LEF
+              </MenuItem>
             </Select>
           </section>
         )}

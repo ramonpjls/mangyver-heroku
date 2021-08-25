@@ -7,38 +7,36 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-//import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const Step3 = () => {
   const [formStep, setFormStep] = useState(0);
-  const [nOt, setNOt] = useState("");
-  const [tarjetaTipo, setTarjetaTipo] = useState("");
-  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
-  const [prioridad, setPrioridad] = useState("");
-  const [componente, setComponente] = useState("");
-  const [causaAveria, setCausaAveria] = useState("");
-  const [tipoFalla, setTipoFalla] = useState("");
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
-  const [afecta, setAfecta] = useState("");
+  const [nOt, setNOt] = useState(null);
+  const [tarjetaTipo, setTarjetaTipo] = useState(null);
+  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
+  const [prioridad, setPrioridad] = useState(null);
+  const [componente, setComponente] = useState(null);
+  const [causaAveria, setCausaAveria] = useState(null);
+  const [tipoFalla, setTipoFalla] = useState(null);
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
+  const [afecta, setAfecta] = useState(null);
 
-  //const history = useHistory();
+  const history = useHistory();
 
-  const m3 = [
-    {
-      Process: "Aviso derivado de una orden",
-      otcode: nOt,
-      cardtype: tarjetaTipo,
-      cardTitle: tarjetaTitulo,
-      priority: prioridad,
-      component: componente,
-      breakdown: causaAveria,
-      failuretype: tipoFalla,
-      cardDescription: descripcionTarjeta,
-      Affect: afecta,
-    },
-  ];
+  const data = {
+    process: "CF2B8484-0901-EC11-B563-2818780EF919",
+    OTCode: nOt,
+    cardType: tarjetaTipo,
+    cardTitle: tarjetaTitulo,
+    priority: prioridad,
+    components: componente,
+    breakdown: causaAveria,
+    failureType: tipoFalla,
+    cardDescription: descripcionTarjeta,
+    affects: afecta,
+  };
 
   const auth = localStorage.token;
 
@@ -48,18 +46,17 @@ const Step3 = () => {
 
   const submitForm = () => {
     axios
-      .post("https://mangyver.herokuapp.com/api/v1/notices", m3, {
+      .post("https://mangyver.herokuapp.com/api/v1/notices", data, {
         headers: { auth },
       })
       .then((res) => {
-        console.log(res);
         Swal.fire({
           text: "Aviso creado exitosamente",
           icon: "success",
           showConfirmButton: false,
         });
-        //history.push("/ShowAvisos");
-        //window.location.reload();
+        history.push("/ShowAvisos");
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -186,10 +183,21 @@ const Step3 = () => {
               value={tarjetaTipo}
               onChange={(e) => setTarjetaTipo(e.target.value)}
             >
-              <MenuItem value={"Amarillo"}>Amarillo</MenuItem>
-              <MenuItem value={"Rojo"}>Rojo</MenuItem>
-              <MenuItem value={"Verde"}>Verde</MenuItem>
-              <MenuItem value={"Azul"}>Azul</MenuItem>
+              <MenuItem value={"DD2B8484-0901-EC11-B563-2818780EF919"}>
+                Amarillo
+              </MenuItem>
+              <MenuItem value={"DE2B8484-0901-EC11-B563-2818780EF919"}>
+                Rojo
+              </MenuItem>
+              <MenuItem value={"DF2B8484-0901-EC11-B563-2818780EF919"}>
+                Verde
+              </MenuItem>
+              <MenuItem value={"70417E6D-CA03-EC11-B563-2818780EF919"}>
+                Negro
+              </MenuItem>
+              <MenuItem value={"DC2B8484-0901-EC11-B563-2818780EF919"}>
+                Azul
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
@@ -213,10 +221,18 @@ const Step3 = () => {
               onChange={(e) => setPrioridad(e.target.value)}
               style={gnrStyle}
             >
-              <MenuItem value={"Muy alta"}>Muy alta</MenuItem>
-              <MenuItem value={"Alta"}>Alta</MenuItem>
-              <MenuItem value={"Media"}>Media</MenuItem>
-              <MenuItem value={"Baja"}>Baja</MenuItem>
+              <MenuItem value={"EF2B8484-0901-EC11-B563-2818780EF919"}>
+                Muy elevado
+              </MenuItem>
+              <MenuItem value={"F02B8484-0901-EC11-B563-2818780EF919"}>
+                Alto
+              </MenuItem>
+              <MenuItem value={"F12B8484-0901-EC11-B563-2818780EF919"}>
+                Medio
+              </MenuItem>
+              <MenuItem value={"F22B8484-0901-EC11-B563-2818780EF919"}>
+                Bajo
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Componente dañado</Typography>
             <Select
@@ -229,8 +245,12 @@ const Step3 = () => {
               value={componente}
               onChange={(e) => setComponente(e.target.value)}
             >
-              <MenuItem value={"cadena"}>Cadena</MenuItem>
-              <MenuItem value={"motoreductor"}>Motoreductor</MenuItem>
+              <MenuItem value={"E42B8484-0901-EC11-B563-2818780EF919"}>
+                Cadena
+              </MenuItem>
+              <MenuItem value={"E52B8484-0901-EC11-B563-2818780EF919"}>
+                Motoreductor
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Causa de la averia</Typography>
             <Select
@@ -243,13 +263,27 @@ const Step3 = () => {
               value={causaAveria}
               onChange={(e) => setCausaAveria(e.target.value)}
             >
-              <MenuItem value={"Tapad@"}>Tapad@</MenuItem>
-              <MenuItem value={"Desgatad@"}>Desgatad@</MenuItem>
-              <MenuItem value={"Desgranad@"}>Desgranad@</MenuItem>
-              <MenuItem value={"Holgad@"}>Holgad@</MenuItem>
-              <MenuItem value={"Reventad@"}>Reventad@</MenuItem>
-              <MenuItem value={"Vibration"}>Vibration</MenuItem>
-              <MenuItem value={"Desajustad@"}>Desajustad@</MenuItem>
+              <MenuItem value={"B63E7187-0F01-EC11-B563-2818780EF919"}>
+                Tapad@
+              </MenuItem>
+              <MenuItem value={"B73E7187-0F01-EC11-B563-2818780EF919"}>
+                Desgatad@
+              </MenuItem>
+              <MenuItem value={"1BC8DA91-0F01-EC11-B563-2818780EF919"}>
+                Desgranad@
+              </MenuItem>
+              <MenuItem value={"1CC8DA91-0F01-EC11-B563-2818780EF919"}>
+                Holgad@
+              </MenuItem>
+              <MenuItem value={"82913C9A-0F01-EC11-B563-2818780EF919"}>
+                Reventad@
+              </MenuItem>
+              <MenuItem value={"83913C9A-0F01-EC11-B563-2818780EF919"}>
+                Vibration
+              </MenuItem>
+              <MenuItem value={"967F4BA4-0F01-EC11-B563-2818780EF919"}>
+                Desajustad@
+              </MenuItem>
             </Select>
             <Typography style={gnrStyle}>Tipo de falla</Typography>
             <Select
@@ -265,15 +299,31 @@ const Step3 = () => {
               <MenuItem value={"Lubricación de espreas"}>
                 Lubricación de espreas
               </MenuItem>
-              <MenuItem value={"Luve Drive"}>Luve Drive</MenuItem>
-              <MenuItem value={"Producción"}>Producción</MenuItem>
-              <MenuItem value={"Mecánica"}>Mecánica</MenuItem>
-              <MenuItem value={"Eléctrica"}>Eléctrica</MenuItem>
-              <MenuItem value={"Electrónica"}>Electrónica</MenuItem>
-              <MenuItem value={"Civil"}>Civil</MenuItem>
-              <MenuItem value={"Climas"}>Climas</MenuItem>
-              <MenuItem value={"Predictivo"}>Predictivo</MenuItem>
-              <MenuItem value={"Lubricación ToolKits"}>
+              <MenuItem value={"FC2B8484-0901-EC11-B563-2818780EF919"}>
+                Luve Drive
+              </MenuItem>
+              <MenuItem value={"FD2B8484-0901-EC11-B563-2818780EF919"}>
+                Producción
+              </MenuItem>
+              <MenuItem value={"F42B8484-0901-EC11-B563-2818780EF919"}>
+                Mecánica
+              </MenuItem>
+              <MenuItem value={"F52B8484-0901-EC11-B563-2818780EF919"}>
+                Eléctrica
+              </MenuItem>
+              <MenuItem value={"F62B8484-0901-EC11-B563-2818780EF919"}>
+                Electrónica
+              </MenuItem>
+              <MenuItem value={"F72B8484-0901-EC11-B563-2818780EF919"}>
+                Civil
+              </MenuItem>
+              <MenuItem value={"F82B8484-0901-EC11-B563-2818780EF919"}>
+                Climas
+              </MenuItem>
+              <MenuItem value={"F92B8484-0901-EC11-B563-2818780EF919"}>
+                Predictivo
+              </MenuItem>
+              <MenuItem value={"FA2B8484-0901-EC11-B563-2818780EF919"}>
                 Lubricación ToolKits
               </MenuItem>
             </Select>
@@ -301,8 +351,12 @@ const Step3 = () => {
               value={afecta}
               onChange={(e) => setAfecta(e.target.value)}
             >
-              <MenuItem value={"calidad"}>Calidad</MenuItem>
-              <MenuItem value={"GLY/LEF"}>GLY/LEF</MenuItem>
+              <MenuItem value={"FE2B8484-0901-EC11-B563-2818780EF919"}>
+                Calidad
+              </MenuItem>
+              <MenuItem value={"FF2B8484-0901-EC11-B563-2818780EF919"}>
+                GLY/LEF
+              </MenuItem>
             </Select>
           </section>
         )}
