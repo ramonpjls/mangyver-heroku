@@ -1,5 +1,5 @@
 import axios from "../axiosinstace";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -46,32 +46,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let notice = [];
-
-axios
-  .get("/notices")
-  .then((res) => {
-    return (notice = res.data);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-for (let i = 0; i < 14; i++) {
-  notice[i] = {
-    Process: notice.Process,
-    cardTitle: notice.cardTitle,
-    cardType: notice.cardType,
-    cardDescription: notice.cardDescription,
-    failureType: notice.ubication_tecnica,
-    priority: notice.priority,
-  };
-}
-
 function ShowAvisos() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [notice, setNotice] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/notices")
+      .then((res) => {
+        return setNotice(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
