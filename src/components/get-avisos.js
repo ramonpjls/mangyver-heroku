@@ -25,23 +25,16 @@ const Getavisos = () => {
 
   const auth = localStorage.token;
 
-  const HandleSubmit = (e) => {
-    e.preventDefault();
-
-    axios
-      .get("https://mangyver.herokuapp.com/api/v1/notices", {
-        headers: { auth },
-      })
-      .then((res) => {
-        console.log(res);
-        setInfo(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  console.log(info);
+  axios
+    .get("https://mangyver.herokuapp.com/api/v1/notices", {
+      headers: { auth },
+    })
+    .then((res) => {
+      setInfo(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   const headers = [
     { label: "Affect", key: "Affect" },
@@ -80,7 +73,7 @@ const Getavisos = () => {
         </Typography>
       </Container>
       <Container maxWidth="md">
-        <form style={{ marginTop: "30px" }} onSubmit={HandleSubmit}>
+        <form style={{ marginTop: "30px" }}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
@@ -111,14 +104,15 @@ const Getavisos = () => {
               />
             </Grid>
             <Grid container item justifyContent="flex-end">
-              <Button
-                color="primary"
-                variant="contained"
-                type="submit"
-                startIcon={<CloudDownloadIcon />}
-              >
-                <CSVLink {...ReportSet}>Descargar</CSVLink>
-              </Button>
+              <CSVLink {...ReportSet}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  startIcon={<CloudDownloadIcon />}
+                >
+                  Descargar
+                </Button>
+              </CSVLink>
             </Grid>
           </Grid>
         </form>
