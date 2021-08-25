@@ -60,7 +60,7 @@ const Step2 = () => {
 
   const submitForm = () => {
     axios
-      .post("http://172.18.220.65:8001/api/v1/notices", data, {
+      .post("https://mangyver.herokuapp.com/api/v1/notices", data, {
         headers: { auth },
       })
       .then((res) => {
