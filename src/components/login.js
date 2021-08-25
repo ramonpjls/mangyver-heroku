@@ -49,7 +49,7 @@ const Login = () => {
     const data = { username, password };
 
     axios
-      .post("https://mangyver.herokuapp.com/api/v1/auth/login", data)
+      .post("http://172.18.220.65:8001/api/v1//auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
         setRedirect(true);
