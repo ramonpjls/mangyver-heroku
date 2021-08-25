@@ -41,7 +41,7 @@ const Getavisos = () => {
     { label: "affectsFile", key: "affectsFile" },
     { label: "breakdown", key: "breakdown" },
     { label: "cardDescription", key: "cardDescription" },
-    { label: "cardTitle", key: "" },
+    { label: "cardTitle", key: "cardTitle" },
     { label: "cardtype", key: "cardtype" },
     { label: "component", key: "component" },
     { label: "consecutive", key: "consecutive" },
