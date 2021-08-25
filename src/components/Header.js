@@ -106,7 +106,7 @@ const auth = localStorage.token;
 let userInfo = "";
 
 axios
-  .get("http://172.18.220.65:8001/api/v1/notices", {
+  .get("http://172.18.220.65:8001/api/v1/profiles", {
     headers: { auth },
   })
   .then((res) => {
