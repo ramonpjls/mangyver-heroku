@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -23,14 +23,16 @@ const Getavisos = () => {
     maxWidth: "100%",
   };
 
-  axios
-    .get("/notices")
-    .then((res) => {
-      return setInfo(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  useEffect(() => {
+    axios
+      .get("/notices")
+      .then((res) => {
+        return setInfo(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const headers = [
     { label: "Affect", key: "Affect" },
