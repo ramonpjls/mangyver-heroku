@@ -25,7 +25,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import AddCommentIcon from "@material-ui/icons/AddComment";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import axios from "axios";
+import axios from "../axiosinstance";
 
 import Getavisos from "./get-avisos";
 import Home from "./notice_mx/home";
@@ -102,13 +102,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const auth = localStorage.token;
 let userInfo = "";
 
 axios
-  .get("https://mangyver.herokuapp.com/api/v1/profiles", {
-    headers: { auth },
-  })
+  .get("/profiles")
   .then((res) => {
     return (userInfo = res.data.profile.name);
   })

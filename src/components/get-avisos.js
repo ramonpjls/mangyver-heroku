@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { CSVLink } from "react-csv";
-import axios from "axios";
+import axios from "../axiosinstance";
 
 const Getavisos = () => {
   const [start, setStart] = useState("");
@@ -23,14 +23,10 @@ const Getavisos = () => {
     maxWidth: "100%",
   };
 
-  const auth = localStorage.token;
-
   axios
-    .get("https://mangyver.herokuapp.com/api/v1/notices", {
-      headers: { auth },
-    })
+    .get("/notices")
     .then((res) => {
-      setInfo(res.data);
+      return setInfo(res.data);
     })
     .catch((err) => {
       console.log(err);

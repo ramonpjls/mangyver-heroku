@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
+import axios from "../../axiosinstance";
 
 const Step2 = () => {
   const [formStep, setFormStep] = useState(0);
@@ -48,8 +48,6 @@ const Step2 = () => {
     affects: afecta,
   };
 
-  const auth = localStorage.token;
-
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
   };
@@ -60,9 +58,7 @@ const Step2 = () => {
 
   const submitForm = () => {
     axios
-      .post("https://mangyver.herokuapp.com/api/v1/notices", data, {
-        headers: { auth },
-      })
+      .post("/notices", data)
       .then((res) => {
         console.log(res);
         Swal.fire({

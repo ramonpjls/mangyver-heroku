@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axiosinstance";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -46,14 +46,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const auth = localStorage.token;
 let notice = [];
 
 axios
-  .get("https://mangyver.herokuapp.com/api/v1/notices", {
-    headers: { auth },
-  })
+  .get("/notices")
   .then((res) => {
+    console.log("se ha realizado la llamada");
     return (notice = res.data);
   })
   .catch((err) => {
