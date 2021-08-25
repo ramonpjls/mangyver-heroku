@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
+import axios from "../../axiosinstace";
 
 const Step3 = () => {
   const [formStep, setFormStep] = useState(0);
@@ -38,17 +38,13 @@ const Step3 = () => {
     affects: afecta,
   };
 
-  const auth = localStorage.token;
-
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
   };
 
   const submitForm = () => {
     axios
-      .post("http://172.18.220.65:8001/api/v1/notices", data, {
-        headers: { auth },
-      })
+      .post("/notices", data)
       .then((res) => {
         Swal.fire({
           text: "Aviso creado exitosamente",

@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { CSVLink } from "react-csv";
-import axios from "axios";
+import axios from "../axiosinstace";
 
 const Getavisos = () => {
   const [start, setStart] = useState("");
@@ -23,12 +23,8 @@ const Getavisos = () => {
     maxWidth: "100%",
   };
 
-  const auth = localStorage.token;
-
   axios
-    .get("http://172.18.220.65:8001/api/v1/notices", {
-      headers: { auth },
-    })
+    .get("/notices")
     .then((res) => {
       console.log(res);
       setInfo(res.data);

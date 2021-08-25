@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axiosinstace";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -46,13 +46,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const auth = localStorage.token;
 let notice = [];
 
 axios
-  .get("http://172.18.220.65:8001/api/v1/notices", {
-    headers: { auth },
-  })
+  .get("/notices")
   .then((res) => {
     return (notice = res.data);
   })

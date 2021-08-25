@@ -12,7 +12,7 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
+import axios from "../axiosinstace";
 
 import LogoG from "../assets/LogoG.png";
 import LandingLogin from "../assets/landing.png";
@@ -49,7 +49,7 @@ const Login = () => {
     const data = { username, password };
 
     axios
-      .post("http://172.18.220.65:8001/api/v1/auth/login", data)
+      .post("/auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
         setRedirect(true);
