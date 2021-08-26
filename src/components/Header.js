@@ -27,7 +27,7 @@ import AddCommentIcon from "@material-ui/icons/AddComment";
 import ArchiveIcon from "@material-ui/icons/Archive";
 import axios from "../axiosinstace";
 
-import Getavisos from "./get-avisos";
+import Noticereport from "./noticeReport";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
@@ -236,7 +236,7 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Route path="/Getavisos" component={Getavisos} />
+        <Route path="/noticereport" component={Noticereport} />
         <Route path="/Home" component={Home} />
         <Route path="/ShowAvisos" component={ShowAvisos} />
       </main>

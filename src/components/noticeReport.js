@@ -10,7 +10,7 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { CSVLink } from "react-csv";
 import axios from "../axiosinstace";
 
-const Getavisos = () => {
+const Noticereport = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [info, setInfo] = useState([]);
@@ -119,4 +119,4 @@ const Getavisos = () => {
   );
 };
 
-export default Getavisos;
+export default Noticereport;
