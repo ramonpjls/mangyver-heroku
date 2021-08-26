@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import {
   makeStyles,
@@ -27,7 +27,7 @@ import AddCommentIcon from "@material-ui/icons/AddComment";
 import ArchiveIcon from "@material-ui/icons/Archive";
 import axios from "../axiosinstance";
 
-import Getavisos from "./get-avisos";
+import Noticereport from "./noticeReport";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
@@ -102,21 +102,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let userInfo = "";
-
-axios
-  .get("/profiles")
-  .then((res) => {
-    return (userInfo = res.data.profile.name);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [userInfo, setUserInfo] = useState("");
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -125,6 +115,17 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    axios
+      .get("/profiles")
+      .then((res) => {
+        return setUserInfo(res.data.profile.name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -224,7 +225,7 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
-          <Link to="/Getavisos">
+          <Link to="/Noticereport">
             <ListItem>
               <ListItemIcon>
                 <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
@@ -236,7 +237,7 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Route path="/Getavisos" component={Getavisos} />
+        <Route path="/Noticereport" component={Noticereport} />
         <Route path="/Home" component={Home} />
         <Route path="/ShowAvisos" component={ShowAvisos} />
       </main>

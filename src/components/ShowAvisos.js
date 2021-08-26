@@ -11,7 +11,6 @@ import {
   Paper,
   Typography,
   TablePagination,
-  TableFooter,
   Backdrop,
   CircularProgress,
 } from "@material-ui/core";
@@ -79,11 +78,13 @@ function ShowAvisos() {
   };
 
   const renderLoad = () => {
-    if (notice === []) {
+    if (notice.length === 0) {
       return (
-        <Backdrop className={classes.backdrop}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <>
+          <Backdrop className={classes.backdrop} open>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </>
       );
     }
   };
@@ -152,17 +153,14 @@ function ShowAvisos() {
                 </TableRow>
               ))}
           </TableBody>
-          <TableFooter>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 15]}
-              component="div"
-              count={notice.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </TableFooter>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 15]}
+            count={notice.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </Table>
       </TableContainer>
     </>

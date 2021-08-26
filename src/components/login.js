@@ -8,25 +8,37 @@ import {
   IconButton,
   Snackbar,
   Hidden,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import axios from "../axiosinstance";
 
 import LogoG from "../assets/LogoG.png";
 import LandingLogin from "../assets/landing.png";
 
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const Login = () => {
+  const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [values, setValues] = useState({ password: "" });
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -48,15 +60,16 @@ const Login = () => {
 
     const data = { username, password };
 
+    setRedirect(true);
+
     axios
       .post("/auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
-        setRedirect(true);
+        setLoading(true);
       })
       .catch((err) => {
         setOpen(true);
-        console.log(err);
       });
   };
 
@@ -64,8 +77,21 @@ const Login = () => {
     return <Redirect to="/ShowAvisos" />;
   }
 
+  const renderLoad = () => {
+    if (loading === []) {
+      return (
+        <>
+          <Backdrop className={classes.backdrop} open>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </>
+      );
+    }
+  };
+
   return (
     <div>
+      {renderLoad()}
       <Grid
         container
         style={{
