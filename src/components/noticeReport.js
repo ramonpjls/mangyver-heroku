@@ -35,26 +35,17 @@ const Noticereport = () => {
   }, []);
 
   const headers = [
-    { label: "Affect", key: "Affect" },
-    { label: "Equipment", key: "Equipment" },
-    { label: "Process", key: "Process" },
-    { label: "affectsFile", key: "affectsFile" },
-    { label: "breakdown", key: "breakdown" },
-    { label: "cardDescription", key: "cardDescription" },
-    { label: "cardTitle", key: "cardTitle" },
-    { label: "cardtype", key: "cardtype" },
-    { label: "component", key: "component" },
-    { label: "consecutive", key: "consecutive" },
-    { label: "created", key: "created" },
-    { label: "department", key: "department" },
-    { label: "didCard", key: "didCard" },
-    { label: "equipmentCode", key: "equipmentCode" },
-    { label: "failureTime", key: "failureTime" },
-    { label: "failuretype", key: "failuretype" },
-    { label: "id", key: "id" },
-    { label: "line", key: "line" },
-    { label: "otcode", key: "otcode" },
-    { label: "priority", key: "priority" },
+    { label: "Titulo del aviso (No mas de 30 caracteres)", key: "cardTitle" },
+    { label: "Ubicacion Tecnica del equipo", key: "ubication_tecnica" },
+    { label: "Codigo del equipo", key: "equipmentCode" },
+    { label: "Codidificacion", key: "cardtype" },
+    { label: "Descripcion del Problema", key: "cardDescription" },
+    { label: "Autor del aviso", key: "" },
+    { label: "Sintoma de averia", key: "component" },
+    { label: "causa de averia", key: "breakdown" },
+    { label: "PRIORIDAD", key: "priority" },
+    { label: "hora", key: "failureTime" },
+    { label: "fecha", key: "created" },
   ];
 
   const ReportSet = {
