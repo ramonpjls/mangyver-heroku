@@ -53,6 +53,7 @@ const Noticereport = () => {
     { label: "hora", key: "failureTime" },
     { label: "fecha", key: "created" },
   ];
+
   const ReportSet = {
     filename: "reporte.csv",
     headers: headers,
