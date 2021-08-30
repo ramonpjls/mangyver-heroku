@@ -12,6 +12,8 @@ import {
   Typography,
   TablePagination,
   TableFooter,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "3px 10px",
     display: "inline-block",
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
 }));
 
 function ShowAvisos() {
@@ -72,79 +78,96 @@ function ShowAvisos() {
     setPage(0);
   };
 
+  const renderLoad = () => {
+    if (notice.length === 0) {
+      return (
+        <>
+          <Backdrop className={classes.backdrop} open>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </>
+      );
+    }
+  };
+
   return (
-    <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.tableHeaderCell}>
-              Tipo de Aviso
-            </TableCell>
-            <TableCell className={classes.tableHeaderCell}>
-              Titulo de Tarjeta
-            </TableCell>
-            <TableCell className={classes.tableHeaderCell}>
-              Tipo de Tarjeta
-            </TableCell>
-            <TableCell className={classes.tableHeaderCell}>
-              Descripcion
-            </TableCell>
-            <TableCell className={classes.tableHeaderCell}>
-              Causa de la averia
-            </TableCell>
-            <TableCell className={classes.tableHeaderCell}>Prioridad</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {notice
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
-                  <Typography>{row.Process}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography>{row.ubication_tecnica}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography>{row.cardtype}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography>{row.cardDescription}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography>{row.breakdown}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    className={classes.status}
-                    style={{
-                      backgroundColor:
-                        (row.priority === "Muy elevado" && "#B855E5") ||
-                        (row.priority === "Alto" && "#E05E54") ||
-                        (row.priority === "Medio" && "#E8AB51") ||
-                        (row.priority === "Bajo" && "#86A9E1"),
-                    }}
-                  >
-                    {row.priority}
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-        <TableFooter>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
-            component="div"
-            count={notice.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </TableFooter>
-      </Table>
-    </TableContainer>
+    <>
+      {renderLoad()}
+      <TableContainer component={Paper} className={classes.tableContainer}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableHeaderCell}>
+                Tipo de Aviso
+              </TableCell>
+              <TableCell className={classes.tableHeaderCell}>
+                Titulo de Tarjeta
+              </TableCell>
+              <TableCell className={classes.tableHeaderCell}>
+                Tipo de Tarjeta
+              </TableCell>
+              <TableCell className={classes.tableHeaderCell}>
+                Descripcion
+              </TableCell>
+              <TableCell className={classes.tableHeaderCell}>
+                Causa de la averia
+              </TableCell>
+              <TableCell className={classes.tableHeaderCell}>
+                Prioridad
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {notice
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    <Typography>{row.Process}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{row.ubication_tecnica}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{row.cardtype}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{row.cardDescription}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{row.breakdown}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      className={classes.status}
+                      style={{
+                        backgroundColor:
+                          (row.priority === "Muy elevado" && "#B855E5") ||
+                          (row.priority === "Alto" && "#E05E54") ||
+                          (row.priority === "Medio" && "#E8AB51") ||
+                          (row.priority === "Bajo" && "#86A9E1"),
+                      }}
+                    >
+                      {row.priority}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+          <TableFooter>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 15]}
+              component="div"
+              count={notice.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 
