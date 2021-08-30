@@ -155,7 +155,9 @@ const Login = () => {
             autoHideDuration={5000}
             onClose={handleClose}
           >
-            <Alert severity="error">Contraseña incoreccta</Alert>
+            <Alert severity="error">
+              Nombre de usuario y/o Contraseña incorecctos
+            </Alert>
           </Snackbar>
         </Grid>
         <div />
