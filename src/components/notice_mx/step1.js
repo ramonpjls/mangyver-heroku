@@ -350,9 +350,6 @@ const Step1 = () => {
               <MenuItem value={"DF2B8484-0901-EC11-B563-2818780EF919"}>
                 Verde
               </MenuItem>
-              <MenuItem value={"70417E6D-CA03-EC11-B563-2818780EF919"}>
-                Negro
-              </MenuItem>
               <MenuItem value={"DC2B8484-0901-EC11-B563-2818780EF919"}>
                 Azul
               </MenuItem>

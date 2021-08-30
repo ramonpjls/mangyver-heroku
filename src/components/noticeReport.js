@@ -29,7 +29,7 @@ const Noticereport = () => {
         params: {
           dateFrom: start,
           dateEnd: end,
-          sapForm: 1,
+          sapForm: true,
         },
       })
       .then((res) => {
