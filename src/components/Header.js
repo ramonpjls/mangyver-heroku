@@ -224,7 +224,7 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
-          <Link to="/Getavisos">
+          <Link to="/noticereport">
             <ListItem>
               <ListItemIcon>
                 <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
