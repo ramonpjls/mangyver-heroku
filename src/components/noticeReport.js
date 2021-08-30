@@ -25,14 +25,20 @@ const Noticereport = () => {
 
   useEffect(() => {
     axios
-      .get("/notices")
+      .get("/notices", {
+        params: {
+          dateFrom: start,
+          dateEnd: end,
+          sapForm: 1,
+        },
+      })
       .then((res) => {
         return setInfo(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [start, end]);
 
   const headers = [
     { label: "Titulo del aviso (No mas de 30 caracteres)", key: "cardTitle" },
@@ -53,6 +59,8 @@ const Noticereport = () => {
     headers: headers,
     data: info,
   };
+
+  console.log(start, end);
 
   return (
     <div>
