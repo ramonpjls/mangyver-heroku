@@ -60,13 +60,12 @@ const Login = () => {
 
     const data = { username, password };
 
-    setRedirect(true);
-
     axios
       .post("/auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
         setLoading(true);
+        setRedirect(true);
       })
       .catch((err) => {
         setOpen(true);

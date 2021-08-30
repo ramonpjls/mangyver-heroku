@@ -112,6 +112,10 @@ export default function MiniDrawer() {
     setOpen(true);
   };
 
+  const forgetToken = () => {
+    localStorage.clear();
+  };
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -159,7 +163,10 @@ export default function MiniDrawer() {
           <img src={logopeq} alt="logo" />
           <IconButton edge="end">
             <Link to="/Login">
-              <ExitToApp style={{ fontSize: 40, color: "white" }} />
+              <ExitToApp
+                onClick={forgetToken}
+                style={{ fontSize: 40, color: "white" }}
+              />
             </Link>
           </IconButton>
         </Toolbar>

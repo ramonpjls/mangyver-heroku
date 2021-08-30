@@ -65,8 +65,9 @@ function ShowAvisos() {
       })
       .catch((err) => {
         console.log(err);
+        window.location.reload();
       });
-  }, []);
+  }, [notice]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
