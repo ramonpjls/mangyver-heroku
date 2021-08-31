@@ -95,7 +95,7 @@ const Login = () => {
         container
         style={{
           minHeight: "90vh",
-          justifyContent: "center",
+          justifyContent: "space-evenly",
         }}
       >
         <Hidden smDown>
@@ -131,7 +131,7 @@ const Login = () => {
               <Grid container>
                 <img src={LogoG} alt="logo" />
               </Grid>
-              <InputLabel shrink>Nombre de usuario</InputLabel>
+              <InputLabel variant="standard">Nombre de usuario</InputLabel>
               <Input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -139,7 +139,7 @@ const Login = () => {
                 required
                 fullWidth
               />
-              <InputLabel shrink>Password</InputLabel>
+              <InputLabel variant="standard">Contraseña</InputLabel>
               <Input
                 name="password"
                 id="standard-adornment-password"
@@ -181,7 +181,7 @@ const Login = () => {
             onClose={handleClose}
           >
             <Alert severity="error">
-              Nombre de usuario y/o Contraseña incorecctos
+              Nombre de usuario y/o Contraseña incorectos
             </Alert>
           </Snackbar>
         </Grid>
