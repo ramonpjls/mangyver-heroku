@@ -86,85 +86,84 @@ function ShowAvisos() {
           </Backdrop>
         </>
       );
+    } else {
+      return (
+        <TableContainer component={Paper} className={classes.tableContainer}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell className={classes.tableHeaderCell}>
+                  Tipo de Aviso
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Titulo de Tarjeta
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Tipo de Tarjeta
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Descripcion
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Causa de la averia
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Prioridad
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {notice
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell>
+                      <Typography>{row.Process}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.ubication_tecnica}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.cardtype}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.cardDescription}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.breakdown}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        className={classes.status}
+                        style={{
+                          backgroundColor:
+                            (row.priority === "Muy elevado" && "#B855E5") ||
+                            (row.priority === "Alto" && "#E05E54") ||
+                            (row.priority === "Medio" && "#E8AB51") ||
+                            (row.priority === "Bajo" && "#86A9E1"),
+                        }}
+                      >
+                        {row.priority}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 15]}
+              count={notice.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </Table>
+        </TableContainer>
+      );
     }
   };
 
-  return (
-    <>
-      {renderLoad()}
-      <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableHeaderCell}>
-                Tipo de Aviso
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Titulo de Tarjeta
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Tipo de Tarjeta
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Descripcion
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Causa de la averia
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Prioridad
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {notice
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>
-                    <Typography>{row.Process}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.ubication_tecnica}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.cardtype}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.cardDescription}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.breakdown}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      className={classes.status}
-                      style={{
-                        backgroundColor:
-                          (row.priority === "Muy elevado" && "#B855E5") ||
-                          (row.priority === "Alto" && "#E05E54") ||
-                          (row.priority === "Medio" && "#E8AB51") ||
-                          (row.priority === "Bajo" && "#86A9E1"),
-                      }}
-                    >
-                      {row.priority}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
-            count={notice.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </Table>
-      </TableContainer>
-    </>
-  );
+  return <>{renderLoad()}</>;
 }
 
 export default ShowAvisos;
