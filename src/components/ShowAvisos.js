@@ -13,7 +13,12 @@ import {
   TablePagination,
   Backdrop,
   CircularProgress,
+  Container,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core";
+
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -56,6 +61,14 @@ function ShowAvisos() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [notice, setNotice] = useState([]);
+  const [keyword, setKeyword] = useState("");
+
+  const Header = {
+    color: "white",
+    borderRadius: "3px",
+    padding: "30px",
+    maxWidth: "100%",
+  };
 
   useEffect(() => {
     axios
@@ -86,14 +99,14 @@ function ShowAvisos() {
           </Backdrop>
         </>
       );
-    } else {
+    } else if (notice !== []) {
       return (
         <TableContainer component={Paper} className={classes.tableContainer}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
-                  Tipo de Aviso
+                  Titulo de Aviso
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
                   Titulo de Tarjeta
@@ -115,10 +128,22 @@ function ShowAvisos() {
             <TableBody>
               {notice
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                // eslint-disable-next-line array-callback-return
+                .filter((row) => {
+                  if (keyword === "") {
+                    return row;
+                  } else if (
+                    row.cardDescription
+                      .toLowerCase()
+                      .includes(keyword.toLocaleLowerCase())
+                  ) {
+                    return row;
+                  }
+                })
                 .map((row) => (
                   <TableRow key={row.id}>
                     <TableCell>
-                      <Typography>{row.Process}</Typography>
+                      <Typography>{row.cardTitle}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.ubication_tecnica}</Typography>
@@ -163,7 +188,31 @@ function ShowAvisos() {
     }
   };
 
-  return <>{renderLoad()}</>;
+  return (
+    <>
+      <Container className="header" style={Header}>
+        <TextField
+          name="keyword"
+          id="keyword"
+          type="text"
+          value={keyword}
+          fullWidth
+          size="small"
+          variant="outlined"
+          placeholder="¿Cual aviso desea buscar?"
+          onChange={(e) => setKeyword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="large" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Container>
+      {renderLoad()}
+    </>
+  );
 }
 
 export default ShowAvisos;
