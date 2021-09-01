@@ -61,7 +61,6 @@ function ShowAvisos() {
   const [notice, setNotice] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
   const Header = {
     color: "white",
@@ -80,9 +79,9 @@ function ShowAvisos() {
       })
       .catch((err) => {
         console.warn(err);
-        setError(true);
+        window.location.reload();
       });
-  }, [error]);
+  }, []);
 
   return (
     <>
