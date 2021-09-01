@@ -62,6 +62,7 @@ function ShowAvisos() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [notice, setNotice] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const Header = {
     color: "white",
@@ -71,15 +72,19 @@ function ShowAvisos() {
   };
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("/notices")
       .then((res) => {
-        return setNotice(res.data);
+        setNotice(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        console.log("error from GET", err.status);
+        setLoading(false);
       });
-  }, [notice]);
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -90,17 +95,33 @@ function ShowAvisos() {
     setPage(0);
   };
 
-  const renderLoad = () => {
-    if (notice.length === 0) {
-      return (
-        <>
-          <Backdrop className={classes.backdrop} open>
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        </>
-      );
-    } else if (notice !== []) {
-      return (
+  return (
+    <>
+      <Container className="header" style={Header}>
+        <TextField
+          name="keyword"
+          id="keyword"
+          type="text"
+          value={keyword}
+          fullWidth
+          size="small"
+          variant="outlined"
+          placeholder="¿Cual aviso desea buscar?"
+          onChange={(e) => setKeyword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="large" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Container>
+      {loading ? (
+        <Backdrop className={classes.backdrop} open>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
         <TableContainer component={Paper} className={classes.tableContainer}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -184,33 +205,7 @@ function ShowAvisos() {
             />
           </Table>
         </TableContainer>
-      );
-    }
-  };
-
-  return (
-    <>
-      <Container className="header" style={Header}>
-        <TextField
-          name="keyword"
-          id="keyword"
-          type="text"
-          value={keyword}
-          fullWidth
-          size="small"
-          variant="outlined"
-          placeholder="¿Cual aviso desea buscar?"
-          onChange={(e) => setKeyword(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon fontSize="large" />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Container>
-      {renderLoad()}
+      )}
     </>
   );
 }
