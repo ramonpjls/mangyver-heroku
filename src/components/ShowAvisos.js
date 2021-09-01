@@ -95,7 +95,7 @@ function ShowAvisos() {
           fullWidth
           size="small"
           variant="outlined"
-          placeholder="¿Cual aviso desea buscar?"
+          placeholder="¿Cual aviso desea buscar? (ESTE FEATURE NO FUNCIONA DEL TODO)"
           onChange={(e) => setKeyword(e.target.value)}
           InputProps={{
             endAdornment: (
