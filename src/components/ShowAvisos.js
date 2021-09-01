@@ -10,7 +10,6 @@ import {
   TableRow,
   Paper,
   Typography,
-  TablePagination,
   Backdrop,
   CircularProgress,
   Container,
@@ -26,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   tableContainer: {
     borderRadius: 15,
-    margin: "10px 10px",
+    margin: "10px 0",
+    maxHeight: 740,
   },
   tableHeaderCell: {
     fontWeight: "bold",
@@ -58,8 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ShowAvisos() {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [notice, setNotice] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -80,20 +78,10 @@ function ShowAvisos() {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("error from GET", err.status);
+        console.warn(err);
         setLoading(false);
       });
   }, []);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   return (
     <>
@@ -123,7 +111,11 @@ function ShowAvisos() {
         </Backdrop>
       ) : (
         <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table className={classes.table} aria-label="simple table">
+          <Table
+            stickyHeader
+            className={classes.table}
+            aria-label="simple table"
+          >
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
@@ -148,16 +140,16 @@ function ShowAvisos() {
             </TableHead>
             <TableBody>
               {notice
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                // eslint-disable-next-line array-callback-return
                 .filter((row) => {
                   if (keyword === "") {
                     return row;
                   } else if (
                     row.cardDescription
                       .toLowerCase()
-                      .includes(keyword.toLocaleLowerCase())
+                      .includes(keyword.toLowerCase())
                   ) {
+                    return row;
+                  } else {
                     return row;
                   }
                 })
@@ -195,14 +187,6 @@ function ShowAvisos() {
                   </TableRow>
                 ))}
             </TableBody>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 15]}
-              count={notice.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
           </Table>
         </TableContainer>
       )}

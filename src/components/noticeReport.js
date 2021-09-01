@@ -60,8 +60,6 @@ const Noticereport = () => {
     data: info,
   };
 
-  console.log(start, end);
-
   return (
     <div>
       <Container className="header" style={Header}>

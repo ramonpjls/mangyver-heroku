@@ -60,15 +60,18 @@ const Login = () => {
 
     const data = { username, password };
 
+    setLoading(true);
+
     axios
       .post("/auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
-        setLoading(true);
+        setLoading(false);
         setRedirect(true);
       })
       .catch((err) => {
         setOpen(true);
+        setLoading(false);
       });
   };
 
@@ -76,21 +79,114 @@ const Login = () => {
     return <Redirect to="/ShowAvisos" />;
   }
 
-  const renderLoad = () => {
-    if (loading === []) {
-      return (
-        <>
-          <Backdrop className={classes.backdrop} open>
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        </>
-      );
-    }
-  };
-
   return (
     <div>
-      {renderLoad()}
+      {loading ? (
+        <Backdrop className={classes.backdrop} open>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <Grid
+          container
+          style={{
+            minHeight: "90vh",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Hidden smDown>
+            <Grid item style={{ textAlignLast: "center", alignSelf: "center" }}>
+              <img
+                src={LandingLogin}
+                alt="landing"
+                style={{ objectFit: "cover" }}
+              />
+            </Grid>
+          </Hidden>
+          <Grid
+            container
+            item
+            alignItems="center"
+            direction="column"
+            style={{
+              justifyContent: "center",
+              placeContent: "center",
+              width: "40vh",
+            }}
+          >
+            <div />
+            <form onSubmit={HandleSubmit}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  minWidth: "300px",
+                  rowGap: "1rem",
+                }}
+              >
+                <Grid container>
+                  <img src={LogoG} alt="logo" />
+                </Grid>
+                <InputLabel variant="standard">Nombre de usuario</InputLabel>
+                <Input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  name="username"
+                  required
+                  fullWidth
+                />
+                <InputLabel variant="standard">Contraseña</InputLabel>
+                <Input
+                  name="password"
+                  id="standard-adornment-password"
+                  type={values.showPassword ? "text" : "password"}
+                  value={password}
+                  required
+                  fullWidth
+                  onChange={(e) => setPassword(e.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                <div style={{ height: 20 }} />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  size="small"
+                >
+                  Entrar
+                </Button>
+              </div>
+            </form>
+            <Snackbar
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              open={open}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
+              <Alert severity="error">
+                Nombre de usuario y/o Contraseña incorectos
+              </Alert>
+            </Snackbar>
+          </Grid>
+          <div />
+        </Grid>
+      )}
       <Grid
         container
         style={{
