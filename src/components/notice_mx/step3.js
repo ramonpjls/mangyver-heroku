@@ -260,7 +260,7 @@ const Step3 = () => {
                 Tapad@
               </MenuItem>
               <MenuItem value={"B73E7187-0F01-EC11-B563-2818780EF919"}>
-                Desgatad@
+                Desgastad@
               </MenuItem>
               <MenuItem value={"1BC8DA91-0F01-EC11-B563-2818780EF919"}>
                 Desgranad@
@@ -272,7 +272,7 @@ const Step3 = () => {
                 Reventad@
               </MenuItem>
               <MenuItem value={"83913C9A-0F01-EC11-B563-2818780EF919"}>
-                Vibration
+                Vibracion
               </MenuItem>
               <MenuItem value={"967F4BA4-0F01-EC11-B563-2818780EF919"}>
                 Desajustad@

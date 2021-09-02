@@ -94,7 +94,7 @@ function ShowAvisos() {
           fullWidth
           size="small"
           variant="outlined"
-          placeholder="¿Cual aviso desea buscar? (ESTE FEATURE NO FUNCIONA DEL TODO)"
+          placeholder="¿Cual aviso desea buscar?"
           onChange={(e) => setKeyword(e.target.value)}
           InputProps={{
             endAdornment: (
@@ -140,16 +140,19 @@ function ShowAvisos() {
             </TableHead>
             <TableBody>
               {notice
+                // eslint-disable-next-line array-callback-return
                 .filter((row) => {
                   if (keyword === "") {
                     return row;
                   } else if (
                     row.cardDescription
                       .toLowerCase()
-                      .includes(keyword.toLowerCase())
+                      .includes(keyword.toLowerCase()) ||
+                    row.priority
+                      .toLowerCase()
+                      .includes(keyword.toLowerCase()) ||
+                    row.breakdown.toLowerCase().includes(keyword.toLowerCase())
                   ) {
-                    return row;
-                  } else {
                     return row;
                   }
                 })
