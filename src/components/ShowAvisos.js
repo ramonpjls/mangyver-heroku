@@ -111,11 +111,7 @@ function ShowAvisos() {
         </Backdrop>
       ) : (
         <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table
-            stickyHeader
-            className={classes.table}
-            aria-label="simple table"
-          >
+          <Table stickyHeader className={classes.table}>
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
