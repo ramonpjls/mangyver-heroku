@@ -17,24 +17,30 @@ const Step1 = () => {
   const [failureTimes, setFailureTimes] = useState(null);
   const [departamento, setDepartamento] = useState(null);
   const [codigoEquipo, setCodigoEquipo] = useState(null);
+
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
+  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
+  const [prioridadValue, setPrioridadValue] = useState(null);
+  const [componenteValue, setComponenteValue] = useState(null);
+  const [causaAveriaValue, setCausaAveriaValue] = useState(null);
+  const [tipoFallaValue, setTipoFallaValue] = useState(null);
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
+  const [afectaValue, setAfectaValue] = useState(null);
+
   const [lineValue, setLineValue] = useState(null);
   const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
   const [consecutivoValue, setConsecutivoValue] = useState(null);
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
-  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
-  const [prioridad, setPrioridad] = useState(null);
-  const [componenteValue, setComponenteValue] = useState(null);
-  const [causaAveriaValue, setCausaAveriaValue] = useState(null);
-  const [tipoFalla, setTipoFalla] = useState(null);
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
-  const [afecta, setAfecta] = useState(null);
 
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
+  const [componente, setComponente] = useState([]);
+  const [prioridad, setPrioridad] = useState([]);
+  const [tipoFalla, setTipoFalla] = useState([]);
+  const [afecta, setAfecta] = useState([]);
+
   const [lines, setLines] = useState([]);
   const [tipoEquipo, setTipoEquipo] = useState([]);
   const [consecutivo, setConsecutivo] = useState([]);
-  const [componente, setComponente] = useState([]);
 
   const history = useHistory();
 
@@ -49,12 +55,12 @@ const Step1 = () => {
     consecutive: consecutivoValue,
     cardType: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridad,
+    priority: prioridadValue,
     components: componenteValue,
     breakdown: causaAveriaValue,
-    failureType: tipoFalla,
+    failureType: tipoFallaValue,
     cardDescription: descripcionTarjeta,
-    affects: afecta,
+    affects: afectaValue,
   };
 
   const completeFormStep = () => {
@@ -164,14 +170,7 @@ const Step1 = () => {
     }
   };
 
-  //TODO: setear el parametro para recibir lineas por lineas
-
-  const submitMachine = (e) => {
-    setLineValue(e.target.value);
-    axios.get("/machines").then((response) => {
-      setComponente(response.data);
-    });
-  };
+  //TODO: setear el parametro para recibir lineas por machines
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -184,11 +183,23 @@ const Step1 = () => {
     await axios.get("/lines").then((response) => {
       setLines(response.data);
     });
-    await axios.get("/machines").then((response) => {
-      setTipoEquipo(response.data);
+    await axios.get("/consecutives").then((response) => {
+      setConsecutivo(response.data);
+    });
+    await axios.get("/components").then((response) => {
+      setComponente(response.data);
+    });
+    await axios.get("/priorities").then((response) => {
+      setPrioridad(response.data);
+    });
+    await axios.get("/type-fails").then((response) => {
+      setTipoFalla(response.data);
+    });
+    await axios.get("/affects").then((response) => {
+      setAfecta(response.data);
     });
     await axios.get("/machines").then((response) => {
-      setConsecutivo(response.data);
+      setTipoEquipo(response.data);
     });
   }, []);
 
@@ -241,7 +252,8 @@ const Step1 = () => {
             size="small"
             style={gnrStyle}
             value={lineValue}
-            onChange={submitMachine()} //TODO: setear el parametro para recibir lineas por lineas
+            onChange={(e) => setLineValue(e.target.value)}
+            //TODO: setear el parametro para recibir lineas por lineas
           >
             {lines.map((elemento) => (
               <MenuItem key={elemento.id} value={elemento.id}>
@@ -373,22 +385,15 @@ const Step1 = () => {
               required
               fullWidth
               size="small"
-              value={prioridad}
-              onChange={(e) => setPrioridad(e.target.value)}
+              value={prioridadValue}
+              onChange={(e) => setPrioridadValue(e.target.value)}
               style={gnrStyle}
             >
-              <MenuItem value={"EF2B8484-0901-EC11-B563-2818780EF919"}>
-                Muy elevado
-              </MenuItem>
-              <MenuItem value={"F02B8484-0901-EC11-B563-2818780EF919"}>
-                Alto
-              </MenuItem>
-              <MenuItem value={"F12B8484-0901-EC11-B563-2818780EF919"}>
-                Medio
-              </MenuItem>
-              <MenuItem value={"F22B8484-0901-EC11-B563-2818780EF919"}>
-                Bajo
-              </MenuItem>
+              {prioridad.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
             <Typography style={gnrStyle}>Componente dañado</Typography>
             <Select
@@ -432,39 +437,14 @@ const Step1 = () => {
               size="small"
               required
               style={gnrStyle}
-              value={tipoFalla}
-              onChange={(e) => setTipoFalla(e.target.value)}
+              value={tipoFallaValue}
+              onChange={(e) => setTipoFallaValue(e.target.value)}
             >
-              <MenuItem value={"Lubricación de espreas"}>
-                Lubricación de espreas
-              </MenuItem>
-              <MenuItem value={"FC2B8484-0901-EC11-B563-2818780EF919"}>
-                Luve Drive
-              </MenuItem>
-              <MenuItem value={"FD2B8484-0901-EC11-B563-2818780EF919"}>
-                Producción
-              </MenuItem>
-              <MenuItem value={"F42B8484-0901-EC11-B563-2818780EF919"}>
-                Mecánica
-              </MenuItem>
-              <MenuItem value={"F52B8484-0901-EC11-B563-2818780EF919"}>
-                Eléctrica
-              </MenuItem>
-              <MenuItem value={"F62B8484-0901-EC11-B563-2818780EF919"}>
-                Electrónica
-              </MenuItem>
-              <MenuItem value={"F72B8484-0901-EC11-B563-2818780EF919"}>
-                Civil
-              </MenuItem>
-              <MenuItem value={"F82B8484-0901-EC11-B563-2818780EF919"}>
-                Climas
-              </MenuItem>
-              <MenuItem value={"F92B8484-0901-EC11-B563-2818780EF919"}>
-                Predictivo
-              </MenuItem>
-              <MenuItem value={"FA2B8484-0901-EC11-B563-2818780EF919"}>
-                Lubricación ToolKits
-              </MenuItem>
+              {tipoFalla.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
             <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
@@ -487,15 +467,14 @@ const Step1 = () => {
               size="small"
               required
               style={gnrStyle}
-              value={afecta}
-              onChange={(e) => setAfecta(e.target.value)}
+              value={afectaValue}
+              onChange={(e) => setAfectaValue(e.target.value)}
             >
-              <MenuItem value={"FE2B8484-0901-EC11-B563-2818780EF919"}>
-                Calidad
-              </MenuItem>
-              <MenuItem value={"FF2B8484-0901-EC11-B563-2818780EF919"}>
-                GLY/LEF
-              </MenuItem>
+              {afecta.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
           </section>
         )}
