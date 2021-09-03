@@ -14,7 +14,7 @@ import axios from "../../axiosinstance";
 const Step2 = () => {
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState(null);
-  const [departamento, setDepartamento] = useState(null);
+  const [departamentoValue, setDepartamentoValue] = useState(null);
   const [codigoEquipo, setCodigoEquipo] = useState(null);
   const [lineValue, setLineValue] = useState(null);
   const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
@@ -28,6 +28,7 @@ const Step2 = () => {
   const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
   const [afectaValue, setAfectaValue] = useState(null);
 
+  const [departamento, setDepartamento] = useState([]);
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
   const [lines, setLines] = useState([]);
@@ -43,7 +44,7 @@ const Step2 = () => {
   const data = {
     process: "CE2B8484-0901-EC11-B563-2818780EF919",
     failureTime: failureTimes,
-    department: departamento,
+    department: departamentoValue,
     equipmentCode: codigoEquipo,
     line: lineValue,
     equipmentType: tipoEquipoValue,
@@ -167,7 +168,7 @@ const Step2 = () => {
   };
 
   const renderCodigoEquipo = () => {
-    if (departamento === "2245A12E-0101-EC11-B563-2818780EF919") {
+    if (departamentoValue === "2245A12E-0101-EC11-B563-2818780EF919") {
       return (
         <div style={gnrStyle}>
           <Typography>Codigo de Equipo</Typography>
@@ -184,12 +185,12 @@ const Step2 = () => {
           ></TextField>
         </div>
       );
-    } else if (departamento === "EFA4C628-35FC-EB11-B563-2818780EF919") {
+    } else if (departamentoValue === "EFA4C628-35FC-EB11-B563-2818780EF919") {
       return (
         <div style={gnrStyle}>
           <Typography>Linea</Typography>
           <Select
-            id="departamento"
+            id="tipoEquipo"
             variant="outlined"
             fullWidth
             required
@@ -207,7 +208,7 @@ const Step2 = () => {
           </Select>
           <Typography>Tipo de Equipo</Typography>
           <Select
-            id="departamento"
+            id="tipoEquipo"
             variant="outlined"
             fullWidth
             required
@@ -275,6 +276,9 @@ const Step2 = () => {
     await axios.get("/machines").then((response) => {
       setTipoEquipo(response.data);
     });
+    await axios.get("/areas").then((response) => {
+      setDepartamento(response.data);
+    });
   }, []);
 
   return (
@@ -308,17 +312,16 @@ const Step2 = () => {
               variant="outlined"
               fullWidth
               required
-              value={departamento}
-              onChange={(e) => setDepartamento(e.target.value)}
+              value={departamentoValue}
+              onChange={(e) => setDepartamentoValue(e.target.value)}
               size="small"
               style={gnrStyle}
             >
-              <MenuItem value={"EFA4C628-35FC-EB11-B563-2818780EF919"}>
-                Envasado
-              </MenuItem>
-              <MenuItem value={"2245A12E-0101-EC11-B563-2818780EF919"}>
-                Otras areas
-              </MenuItem>
+              {departamento.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
             {renderCodigoEquipo()}
           </section>
@@ -327,7 +330,7 @@ const Step2 = () => {
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
             <Select
-              id="departamento"
+              id="tarjetaTipo"
               variant="outlined"
               fullWidth
               required
