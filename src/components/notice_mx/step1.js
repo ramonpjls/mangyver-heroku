@@ -17,19 +17,24 @@ const Step1 = () => {
   const [failureTimes, setFailureTimes] = useState(null);
   const [departamento, setDepartamento] = useState(null);
   const [codigoEquipo, setCodigoEquipo] = useState(null);
-  const [linea, setLinea] = useState(null);
-  const [tipoEquipo, setTipoEquipo] = useState(null);
-  const [consecutivo, setConsecutivo] = useState(null);
-  const [tarjetaTipo, setTarjetaTipo] = useState([]);
+  const [lineValue, setLineValue] = useState(null);
+  const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
+  const [consecutivoValue, setConsecutivoValue] = useState(null);
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
   const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
   const [prioridad, setPrioridad] = useState(null);
-  const [componente, setComponente] = useState(null);
-  const [causaAveria, setCausaAveria] = useState([]);
+  const [componenteValue, setComponenteValue] = useState(null);
   const [causaAveriaValue, setCausaAveriaValue] = useState(null);
   const [tipoFalla, setTipoFalla] = useState(null);
   const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
   const [afecta, setAfecta] = useState(null);
+
+  const [causaAveria, setCausaAveria] = useState([]);
+  const [tarjetaTipo, setTarjetaTipo] = useState([]);
+  const [lines, setLines] = useState([]);
+  const [tipoEquipo, setTipoEquipo] = useState([]);
+  const [consecutivo, setConsecutivo] = useState([]);
+  const [componente, setComponente] = useState([]);
 
   const history = useHistory();
 
@@ -39,13 +44,13 @@ const Step1 = () => {
     failureTime: failureTimes,
     department: departamento,
     equipmentCode: codigoEquipo,
-    line: linea,
-    equipmentType: tipoEquipo,
-    consecutive: consecutivo,
+    line: lineValue,
+    equipmentType: tipoEquipoValue,
+    consecutive: consecutivoValue,
     cardType: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priority: prioridad,
-    components: componente,
+    components: componenteValue,
     breakdown: causaAveriaValue,
     failureType: tipoFalla,
     cardDescription: descripcionTarjeta,
@@ -159,6 +164,34 @@ const Step1 = () => {
     }
   };
 
+  //TODO: setear el parametro para recibir lineas por lineas
+
+  const submitMachine = (e) => {
+    setLineValue(e.target.value);
+    axios.get("/machines").then((response) => {
+      setComponente(response.data);
+    });
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    await axios.get("/cards").then((response) => {
+      setTarjetaTipo(response.data);
+    });
+    await axios.get("/breakdowns").then((response) => {
+      setCausaAveria(response.data);
+    });
+    await axios.get("/lines").then((response) => {
+      setLines(response.data);
+    });
+    await axios.get("/machines").then((response) => {
+      setTipoEquipo(response.data);
+    });
+    await axios.get("/machines").then((response) => {
+      setConsecutivo(response.data);
+    });
+  }, []);
+
   const rndrFalla = () => {
     if (tarjeta === "si") {
       return (
@@ -201,51 +234,37 @@ const Step1 = () => {
         <div style={gnrStyle}>
           <Typography>Linea</Typography>
           <Select
-            id="Linea"
+            id="departamento"
             variant="outlined"
             fullWidth
             required
             size="small"
             style={gnrStyle}
-            value={linea}
-            onChange={(e) => setLinea(e.target.value)}
+            value={lineValue}
+            onChange={submitMachine()} //TODO: setear el parametro para recibir lineas por lineas
           >
-            <MenuItem value={"EB2B8484-0901-EC11-B563-2818780EF919"}>
-              Linea 2
-            </MenuItem>
-            <MenuItem value={"EC2B8484-0901-EC11-B563-2818780EF919"}>
-              Linea 3
-            </MenuItem>
-            <MenuItem value={"ED2B8484-0901-EC11-B563-2818780EF919"}>
-              Linea 4
-            </MenuItem>
-            <MenuItem value={"EE2B8484-0901-EC11-B563-2818780EF919"}>
-              Linea 5
-            </MenuItem>
+            {lines.map((elemento) => (
+              <MenuItem key={elemento.id} value={elemento.id}>
+                {elemento.name}
+              </MenuItem>
+            ))}
           </Select>
           <Typography>Tipo de Equipo</Typography>
           <Select
-            id="tipoEquipo"
+            id="departamento"
             variant="outlined"
             fullWidth
             required
             size="small"
             style={gnrStyle}
-            value={tipoEquipo}
-            onChange={(e) => setTipoEquipo(e.target.value)}
+            value={tipoEquipoValue}
+            onChange={(e) => setTipoEquipoValue(e.target.value)}
           >
-            <MenuItem value={"E02B8484-0901-EC11-B563-2818780EF919"}>
-              Despaletizador
-            </MenuItem>
-            <MenuItem value={"E12B8484-0901-EC11-B563-2818780EF919"}>
-              Trans de carton vacío
-            </MenuItem>
-            <MenuItem value={"E22B8484-0901-EC11-B563-2818780EF919"}>
-              Stewart de vacío
-            </MenuItem>
-            <MenuItem value={"E32B8484-0901-EC11-B563-2818780EF919"}>
-              Abridora
-            </MenuItem>
+            {tipoEquipo.map((elemento) => (
+              <MenuItem key={elemento.id} value={elemento.id}>
+                {elemento.name}
+              </MenuItem>
+            ))}
           </Select>
           <Typography>Consecutivo</Typography>
           <Select
@@ -255,39 +274,19 @@ const Step1 = () => {
             size="small"
             required
             style={gnrStyle}
-            value={consecutivo}
-            onChange={(e) => setConsecutivo(e.target.value)}
+            value={consecutivoValue}
+            onChange={(e) => setConsecutivoValue(e.target.value)}
           >
-            <MenuItem value={"E62B8484-0901-EC11-B563-2818780EF919"}>
-              A
-            </MenuItem>
-            <MenuItem value={"E72B8484-0901-EC11-B563-2818780EF919"}>
-              B
-            </MenuItem>
-            <MenuItem value={"E82B8484-0901-EC11-B563-2818780EF919"}>
-              C
-            </MenuItem>
-            <MenuItem value={"E92B8484-0901-EC11-B563-2818780EF919"}>
-              D
-            </MenuItem>
-            <MenuItem value={"EA2B8484-0901-EC11-B563-2818780EF919"}>
-              No Aplica
-            </MenuItem>
+            {consecutivo.map((elemento) => (
+              <MenuItem key={elemento.id} value={elemento.id}>
+                {elemento.name}
+              </MenuItem>
+            ))}
           </Select>
         </div>
       );
     }
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    await axios.get("/cards").then((response) => {
-      setTarjetaTipo(response.data);
-    });
-    await axios.get("/breakdowns").then((response) => {
-      setCausaAveria(response.data);
-    });
-  }, []);
 
   return (
     <div>
@@ -399,15 +398,14 @@ const Step1 = () => {
               required
               size="small"
               style={gnrStyle}
-              value={componente}
-              onChange={(e) => setComponente(e.target.value)}
+              value={componenteValue}
+              onChange={(e) => setComponenteValue(e.target.value)}
             >
-              <MenuItem value={"E42B8484-0901-EC11-B563-2818780EF919"}>
-                Cadena
-              </MenuItem>
-              <MenuItem value={"E52B8484-0901-EC11-B563-2818780EF919"}>
-                Motoreductor
-              </MenuItem>
+              {componente.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
             <Typography style={gnrStyle}>Causa de la averia</Typography>
             <Select
