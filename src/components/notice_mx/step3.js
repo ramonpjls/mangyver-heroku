@@ -263,7 +263,7 @@ const Step3 = () => {
                 Tapad@
               </MenuItem>
               <MenuItem value={"B73E7187-0F01-EC11-B563-2818780EF919"}>
-                Desgatad@
+                Desgastad@
               </MenuItem>
               <MenuItem value={"1BC8DA91-0F01-EC11-B563-2818780EF919"}>
                 Desgranad@

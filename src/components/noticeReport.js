@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { CSVLink } from "react-csv";
-import axios from "../axiosinstace";
+import axios from "../axiosinstance";
 
 const Noticereport = () => {
   const [start, setStart] = useState("");
@@ -46,7 +46,7 @@ const Noticereport = () => {
     { label: "Codigo del equipo", key: "equipmentCode" },
     { label: "Codidificacion", key: "cardtype" },
     { label: "Descripcion del Problema", key: "cardDescription" },
-    { label: "Autor del aviso", key: "" },
+    { label: "Autor del aviso", key: "autor" },
     { label: "Sintoma de averia", key: "component" },
     { label: "causa de averia", key: "breakdown" },
     { label: "PRIORIDAD", key: "priority" },
@@ -99,13 +99,13 @@ const Noticereport = () => {
               />
             </Grid>
             <Grid container item justifyContent="flex-end">
-              <CSVLink {...ReportSet}>
+              <CSVLink {...ReportSet} separator={","}>
                 <Button
                   color="primary"
                   variant="contained"
                   startIcon={<CloudDownloadIcon />}
                 >
-                  descargar
+                  Descargar
                 </Button>
               </CSVLink>
             </Grid>

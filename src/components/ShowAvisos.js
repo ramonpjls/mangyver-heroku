@@ -1,4 +1,4 @@
-import axios from "../axiosinstace";
+import axios from "../axiosinstance";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -10,11 +10,14 @@ import {
   TableRow,
   Paper,
   Typography,
-  TablePagination,
-  TableFooter,
   Backdrop,
   CircularProgress,
+  Container,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core";
+
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -22,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   tableContainer: {
     borderRadius: 15,
-    margin: "10px 10px",
+    margin: "10px 0",
+    maxHeight: 740,
   },
   tableHeaderCell: {
     fontWeight: "bold",
@@ -54,119 +58,137 @@ const useStyles = makeStyles((theme) => ({
 
 function ShowAvisos() {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [notice, setNotice] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const Header = {
+    color: "white",
+    borderRadius: "3px",
+    padding: "30px",
+    maxWidth: "100%",
+  };
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("/notices")
       .then((res) => {
-        return setNotice(res.data);
+        setNotice(res.data);
+        setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.warn(err);
+        window.location.reload();
       });
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  const renderLoad = () => {
-    if (notice.length === 0) {
-      return (
-        <>
-          <Backdrop className={classes.backdrop} open>
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        </>
-      );
-    }
-  };
-
   return (
     <>
-      {renderLoad()}
-      <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableHeaderCell}>
-                Tipo de Aviso
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Titulo de Tarjeta
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Tipo de Tarjeta
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Descripcion
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Causa de la averia
-              </TableCell>
-              <TableCell className={classes.tableHeaderCell}>
-                Prioridad
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {notice
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>
-                    <Typography>{row.Process}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.ubication_tecnica}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.cardtype}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.cardDescription}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{row.breakdown}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      className={classes.status}
-                      style={{
-                        backgroundColor:
-                          (row.priority === "Muy elevado" && "#B855E5") ||
-                          (row.priority === "Alto" && "#E05E54") ||
-                          (row.priority === "Medio" && "#E8AB51") ||
-                          (row.priority === "Bajo" && "#86A9E1"),
-                      }}
-                    >
-                      {row.priority}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-          <TableFooter>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 15]}
-              component="div"
-              count={notice.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </TableFooter>
-        </Table>
-      </TableContainer>
+      <Container className="header" style={Header}>
+        <TextField
+          name="keyword"
+          id="keyword"
+          type="text"
+          value={keyword}
+          fullWidth
+          size="small"
+          variant="outlined"
+          placeholder="¿Cual aviso desea buscar?"
+          onChange={(e) => setKeyword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="large" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Container>
+      {loading ? (
+        <Backdrop className={classes.backdrop} open>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <TableContainer component={Paper} className={classes.tableContainer}>
+          <Table stickyHeader className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell className={classes.tableHeaderCell}>
+                  Titulo de Aviso
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Titulo de Tarjeta
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Tipo de Tarjeta
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Descripcion
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Causa de la averia
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
+                  Prioridad
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {notice
+                // eslint-disable-next-line array-callback-return
+                .filter((row) => {
+                  if (keyword === "") {
+                    return row;
+                  } else if (
+                    row.cardDescription
+                      .toLowerCase()
+                      .includes(keyword.toLowerCase()) ||
+                    row.priority
+                      .toLowerCase()
+                      .includes(keyword.toLowerCase()) ||
+                    row.breakdown.toLowerCase().includes(keyword.toLowerCase())
+                  ) {
+                    return row;
+                  }
+                })
+                .map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell>
+                      <Typography>{row.cardTitle}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.ubication_tecnica}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.cardtype}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.cardDescription}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.breakdown}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        className={classes.status}
+                        style={{
+                          backgroundColor:
+                            (row.priority === "Muy elevado" && "#B855E5") ||
+                            (row.priority === "Alto" && "#E05E54") ||
+                            (row.priority === "Medio" && "#E8AB51") ||
+                            (row.priority === "Bajo" && "#86A9E1"),
+                        }}
+                      >
+                        {row.priority}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 }

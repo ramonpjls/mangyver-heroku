@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import {
   makeStyles,
@@ -102,20 +102,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let userInfo = "";
-
-axios
-  .get("/profiles")
-  .then((res) => {
-    return (userInfo = res.data.profile.name);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
+  const [userInfo, setUserInfo] = useState("");
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -125,6 +115,17 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    axios
+      .get("/profiles")
+      .then((res) => {
+        return setUserInfo(res.data.profile.name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className={classes.root}>
