@@ -26,7 +26,7 @@ class DropDown extends Component {
         >
           <MenuItem value={"Step1"}>M1-Crear tarjeta</MenuItem>
           <MenuItem value={"Step2"}>M2-Notificación de falla</MenuItem>
-          <MenuItem value={"Step3"}>M3-Aviso deribado de una orden</MenuItem>
+          <MenuItem value={"Step3"}>M3-Aviso derivado de una orden</MenuItem>
         </Select>
       </Container>
     );

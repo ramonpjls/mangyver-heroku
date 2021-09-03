@@ -269,7 +269,7 @@ const Step1 = () => {
               D
             </MenuItem>
             <MenuItem value={"2815988C-CE03-EC11-B563-2818780EF919"}>
-              H
+              R
             </MenuItem>
             <MenuItem value={"EA2B8484-0901-EC11-B563-2818780EF919"}>
               No Aplica
