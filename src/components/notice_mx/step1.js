@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -20,7 +20,7 @@ const Step1 = () => {
   const [linea, setLinea] = useState(null);
   const [tipoEquipo, setTipoEquipo] = useState(null);
   const [consecutivo, setConsecutivo] = useState(null);
-  const [tarjetaTipo, setTarjetaTipo] = useState(null);
+  const [tarjetaTipo, setTarjetaTipo] = useState([]);
   const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
   const [prioridad, setPrioridad] = useState(null);
   const [componente, setComponente] = useState(null);
@@ -268,9 +268,6 @@ const Step1 = () => {
             <MenuItem value={"E92B8484-0901-EC11-B563-2818780EF919"}>
               D
             </MenuItem>
-            <MenuItem value={"2815988C-CE03-EC11-B563-2818780EF919"}>
-              H
-            </MenuItem>
             <MenuItem value={"EA2B8484-0901-EC11-B563-2818780EF919"}>
               No Aplica
             </MenuItem>
@@ -279,6 +276,13 @@ const Step1 = () => {
       );
     }
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    await axios.get("/cards").then((response) => {
+      setTarjetaTipo(response.data);
+    });
+  }, []);
 
   return (
     <div>
@@ -332,27 +336,23 @@ const Step1 = () => {
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
             <Select
-              id="tarjetaTipo"
+              id="departamento"
               variant="outlined"
               fullWidth
-              size="small"
               required
+              size="small"
               style={gnrStyle}
-              value={tarjetaTipo}
-              onChange={(e) => setTarjetaTipo(e.target.value)}
+              value={tarjetaTipo[0]}
             >
-              <MenuItem value={"DD2B8484-0901-EC11-B563-2818780EF919"}>
-                Amarillo
-              </MenuItem>
-              <MenuItem value={"DE2B8484-0901-EC11-B563-2818780EF919"}>
-                Rojo
-              </MenuItem>
-              <MenuItem value={"DF2B8484-0901-EC11-B563-2818780EF919"}>
-                Verde
-              </MenuItem>
-              <MenuItem value={"DC2B8484-0901-EC11-B563-2818780EF919"}>
-                Azul
-              </MenuItem>
+              {tarjetaTipo.map((elemento) => (
+                <MenuItem
+                  key={elemento.id}
+                  tarjetaTipo={elemento.id}
+                  onChange={(e) => setTarjetaTipo(e.target.value)}
+                >
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
@@ -434,7 +434,7 @@ const Step1 = () => {
                 Reventad@
               </MenuItem>
               <MenuItem value={"83913C9A-0F01-EC11-B563-2818780EF919"}>
-                Vibracion
+                Vibration
               </MenuItem>
               <MenuItem value={"967F4BA4-0F01-EC11-B563-2818780EF919"}>
                 Desajustad@
