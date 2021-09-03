@@ -273,6 +273,12 @@ const Step1 = () => {
             <MenuItem value={"E92B8484-0901-EC11-B563-2818780EF919"}>
               D
             </MenuItem>
+<<<<<<< HEAD
+=======
+            <MenuItem value={"2815988C-CE03-EC11-B563-2818780EF919"}>
+              R
+            </MenuItem>
+>>>>>>> 67aa1639d3bb249752b92bd57cf6c0b28113ede4
             <MenuItem value={"EA2B8484-0901-EC11-B563-2818780EF919"}>
               No Aplica
             </MenuItem>
