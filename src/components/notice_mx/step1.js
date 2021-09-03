@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "../../axiosinstace";
+import axios from "../../axiosinstance";
 
 const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
@@ -279,7 +279,6 @@ const Step1 = () => {
       );
     }
   };
-
   return (
     <div>
       <Container>
@@ -332,30 +331,15 @@ const Step1 = () => {
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
             <Select
-              id="tarjetaTipo"
               variant="outlined"
-              fullWidth
-              size="small"
-              required
-              style={gnrStyle}
-              value={tarjetaTipo}
+              value={tarjetaTipo[0]}
               onChange={(e) => setTarjetaTipo(e.target.value)}
             >
-              <MenuItem value={"DD2B8484-0901-EC11-B563-2818780EF919"}>
-                Amarillo
-              </MenuItem>
-              <MenuItem value={"DE2B8484-0901-EC11-B563-2818780EF919"}>
-                Rojo
-              </MenuItem>
-              <MenuItem value={"DF2B8484-0901-EC11-B563-2818780EF919"}>
-                Verde
-              </MenuItem>
-              <MenuItem value={"70417E6D-CA03-EC11-B563-2818780EF919"}>
-                Negro
-              </MenuItem>
-              <MenuItem value={"DC2B8484-0901-EC11-B563-2818780EF919"}>
-                Azul
-              </MenuItem>
+              {tarjetaTipo.map((elemento) => (
+                <MenuItem key={elemento.id} tarjetaTipo={elemento.name}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
             </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField

@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "../../axiosinstace";
+import axios from "../../axiosinstance";
 
 const Step2 = () => {
   const [formStep, setFormStep] = useState(0);

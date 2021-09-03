@@ -8,37 +8,25 @@ import {
   IconButton,
   Snackbar,
   Hidden,
-  Backdrop,
-  CircularProgress,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import MuiAlert from "@material-ui/lab/Alert";
-import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import axios from "../axiosinstance";
 
 import LogoG from "../assets/LogoG.png";
 import LandingLogin from "../assets/landing.png";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const Login = () => {
-  const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [values, setValues] = useState({ password: "" });
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -60,18 +48,15 @@ const Login = () => {
 
     const data = { username, password };
 
-    setLoading(true);
-
     axios
       .post("/auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data);
-        setLoading(false);
         setRedirect(true);
       })
       .catch((err) => {
         setOpen(true);
-        setLoading(false);
+        console.log(err);
       });
   };
 
@@ -81,16 +66,11 @@ const Login = () => {
 
   return (
     <div>
-      {loading ? (
-        <Backdrop className={classes.backdrop} open>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      ) : null}
       <Grid
         container
         style={{
           minHeight: "90vh",
-          justifyContent: "space-evenly",
+          justifyContent: "center",
         }}
       >
         <Hidden smDown>
@@ -126,7 +106,7 @@ const Login = () => {
               <Grid container>
                 <img src={LogoG} alt="logo" />
               </Grid>
-              <InputLabel variant="standard">Nombre de usuario</InputLabel>
+              <InputLabel shrink>Nombre de usuario</InputLabel>
               <Input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -134,7 +114,7 @@ const Login = () => {
                 required
                 fullWidth
               />
-              <InputLabel variant="standard">Contraseña</InputLabel>
+              <InputLabel shrink>Password</InputLabel>
               <Input
                 name="password"
                 id="standard-adornment-password"
@@ -176,7 +156,7 @@ const Login = () => {
             onClose={handleClose}
           >
             <Alert severity="error">
-              Nombre de usuario y/o Contraseña incorectos
+              Nombre de usuario y/o Contraseña incorecctos
             </Alert>
           </Snackbar>
         </Grid>

@@ -25,7 +25,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import AddCommentIcon from "@material-ui/icons/AddComment";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import axios from "../axiosinstace";
+import axios from "../axiosinstance";
 
 import Noticereport from "./noticeReport";
 import Home from "./notice_mx/home";

@@ -115,10 +115,10 @@ function ShowAvisos() {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
-                  Titulo de Aviso
+                  Titulo de Tarjeta
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Titulo de Tarjeta
+                  Ubicacion Tecnica
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
                   Tipo de Tarjeta
@@ -158,7 +158,7 @@ function ShowAvisos() {
                       <Typography>{row.cardTitle}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.ubication_tecnica}</Typography>
+                      <Typography>{row.technicalLocation}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.cardtype}</Typography>
