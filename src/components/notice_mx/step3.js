@@ -15,7 +15,10 @@ const Step3 = () => {
   const [formStep, setFormStep] = useState(0);
   const [nOt, setNOt] = useState(null);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
+<<<<<<< HEAD
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
+=======
+>>>>>>> master
   const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
   const [prioridad, setPrioridad] = useState(null);
   const [componente, setComponente] = useState(null);
@@ -152,9 +155,12 @@ const Step3 = () => {
     await axios.get("/cards").then((response) => {
       setTarjetaTipo(response.data);
     });
+<<<<<<< HEAD
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
     });
+=======
+>>>>>>> master
   }, []);
 
   return (
@@ -188,11 +194,19 @@ const Step3 = () => {
               required
               size="small"
               style={gnrStyle}
+<<<<<<< HEAD
               value={tarjetaTipoValue}
               onChange={(e) => setTarjetaTipoValue(e.target.value)}
             >
               {tarjetaTipo.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
+=======
+              value={tarjetaTipo[0]}
+              onChange={(e) => setTarjetaTipo(e.target.value)}
+            >
+              {tarjetaTipo.map((elemento) => (
+                <MenuItem key={elemento.id} tarjetaTipo={elemento.name}>
+>>>>>>> master
                   {elemento.name}
                 </MenuItem>
               ))}
@@ -261,11 +275,35 @@ const Step3 = () => {
               value={causaAveriaValue}
               onChange={(e) => setCausaAveriaValue(e.target.value)}
             >
+<<<<<<< HEAD
               {causaAveria.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
                   {elemento.name}
                 </MenuItem>
               ))}
+=======
+              <MenuItem value={"B63E7187-0F01-EC11-B563-2818780EF919"}>
+                Tapad@
+              </MenuItem>
+              <MenuItem value={"B73E7187-0F01-EC11-B563-2818780EF919"}>
+                Desgastad@
+              </MenuItem>
+              <MenuItem value={"1BC8DA91-0F01-EC11-B563-2818780EF919"}>
+                Desgranad@
+              </MenuItem>
+              <MenuItem value={"1CC8DA91-0F01-EC11-B563-2818780EF919"}>
+                Holgad@
+              </MenuItem>
+              <MenuItem value={"82913C9A-0F01-EC11-B563-2818780EF919"}>
+                Reventad@
+              </MenuItem>
+              <MenuItem value={"83913C9A-0F01-EC11-B563-2818780EF919"}>
+                Vibration
+              </MenuItem>
+              <MenuItem value={"967F4BA4-0F01-EC11-B563-2818780EF919"}>
+                Desajustad@
+              </MenuItem>
+>>>>>>> master
             </Select>
             <Typography style={gnrStyle}>Tipo de falla</Typography>
             <Select

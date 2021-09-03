@@ -115,7 +115,11 @@ function ShowAvisos() {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
+<<<<<<< HEAD
                   Titulo de Aviso
+=======
+                  Titulo de Tarjeta
+>>>>>>> master
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
                   Ubicacion Tecnica

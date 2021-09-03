@@ -106,7 +106,11 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [userInfo, setUserInfo] = useState("");
+<<<<<<< HEAD
   const [open, setOpen] = useState(false);
+=======
+  const [open, setOpen] = React.useState(false);
+>>>>>>> master
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -232,7 +236,11 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
+<<<<<<< HEAD
           <Link to="/Noticereport">
+=======
+          <Link to="/noticereport">
+>>>>>>> master
             <ListItem>
               <ListItemIcon>
                 <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
@@ -244,7 +252,11 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
+<<<<<<< HEAD
         <Route path="/Noticereport" component={Noticereport} />
+=======
+        <Route path="/noticereport" component={Noticereport} />
+>>>>>>> master
         <Route path="/Home" component={Home} />
         <Route path="/ShowAvisos" component={ShowAvisos} />
       </main>
