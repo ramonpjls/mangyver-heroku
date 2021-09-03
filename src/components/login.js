@@ -176,11 +176,7 @@ const Login = () => {
             onClose={handleClose}
           >
             <Alert severity="error">
-<<<<<<< HEAD
               Nombre de usuario y/o Contraseña incorectos
-=======
-              Nombre de usuario y/o Contraseña incorecctos
->>>>>>> master
             </Alert>
           </Snackbar>
         </Grid>
