@@ -264,7 +264,7 @@ const Step1 = () => {
     } else if (departamentoValue !== "") {
       return (
         <div style={gnrStyle}>
-          <Typography>Linea</Typography>
+          <Typography>SubArea</Typography>
           <Select
             id="Linea"
             variant="outlined"
@@ -282,7 +282,7 @@ const Step1 = () => {
               </MenuItem>
             ))}
           </Select>
-          <Typography>Tipo de Equipo</Typography>
+          <Typography>Equipo</Typography>
           <Select
             id="tipoEquipo"
             variant="outlined"
@@ -432,7 +432,7 @@ const Step1 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Tipo de falla</Typography>
+            <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"

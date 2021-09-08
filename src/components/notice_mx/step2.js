@@ -167,7 +167,7 @@ const Step2 = () => {
     if (departamentoValue === "2245A12E-0101-EC11-B563-2818780EF919") {
       return (
         <div style={gnrStyle}>
-          <Typography>Codigo de Equipo</Typography>
+          <Typography>Equipo</Typography>
           <TextField
             id="codigoEquipo"
             variant="outlined"
@@ -184,7 +184,7 @@ const Step2 = () => {
     } else if (departamentoValue !== "") {
       return (
         <div style={gnrStyle}>
-          <Typography>Linea</Typography>
+          <Typography>SubArea</Typography>
           <Select
             id="tipoEquipo"
             variant="outlined"
@@ -410,7 +410,7 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Tipo de falla</Typography>
+            <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"
