@@ -13,15 +13,15 @@ import axios from "../../axiosinstance";
 
 const Step3 = () => {
   const [formStep, setFormStep] = useState(0);
-  const [nOt, setNOt] = useState(null);
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
-  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
-  const [prioridadValue, setPrioridadValue] = useState(null);
-  const [componenteValue, setComponenteValue] = useState(null);
-  const [causaAveriaValue, setCausaAveriaValue] = useState(null);
-  const [tipoFallaValue, setTipoFallaValue] = useState(null);
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
-  const [afectaValue, setAfectaValue] = useState(null);
+  const [nOt, setNOt] = useState("");
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
+  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
+  const [prioridadValue, setPrioridadValue] = useState("");
+  const [componenteValue, setComponenteValue] = useState("");
+  const [causaAveriaValue, setCausaAveriaValue] = useState("");
+  const [tipoFallaValue, setTipoFallaValue] = useState("");
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
+  const [afectaValue, setAfectaValue] = useState("");
 
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
@@ -156,9 +156,6 @@ const Step3 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/cards").then((response) => {
-      setTarjetaTipo(response.data);
-    });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
     });
@@ -175,6 +172,18 @@ const Step3 = () => {
       setAfecta(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get("/cards", {
+        params: {
+          process: "CF2B8484-0901-EC11-B563-2818780EF919",
+        },
+      })
+      .then((response) => {
+        setTarjetaTipo(response.data);
+      });
+  });
 
   return (
     <div>

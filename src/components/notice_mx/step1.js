@@ -13,23 +13,23 @@ import axios from "../../axiosinstance";
 
 const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
-  const [tarjeta, setTarjeta] = useState(null);
-  const [failureTimes, setFailureTimes] = useState(null);
-  const [departamentoValue, setDepartamentoValue] = useState(null);
-  const [codigoEquipo, setCodigoEquipo] = useState(null);
+  const [tarjeta, setTarjeta] = useState("");
+  const [failureTimes, setFailureTimes] = useState("");
+  const [departamentoValue, setDepartamentoValue] = useState("");
+  const [codigoEquipo, setCodigoEquipo] = useState("");
 
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
-  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
-  const [prioridadValue, setPrioridadValue] = useState(null);
-  const [componenteValue, setComponenteValue] = useState(null);
-  const [causaAveriaValue, setCausaAveriaValue] = useState(null);
-  const [tipoFallaValue, setTipoFallaValue] = useState(null);
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
-  const [afectaValue, setAfectaValue] = useState(null);
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
+  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
+  const [prioridadValue, setPrioridadValue] = useState("");
+  const [componenteValue, setComponenteValue] = useState("");
+  const [causaAveriaValue, setCausaAveriaValue] = useState("");
+  const [tipoFallaValue, setTipoFallaValue] = useState("");
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
+  const [afectaValue, setAfectaValue] = useState("");
 
-  const [lineValue, setLineValue] = useState(null);
-  const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
-  const [consecutivoValue, setConsecutivoValue] = useState(null);
+  const [lineValue, setLineValue] = useState("");
+  const [tipoEquipoValue, setTipoEquipoValue] = useState("");
+  const [consecutivoValue, setConsecutivoValue] = useState("");
 
   const [departamento, setDepartamento] = useState([]);
   const [causaAveria, setCausaAveria] = useState([]);
@@ -175,14 +175,11 @@ const Step1 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/cards").then((response) => {
-      setTarjetaTipo(response.data);
+    await axios.get("/areas").then((response) => {
+      setDepartamento(response.data);
     });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
-    });
-    await axios.get("/lines").then((response) => {
-      setLines(response.data);
     });
     await axios.get("/consecutives").then((response) => {
       setConsecutivo(response.data);
@@ -199,12 +196,43 @@ const Step1 = () => {
     await axios.get("/affects").then((response) => {
       setAfecta(response.data);
     });
-    await axios.get("/machines").then((response) => {
-      setTipoEquipo(response.data);
-    });
-    await axios.get("/areas").then((response) => {
-      setDepartamento(response.data);
-    });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/lines", {
+        params: {
+          area: departamentoValue,
+        },
+      })
+      .then((response) => {
+        setLines(response.data);
+      });
+  }, [departamentoValue]);
+
+  useEffect(() => {
+    axios
+      .get("/machines", {
+        params: {
+          line: lineValue,
+        },
+      })
+      .then((response) => {
+        setTipoEquipo(response.data);
+      });
+  }, [lineValue]);
+
+  useEffect(() => {
+    axios
+      .get("/cards", {
+        params: {
+          process: "CD2B8484-0901-EC11-B563-2818780EF919",
+        },
+      })
+      .then((response) => {
+        setTarjetaTipo(response.data);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const rndrFalla = () => {
@@ -244,7 +272,7 @@ const Step1 = () => {
           ></TextField>
         </div>
       );
-    } else if (departamentoValue === "EFA4C628-35FC-EB11-B563-2818780EF919") {
+    } else if (departamentoValue !== "") {
       return (
         <div style={gnrStyle}>
           <Typography>Linea</Typography>
