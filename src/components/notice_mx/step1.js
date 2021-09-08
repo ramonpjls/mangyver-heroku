@@ -175,14 +175,8 @@ const Step1 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/cards").then((response) => {
-      setTarjetaTipo(response.data);
-    });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
-    });
-    await axios.get("/lines").then((response) => {
-      setLines(response.data);
     });
     await axios.get("/consecutives").then((response) => {
       setConsecutivo(response.data);
@@ -199,13 +193,47 @@ const Step1 = () => {
     await axios.get("/affects").then((response) => {
       setAfecta(response.data);
     });
-    await axios.get("/machines").then((response) => {
-      setTipoEquipo(response.data);
-    });
     await axios.get("/areas").then((response) => {
       setDepartamento(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get("/lines", {
+        params: {
+          areaID: departamentoValue,
+        },
+      })
+      .then((response) => {
+        setLines(response.data);
+        console.log(response);
+      });
+  }, [departamentoValue]);
+
+  useEffect(() => {
+    axios
+      .get("/machines", {
+        params: {
+          lineID: lineValue,
+        },
+      })
+      .then((response) => {
+        setTipoEquipo(response.data);
+      });
+  }, [lineValue]);
+
+  useEffect(() => {
+    axios
+      .get("/cards", {
+        params: {
+          processId: "CD2B8484-0901-EC11-B563-2818780EF919",
+        },
+      })
+      .then((response) => {
+        setTarjetaTipo(response.data);
+      });
+  });
 
   const rndrFalla = () => {
     if (tarjeta === "si") {

@@ -156,9 +156,6 @@ const Step3 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/cards").then((response) => {
-      setTarjetaTipo(response.data);
-    });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
     });
@@ -175,6 +172,18 @@ const Step3 = () => {
       setAfecta(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get("/cards", {
+        params: {
+          processId: "CF2B8484-0901-EC11-B563-2818780EF919",
+        },
+      })
+      .then((response) => {
+        setTarjetaTipo(response.data);
+      });
+  });
 
   return (
     <div>
