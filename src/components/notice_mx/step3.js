@@ -177,7 +177,7 @@ const Step3 = () => {
     axios
       .get("/cards", {
         params: {
-          processId: "CF2B8484-0901-EC11-B563-2818780EF919",
+          process: "CF2B8484-0901-EC11-B563-2818780EF919",
         },
       })
       .then((response) => {

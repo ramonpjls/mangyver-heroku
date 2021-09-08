@@ -276,7 +276,7 @@ const Step2 = () => {
     axios
       .get("/lines", {
         params: {
-          areaID: departamentoValue,
+          area: departamentoValue,
         },
       })
       .then((response) => {
@@ -300,13 +300,14 @@ const Step2 = () => {
     axios
       .get("/cards", {
         params: {
-          processId: "CE2B8484-0901-EC11-B563-2818780EF919",
+          process: "CE2B8484-0901-EC11-B563-2818780EF919",
         },
       })
       .then((response) => {
         setTarjetaTipo(response.data);
       });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>

@@ -202,7 +202,7 @@ const Step1 = () => {
     axios
       .get("/lines", {
         params: {
-          areaID: departamentoValue,
+          area: departamentoValue,
         },
       })
       .then((response) => {
@@ -226,13 +226,14 @@ const Step1 = () => {
     axios
       .get("/cards", {
         params: {
-          processId: "CD2B8484-0901-EC11-B563-2818780EF919",
+          process: "CD2B8484-0901-EC11-B563-2818780EF919",
         },
       })
       .then((response) => {
         setTarjetaTipo(response.data);
       });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const rndrFalla = () => {
     if (tarjeta === "si") {
