@@ -231,6 +231,42 @@ const Step1 = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("/lines", {
+        params: {
+          areaID: departamentoValue,
+        },
+      })
+      .then((response) => {
+        setLines(response.data);
+      });
+  }, [departamentoValue]);
+
+  useEffect(() => {
+    axios
+      .get("/machines", {
+        params: {
+          line: lineValue,
+        },
+      })
+      .then((response) => {
+        setTipoEquipo(response.data);
+      });
+  }, [lineValue]);
+
+  useEffect(() => {
+    axios
+      .get("/cards", {
+        params: {
+          processId: "CD2B8484-0901-EC11-B563-2818780EF919",
+        },
+      })
+      .then((response) => {
+        setTarjetaTipo(response.data);
+      });
+  });
+
   const rndrFalla = () => {
     if (tarjeta === "si") {
       return (

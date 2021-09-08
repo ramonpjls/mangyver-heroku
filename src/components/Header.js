@@ -106,10 +106,14 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [userInfo, setUserInfo] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
+  };
+
+  const forgetToken = () => {
+    localStorage.clear();
   };
 
   const handleDrawerClose = () => {
@@ -159,7 +163,10 @@ export default function MiniDrawer() {
           <img src={logopeq} alt="logo" />
           <IconButton edge="end">
             <Link to="/Login">
-              <ExitToApp style={{ fontSize: 40, color: "white" }} />
+              <ExitToApp
+                onClick={forgetToken}
+                style={{ fontSize: 40, color: "white" }}
+              />
             </Link>
           </IconButton>
         </Toolbar>
@@ -225,7 +232,7 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
-          <Link to="/noticereport">
+          <Link to="/Noticereport">
             <ListItem>
               <ListItemIcon>
                 <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
@@ -237,7 +244,7 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Route path="/noticereport" component={Noticereport} />
+        <Route path="/Noticereport" component={Noticereport} />
         <Route path="/Home" component={Home} />
         <Route path="/ShowAvisos" component={ShowAvisos} />
       </main>
