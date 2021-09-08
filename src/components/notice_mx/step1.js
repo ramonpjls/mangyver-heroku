@@ -175,6 +175,9 @@ const Step1 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
+    await axios.get("/areas").then((response) => {
+      setDepartamento(response.data);
+    });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
     });
@@ -192,9 +195,6 @@ const Step1 = () => {
     });
     await axios.get("/affects").then((response) => {
       setAfecta(response.data);
-    });
-    await axios.get("/areas").then((response) => {
-      setDepartamento(response.data);
     });
   }, []);
 
