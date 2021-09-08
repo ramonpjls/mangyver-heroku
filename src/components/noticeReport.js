@@ -41,6 +41,7 @@ const Noticereport = () => {
   }, [start, end]);
 
   const headers = [
+    { label: "ID del Aviso", key: "IDAviso" },
     { label: "Titulo del aviso (No mas de 30 caracteres)", key: "cardTitle" },
     { label: "Ubicacion Tecnica del equipo", key: "ubication_tecnica" },
     { label: "Codigo del equipo", key: "equipmentCode" },
@@ -52,10 +53,12 @@ const Noticereport = () => {
     { label: "PRIORIDAD", key: "priority" },
     { label: "hora", key: "failureTime" },
     { label: "fecha", key: "created" },
+    { label: "Tipo de Aviso", key: "TipoAviso" },
+    { label: "Numero de OT", key: "OT" },
   ];
 
   const ReportSet = {
-    filename: "reporte.csv",
+    filename: "reporte.xls",
     headers: headers,
     data: info,
   };
