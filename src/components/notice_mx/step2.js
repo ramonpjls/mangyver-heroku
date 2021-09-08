@@ -27,7 +27,6 @@ const Step2 = () => {
   const [tipoFallaValue, setTipoFallaValue] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afectaValue, setAfectaValue] = useState("");
-
   const [departamento, setDepartamento] = useState([]);
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);

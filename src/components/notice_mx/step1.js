@@ -17,7 +17,6 @@ const Step1 = () => {
   const [failureTimes, setFailureTimes] = useState("");
   const [departamentoValue, setDepartamentoValue] = useState("");
   const [codigoEquipo, setCodigoEquipo] = useState("");
-
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
   const [tarjetaTitulo, setTarjetaTitulo] = useState("");
   const [prioridadValue, setPrioridadValue] = useState("");
@@ -26,11 +25,9 @@ const Step1 = () => {
   const [tipoFallaValue, setTipoFallaValue] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afectaValue, setAfectaValue] = useState("");
-
   const [lineValue, setLineValue] = useState("");
   const [tipoEquipoValue, setTipoEquipoValue] = useState("");
   const [consecutivoValue, setConsecutivoValue] = useState("");
-
   const [departamento, setDepartamento] = useState([]);
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
@@ -38,7 +35,6 @@ const Step1 = () => {
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
-
   const [lines, setLines] = useState([]);
   const [tipoEquipo, setTipoEquipo] = useState([]);
   const [consecutivo, setConsecutivo] = useState([]);
