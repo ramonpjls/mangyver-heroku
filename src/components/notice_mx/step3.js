@@ -13,15 +13,15 @@ import axios from "../../axiosinstance";
 
 const Step3 = () => {
   const [formStep, setFormStep] = useState(0);
-  const [nOt, setNOt] = useState(null);
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
-  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
-  const [prioridadValue, setPrioridadValue] = useState(null);
-  const [componenteValue, setComponenteValue] = useState(null);
-  const [causaAveriaValue, setCausaAveriaValue] = useState(null);
-  const [tipoFallaValue, setTipoFallaValue] = useState(null);
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
-  const [afectaValue, setAfectaValue] = useState(null);
+  const [nOt, setNOt] = useState("");
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
+  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
+  const [prioridadValue, setPrioridadValue] = useState("");
+  const [componenteValue, setComponenteValue] = useState("");
+  const [causaAveriaValue, setCausaAveriaValue] = useState("");
+  const [tipoFallaValue, setTipoFallaValue] = useState("");
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
+  const [afectaValue, setAfectaValue] = useState("");
 
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
