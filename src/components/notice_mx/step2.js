@@ -18,7 +18,7 @@ const Step2 = () => {
   const [codigoEquipo, setCodigoEquipo] = useState("");
   const [lineValue, setLineValue] = useState("");
   const [tipoEquipoValue, setTipoEquipoValue] = useState("");
-  const [consecutivoValue, setConsecutivoValue] = useState("");
+
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
   const [tarjetaTitulo, setTarjetaTitulo] = useState("");
   const [prioridadValue, setPrioridadValue] = useState("");
@@ -33,7 +33,7 @@ const Step2 = () => {
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
   const [lines, setLines] = useState([]);
   const [tipoEquipo, setTipoEquipo] = useState([]);
-  const [consecutivo, setConsecutivo] = useState([]);
+
   const [componente, setComponente] = useState([]);
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
@@ -48,7 +48,7 @@ const Step2 = () => {
     equipmentCode: codigoEquipo,
     line: lineValue,
     equipmentType: tipoEquipoValue,
-    consecutive: consecutivoValue,
+
     cardType: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priority: prioridadValue,
@@ -188,7 +188,7 @@ const Step2 = () => {
     } else if (departamentoValue !== "") {
       return (
         <div style={gnrStyle}>
-          <Typography>Linea</Typography>
+          <Typography>SubArea</Typography>
           <Select
             id="tipoEquipo"
             variant="outlined"
@@ -206,7 +206,7 @@ const Step2 = () => {
               </MenuItem>
             ))}
           </Select>
-          <Typography>Tipo de Equipo</Typography>
+          <Typography>Equipo</Typography>
           <Select
             id="tipoEquipo"
             variant="outlined"
@@ -218,23 +218,6 @@ const Step2 = () => {
             onChange={(e) => setTipoEquipoValue(e.target.value)}
           >
             {tipoEquipo.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography>Consecutivo</Typography>
-          <Select
-            id="consecutivo"
-            variant="outlined"
-            fullWidth
-            size="small"
-            required
-            style={gnrStyle}
-            value={consecutivoValue}
-            onChange={(e) => setConsecutivoValue(e.target.value)}
-          >
-            {consecutivo.map((elemento) => (
               <MenuItem key={elemento.id} value={elemento.id}>
                 {elemento.name}
               </MenuItem>
@@ -254,9 +237,6 @@ const Step2 = () => {
     });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
-    });
-    await axios.get("/consecutives").then((response) => {
-      setConsecutivo(response.data);
     });
     await axios.get("/components").then((response) => {
       setComponente(response.data);
@@ -307,7 +287,7 @@ const Step2 = () => {
         setTarjetaTipo(response.data);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <div>
@@ -435,7 +415,7 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Tipo de falla</Typography>
+            <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"

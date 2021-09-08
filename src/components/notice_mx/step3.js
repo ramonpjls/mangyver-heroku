@@ -287,7 +287,7 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Tipo de falla</Typography>
+            <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"
