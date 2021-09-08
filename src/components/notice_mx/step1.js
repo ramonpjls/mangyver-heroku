@@ -27,7 +27,6 @@ const Step1 = () => {
   const [afectaValue, setAfectaValue] = useState("");
   const [lineValue, setLineValue] = useState("");
   const [tipoEquipoValue, setTipoEquipoValue] = useState("");
-  const [consecutivoValue, setConsecutivoValue] = useState("");
   const [departamento, setDepartamento] = useState([]);
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
@@ -37,7 +36,6 @@ const Step1 = () => {
   const [afecta, setAfecta] = useState([]);
   const [lines, setLines] = useState([]);
   const [tipoEquipo, setTipoEquipo] = useState([]);
-  const [consecutivo, setConsecutivo] = useState([]);
 
   const history = useHistory();
 
@@ -49,7 +47,6 @@ const Step1 = () => {
     equipmentCode: codigoEquipo,
     line: lineValue,
     equipmentType: tipoEquipoValue,
-    consecutive: consecutivoValue,
     cardType: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priority: prioridadValue,
@@ -177,9 +174,6 @@ const Step1 = () => {
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
     });
-    await axios.get("/consecutives").then((response) => {
-      setConsecutivo(response.data);
-    });
     await axios.get("/components").then((response) => {
       setComponente(response.data);
     });
@@ -223,43 +217,6 @@ const Step1 = () => {
       .get("/cards", {
         params: {
           process: "CD2B8484-0901-EC11-B563-2818780EF919",
-        },
-      })
-      .then((response) => {
-        setTarjetaTipo(response.data);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("/lines", {
-        params: {
-          areaID: departamentoValue,
-        },
-      })
-      .then((response) => {
-        setLines(response.data);
-      });
-  }, [departamentoValue]);
-
-  useEffect(() => {
-    axios
-      .get("/machines", {
-        params: {
-          line: lineValue,
-        },
-      })
-      .then((response) => {
-        setTipoEquipo(response.data);
-      });
-  }, [lineValue]);
-
-  useEffect(() => {
-    axios
-      .get("/cards", {
-        params: {
-          processId: "CD2B8484-0901-EC11-B563-2818780EF919",
         },
       })
       .then((response) => {
@@ -337,23 +294,6 @@ const Step1 = () => {
             onChange={(e) => setTipoEquipoValue(e.target.value)}
           >
             {tipoEquipo.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography>Consecutivo</Typography>
-          <Select
-            id="consecutivo"
-            variant="outlined"
-            fullWidth
-            size="small"
-            required
-            style={gnrStyle}
-            value={consecutivoValue}
-            onChange={(e) => setConsecutivoValue(e.target.value)}
-          >
-            {consecutivo.map((elemento) => (
               <MenuItem key={elemento.id} value={elemento.id}>
                 {elemento.name}
               </MenuItem>
