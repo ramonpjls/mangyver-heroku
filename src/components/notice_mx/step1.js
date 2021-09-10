@@ -16,7 +16,6 @@ const Step1 = () => {
   const [tarjeta, setTarjeta] = useState("");
   const [failureTimes, setFailureTimes] = useState("");
   const [departamentoValue, setDepartamentoValue] = useState("");
-  const [codigoEquipo, setCodigoEquipo] = useState("");
 
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
   const [tarjetaTitulo, setTarjetaTitulo] = useState("");
@@ -48,10 +47,8 @@ const Step1 = () => {
     didCard: tarjeta,
     failureTime: failureTimes,
     department: departamentoValue,
-    equipmentCode: codigoEquipo,
     line: lineValue,
     equipmentType: tipoEquipoValue,
-
     cardType: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priority: prioridadValue,
@@ -251,24 +248,7 @@ const Step1 = () => {
   };
 
   const renderCodigoEquipo = () => {
-    if (departamentoValue === "2245A12E-0101-EC11-B563-2818780EF919") {
-      return (
-        <div style={gnrStyle}>
-          <Typography>Codigo de Equipo</Typography>
-          <TextField
-            id="codigoEquipo"
-            variant="outlined"
-            fullWidth
-            size="small"
-            type="number"
-            required
-            style={gnrStyle}
-            value={codigoEquipo}
-            onChange={(e) => setCodigoEquipo(e.target.value)}
-          ></TextField>
-        </div>
-      );
-    } else if (departamentoValue !== "") {
+    if (departamentoValue !== "") {
       return (
         <div style={gnrStyle}>
           <Typography>SubArea</Typography>
