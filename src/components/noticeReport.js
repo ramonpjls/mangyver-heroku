@@ -55,6 +55,9 @@ const Noticereport = () => {
     { label: "fecha", key: "created" },
     { label: "Tipo de Aviso", key: "TipoAviso" },
     { label: "Numero de OT", key: "OT" },
+    { label: "Si/No", key: "SiNo" },
+    { label: "Puesto de trabajo", key: "PuestroTrabajo" },
+    { label: "Grupo planificador", key: "GrupoPlanificador" },
   ];
 
   const ReportSet = {
