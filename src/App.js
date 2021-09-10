@@ -4,6 +4,7 @@ import Login from "./components/login";
 import Header from "./components/Header";
 import ShowAvisos from "./components/ShowAvisos";
 import Home from "./components/notice_mx/home";
+import Protected from "./components/Potected";
 
 function App() {
   return (
@@ -13,8 +14,15 @@ function App() {
           <Route path="/" exact component={Login} />
           <Route path="/Login" exact component={Login} />
           <Route path="/" component={Header} />
-          <Route path="/ShowAvisos" component={ShowAvisos} />
-          <Route path="/Home" component={Home} />
+          <Route path="/ShowAvisos">
+            <Protected component={ShowAvisos} />
+          </Route>
+          <Route path="/Home">
+            <Protected component={Home} />
+          </Route>
+          <Route path="/Home">
+            <Protected component={Home} />
+          </Route>
         </Switch>
       </div>
     </BrowserRouter>

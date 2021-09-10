@@ -27,6 +27,7 @@ import AddCommentIcon from "@material-ui/icons/AddComment";
 import ArchiveIcon from "@material-ui/icons/Archive";
 import axios from "../axiosinstance";
 
+import Protected from "./Potected";
 import Noticereport from "./noticeReport";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
@@ -244,9 +245,15 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Route path="/Noticereport" component={Noticereport} />
-        <Route path="/Home" component={Home} />
-        <Route path="/ShowAvisos" component={ShowAvisos} />
+        <Route path="/Noticereport">
+          <Protected component={Noticereport} />
+        </Route>
+        <Route path="/ShowAvisos">
+          <Protected component={ShowAvisos} />
+        </Route>
+        <Route path="/Home">
+          <Protected component={Home} />
+        </Route>
       </main>
     </div>
   );
