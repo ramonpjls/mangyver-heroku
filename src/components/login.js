@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Button,
@@ -10,35 +10,36 @@ import {
   Hidden,
   Backdrop,
   CircularProgress,
-} from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
-import MuiAlert from "@material-ui/lab/Alert";
-import { makeStyles } from "@material-ui/core/styles";
-import { Redirect } from "react-router-dom";
+  Alert,
+} from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Redirect, Link } from "react-router-dom";
 import axios from "../axiosinstance";
 
 import LogoG from "../assets/LogoG.png";
 import LandingLogin from "../assets/landing.png";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+function alertFunc(props) {
+  return <Alert elevation={6} variant="filled" {...props} />;
 }
 
 const Login = () => {
-  const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [values, setValues] = useState({ password: "" });
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [fieldValidationError, setfieldValidationError] = useState(false);
+
+  useEffect(() => {
+    if (username === "" || password === "") {
+      setfieldValidationError(true);
+    } else {
+      setfieldValidationError(false);
+    }
+  }, [username, password]);
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -82,7 +83,10 @@ const Login = () => {
   return (
     <div>
       {loading ? (
-        <Backdrop className={classes.backdrop} open>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open
+        >
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : null}
@@ -150,20 +154,55 @@ const Login = () => {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      {values.showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
               />
               <div style={{ height: 20 }} />
-              <Button
-                color="primary"
-                variant="contained"
-                type="submit"
-                size="small"
+              <Grid
+                container
+                spacing={4}
+                alignItems="stretch"
+                direction="column"
+                justifyContent="center"
               >
-                Entrar
-              </Button>
+                <Grid
+                  container
+                  item
+                  alignItems="center"
+                  direction="row"
+                  spacing={2}
+                  justifyContent="center"
+                >
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    type="submit"
+                    size="small"
+                    disabled={fieldValidationError}
+                  >
+                    Entrar
+                  </Button>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  alignItems="center"
+                  direction="row"
+                  spacing={2}
+                  justifyContent="center"
+                >
+                  <Link to="/Register">
+                    <Button variant="text">Registrate aqui</Button>
+                  </Link>
+                </Grid>
+              </Grid>
             </div>
           </form>
           <Snackbar
@@ -175,9 +214,9 @@ const Login = () => {
             autoHideDuration={5000}
             onClose={handleClose}
           >
-            <Alert severity="error">
+            <alertFunc severity="error">
               Nombre de usuario y/o Contraseña incorectos
-            </Alert>
+            </alertFunc>
           </Snackbar>
         </Grid>
         <div />

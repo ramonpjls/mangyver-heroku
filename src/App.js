@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import ShowAvisos from "./components/ShowAvisos";
 import Home from "./components/notice_mx/home";
 import Protected from "./components/Potected";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/Login" exact component={Login} />
+          <Route path="/Register" exact component={Register} />
           <Route path="/" component={Header} />
           <Route path="/ShowAvisos">
             <Protected component={ShowAvisos} />

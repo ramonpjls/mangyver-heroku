@@ -1,6 +1,6 @@
 import axios from "../axiosinstance";
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Table,
   TableBody,
@@ -15,9 +15,9 @@ import {
   Container,
   TextField,
   InputAdornment,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "@mui/icons-material/Search";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -31,15 +31,10 @@ const useStyles = makeStyles((theme) => ({
   tableHeaderCell: {
     fontWeight: "bold",
     backgroundColor: "#79A9D1",
-    color: theme.palette.getContrastText(theme.palette.primary.dark),
-  },
-  avatar: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.getContrastText(theme.palette.primary.light),
+    color: "#fff",
   },
   name: {
     fontWeight: "bold",
-    color: theme.palette.secondary.dark,
   },
   status: {
     fontWeight: "bold",
@@ -51,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
   },
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
 }));
