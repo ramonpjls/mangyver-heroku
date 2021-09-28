@@ -221,13 +221,8 @@ export default function MiniDrawer() {
           </Link>
         </List>
       </Drawer>
-<<<<<<< HEAD
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-=======
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
->>>>>>> dev
         <Route path="/Noticereport">
           <Protected component={Noticereport} />
         </Route>
@@ -237,12 +232,7 @@ export default function MiniDrawer() {
         <Route path="/Home">
           <Protected component={Home} />
         </Route>
-<<<<<<< HEAD
-      </main>
-    </div>
-=======
       </Box>
     </Box>
->>>>>>> dev
   );
 }

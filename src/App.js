@@ -5,10 +5,7 @@ import Header from "./components/Header";
 import ShowAvisos from "./components/ShowAvisos";
 import Home from "./components/notice_mx/home";
 import Protected from "./components/Potected";
-<<<<<<< HEAD
-=======
 import Register from "./components/Register";
->>>>>>> dev
 
 function App() {
   return (
