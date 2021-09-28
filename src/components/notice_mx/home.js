@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, withRouter, Switch } from "react-router-dom";
-import { MenuItem, Select, Typography, Container } from "@material-ui/core";
+import { MenuItem, Select, Typography, Container } from "@mui/material";
 import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
