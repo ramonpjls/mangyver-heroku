@@ -66,7 +66,7 @@ const Step1 = () => {
 
   const submitForm = () => {
     axios
-      .post("/notices", data)
+      .post("​/notices​/old_notice", data)
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -107,7 +107,6 @@ const Step1 = () => {
     marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
-    backgroundColor: "#2760B7",
     color: "#fff",
   };
 
@@ -147,7 +146,7 @@ const Step1 = () => {
       return (
         <Button
           style={btnNxtStyle}
-          variant="outlined"
+          variant="contained"
           color="primary"
           onClick={submitForm}
         >
@@ -158,7 +157,7 @@ const Step1 = () => {
       return (
         <Button
           style={btnNxtStyle}
-          variant="outlined"
+          variant="contained"
           onClick={completeFormStep}
         >
           Next
