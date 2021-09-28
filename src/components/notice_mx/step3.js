@@ -49,7 +49,7 @@ const Step3 = () => {
 
   const submitForm = () => {
     axios
-      .post("/notices", data)
+      .post("​/notices​/old_notice", data)
       .then((res) => {
         Swal.fire({
           text: "Aviso creado exitosamente",

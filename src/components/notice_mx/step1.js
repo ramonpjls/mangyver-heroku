@@ -61,7 +61,7 @@ const Step1 = () => {
 
   const submitForm = () => {
     axios
-      .post("/notices", data)
+      .post("/​notices​/old_notice", data)
       .then((res) => {
         console.log(res);
         Swal.fire({
