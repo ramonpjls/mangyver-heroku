@@ -78,7 +78,7 @@ function ShowAvisos() {
   }, []);
 
   return (
-    <>
+    <div>
       <Container className="header" style={Header}>
         <TextField
           name="keyword"
@@ -183,7 +183,7 @@ function ShowAvisos() {
           </Table>
         </TableContainer>
       )}
-    </>
+    </div>
   );
 }
 

@@ -9,7 +9,6 @@ function Protected(props) {
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       history.push("/login");
-      console.log("protected was called");
     }
   });
 

@@ -6,7 +6,6 @@ import {
   Select,
   Button,
   MenuItem,
-  Autocomplete,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -30,6 +29,8 @@ const Step3 = () => {
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
+
+  const [disButton, setDisButton] = useState(true);
 
   const history = useHistory();
 
@@ -92,7 +93,6 @@ const Step3 = () => {
     marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
-    backgroundColor: "#2760B7",
     color: "#fff",
   };
 
@@ -133,7 +133,7 @@ const Step3 = () => {
         <Button
           type="submit"
           style={btnNxtStyle}
-          variant="outlined"
+          variant="contained"
           color="primary"
           onClick={submitForm}
         >
@@ -144,8 +144,9 @@ const Step3 = () => {
       return (
         <Button
           style={btnNxtStyle}
-          variant="outlined"
+          variant="contained"
           onClick={completeFormStep}
+          disabled={disButton}
         >
           Next
         </Button>
@@ -186,6 +187,14 @@ const Step3 = () => {
       });
   });
 
+  useEffect(() => {
+    if (nOt !== "") {
+      setDisButton(false);
+    } else {
+      setDisButton(true);
+    }
+  }, [nOt]);
+
   return (
     <div>
       <Container>
@@ -210,17 +219,22 @@ const Step3 = () => {
         {formStep >= 1 && (
           <section style={formStep === 1 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
-            <Autocomplete
-              id="tarjetaTipo"
-              options={tarjetaTipo}
-              style={gnrStyle}
+            <Select
+              id="departamento"
+              variant="outlined"
+              fullWidth
+              required
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={tarjetaTipoValue}
-              onInputChange={(event, newValue) => {
-                setTarjetaTipoValue(newValue);
-              }}
-            />
+              style={gnrStyle}
+              value={tarjetaTipoValue}
+              onChange={(e) => setTarjetaTipoValue(e.target.value)}
+            >
+              {tarjetaTipo.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
               id="tarjetaTitulo"
@@ -250,17 +264,22 @@ const Step3 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>Componente dañado</Typography>
-            <Autocomplete
+            <Select
               id="componente"
-              options={componente}
-              style={gnrStyle}
+              variant="outlined"
+              fullWidth
+              required
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={componenteValue}
-              onInputChange={(event, newValue) => {
-                setComponenteValue(newValue);
-              }}
-            />
+              style={gnrStyle}
+              value={componenteValue}
+              onChange={(e) => setComponenteValue(e.target.value)}
+            >
+              {componente.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             <Typography style={gnrStyle}>Causa de la averia</Typography>
             <Select
               id="causaAveria"
@@ -279,17 +298,22 @@ const Step3 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>Grupo planificador</Typography>
-            <Autocomplete
+            <Select
               id="tipoFalla"
-              options={tipoFalla}
-              style={gnrStyle}
+              variant="outlined"
+              fullWidth
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={tipoFallaValue}
-              onInputChange={(event, newValue) => {
-                setTipoFallaValue(newValue);
-              }}
-            />
+              required
+              style={gnrStyle}
+              value={tipoFallaValue}
+              onChange={(e) => setTipoFallaValue(e.target.value)}
+            >
+              {tipoFalla.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
               variant="outlined"
