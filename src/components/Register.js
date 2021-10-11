@@ -5,6 +5,7 @@ import LogoG from "../assets/LogoG.png";
 import PasswordStrengthIndicator from "./passwordStrengthIndicator";
 
 const isNumberRegx = /\d/;
+// eslint-disable-next-line
 const specialCharacterRegx = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 const alphaExp = /[A-Z]*$/g;
 
@@ -16,6 +17,9 @@ const Register = () => {
   const [buttonDis, setButtonDis] = useState(true);
   const [helperError, setHelperError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [fullName, setFullName] = useState("");
+
   const [nameValue, setNameValue] = useState("");
   const [lastNameValue, setLastNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -23,8 +27,6 @@ const Register = () => {
   const [sapUserValue, setSapUserValue] = useState("");
   const [plantaValue, setPlantaValue] = useState("");
   const [rolValue, setRolValue] = useState("");
-  const [areaValue, setAreaValue] = useState("");
-  const [subAreaValue, setSubAreaValue] = useState("");
   const [password, setPassword] = useState("");
   const [passwordValidity, setPasswordValidity] = useState({
     minChar: null,
@@ -54,6 +56,24 @@ const Register = () => {
       setHelperError("debe coincidir las contraseñas");
     }
   }, [confirmPassword, password]);
+
+  useEffect(() => {
+    setFullName(nameValue + lastNameValue);
+  }, [nameValue, lastNameValue]);
+
+  // eslint-disable-next-line
+  const data = {
+    name: fullName,
+    username: emailValue,
+    password: password,
+    email: emailValue,
+    role: rolValue,
+    operation: plantaValue,
+    area: null,
+    line: null,
+    SAPCode: sapCodeValue,
+    SAPUser: sapUserValue,
+  };
 
   return (
     <div>
@@ -171,11 +191,11 @@ const Register = () => {
                 value={plantaValue}
                 onChange={(e) => setPlantaValue(e.target.value)}
               >
-                <MenuItem>Tropico</MenuItem>
-                <MenuItem>Apan</MenuItem>
-                <MenuItem>Mexico</MenuItem>
-                <MenuItem>Yucatan</MenuItem>
-                <MenuItem>Merida</MenuItem>
+                <MenuItem value={"Tropico"}>Tropico</MenuItem>
+                <MenuItem value={"Apan"}>Apan</MenuItem>
+                <MenuItem value={"Mexico"}>Mexico</MenuItem>
+                <MenuItem value={"Yucatan"}>Yucatan</MenuItem>
+                <MenuItem value={"Merida"}>Merida</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={4}>
@@ -188,49 +208,10 @@ const Register = () => {
                 value={rolValue}
                 onChange={(e) => setRolValue(e.target.value)}
               >
-                <MenuItem></MenuItem>
-                <MenuItem></MenuItem>
-                <MenuItem></MenuItem>
-                <MenuItem></MenuItem>
-              </TextField>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            direction="row"
-            justifyContent="center"
-            spacing={2}
-          >
-            <Grid item xs={4}>
-              <TextField
-                label="Area"
-                variant="outlined"
-                fullWidth
-                select
-                size="small"
-                value={areaValue}
-                onChange={(e) => setAreaValue(e.target.value)}
-              >
-                <MenuItem>Mantenimiento general</MenuItem>
-                <MenuItem>Envasado</MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                label="SubArea"
-                variant="outlined"
-                fullWidth
-                select
-                size="small"
-                value={subAreaValue}
-                onChange={(e) => setSubAreaValue(e.target.value)}
-              >
-                <MenuItem></MenuItem>
-                <MenuItem></MenuItem>
-                <MenuItem></MenuItem>
-                <MenuItem></MenuItem>
+                <MenuItem value={"Rol1"}>Rol uno</MenuItem>
+                <MenuItem value={"Rol2"}>Rol dos</MenuItem>
+                <MenuItem value={"Rol3"}>Rol tres</MenuItem>
+                <MenuItem value={"Rol4"}>Rol cuatro</MenuItem>
               </TextField>
             </Grid>
           </Grid>

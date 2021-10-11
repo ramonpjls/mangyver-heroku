@@ -6,11 +6,17 @@ import {
   Select,
   Button,
   MenuItem,
-  Autocomplete,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  InputAdornment,
+  ListSubheader,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Step2 = () => {
   const [formStep, setFormStep] = useState(0);
@@ -38,6 +44,10 @@ const Step2 = () => {
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
+
+  const [disButton, setDisButton] = useState(true);
+
+  const [keyword, setKeyword] = useState("");
 
   const history = useHistory();
 
@@ -92,8 +102,8 @@ const Step2 = () => {
   const btnBckStyle = {
     textTransform: "none",
     marginTop: "1rem",
-    fontSize: 16,
     marginBottom: "1rem",
+    fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#d06345",
     color: "#fff",
@@ -105,7 +115,6 @@ const Step2 = () => {
     marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
-    backgroundColor: "#2760B7",
     color: "#fff",
   };
 
@@ -146,7 +155,7 @@ const Step2 = () => {
         <Button
           type="submit"
           style={btnNxtStyle}
-          variant="outlined"
+          variant="contained"
           color="primary"
           onClick={submitForm}
         >
@@ -157,8 +166,9 @@ const Step2 = () => {
       return (
         <Button
           style={btnNxtStyle}
-          variant="outlined"
           onClick={completeFormStep}
+          variant="contained"
+          disabled={disButton}
         >
           Next
         </Button>
@@ -166,37 +176,8 @@ const Step2 = () => {
     }
   };
 
-  const renderCodigoEquipo = () => {
-    if (departamentoValue !== "") {
-      return (
-        <div style={gnrStyle}>
-          <Typography>SubArea</Typography>
-          <Autocomplete
-            id="lines"
-            options={lines}
-            style={gnrStyle}
-            size="small"
-            renderInput={(params) => <TextField {...params} />}
-            inputValue={lineValue}
-            onInputChange={(event, newValue) => {
-              setLineValue(newValue);
-            }}
-          />
-          <Typography>Equipo</Typography>
-          <Autocomplete
-            id="tipoEquipo"
-            options={tipoEquipo}
-            style={gnrStyle}
-            size="small"
-            renderInput={(params) => <TextField {...params} />}
-            inputValue={tipoEquipoValue}
-            onInputChange={(event, newValue) => {
-              setTipoEquipoValue(newValue);
-            }}
-          />
-        </div>
-      );
-    }
+  const handleListItemClick = (event, index) => {
+    setTipoEquipoValue(index);
   };
 
   //TODO: setear el parametro para recibir lineas por machines
@@ -257,8 +238,93 @@ const Step2 = () => {
       .then((response) => {
         setTarjetaTipo(response.data);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, []);
+
+  const renderCodigoEquipo = () => {
+    if (departamentoValue !== "") {
+      return (
+        <div style={gnrStyle}>
+          <Typography>SubArea</Typography>
+          <Select
+            id="tipoEquipo"
+            variant="outlined"
+            fullWidth
+            required
+            size="small"
+            style={gnrStyle}
+            value={lineValue}
+            onChange={(e) => setLineValue(e.target.value)}
+            //TODO: setear el parametro para recibir lineas por lineas
+          >
+            {lines.map((elemento) => (
+              <MenuItem key={elemento.id} value={elemento.id}>
+                {elemento.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography>Tipo de Equipo</Typography>
+          <List
+            sx={{
+              width: "100%",
+              maxWidth: 500,
+              bgcolor: "background.paper",
+              position: "relative",
+              overflow: "auto",
+              maxHeight: 300,
+            }}
+            style={gnrStyle}
+          >
+            <ListSubheader>
+              <TextField
+                type="text"
+                size="small"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="Seleccione el campo"
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon fontSize="large" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </ListSubheader>
+            {tipoEquipo
+              // eslint-disable-next-line array-callback-return
+              .filter((item) => {
+                if (keyword === "") {
+                  return item;
+                } else if (
+                  item.name.toLowerCase().includes(keyword.toLowerCase())
+                ) {
+                  return item;
+                }
+              })
+              .map((item) => (
+                <ListItemButton
+                  selected={tipoEquipoValue === item.id}
+                  onClick={(event) => handleListItemClick(event, item.id)}
+                >
+                  <ListItem key={item.id}>
+                    <ListItemText primary={item.name} />
+                  </ListItem>
+                </ListItemButton>
+              ))}
+          </List>
+        </div>
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (failureTimes !== "") {
+      setDisButton(false);
+    } else {
+      setDisButton(true);
+    }
+  }, [failureTimes]);
 
   return (
     <div>
@@ -286,34 +352,44 @@ const Step2 = () => {
             <Typography align="left" variant="h5">
               Departamento
             </Typography>
-            <Autocomplete
-              id="Departamento"
-              options={departamento}
-              style={gnrStyle}
+            <Select
+              id="departamento"
+              variant="outlined"
+              fullWidth
+              required
+              value={departamentoValue}
+              onChange={(e) => setDepartamentoValue(e.target.value)}
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={departamentoValue}
-              onInputChange={(event, newValue) => {
-                setDepartamentoValue(newValue);
-              }}
-            />
+              style={gnrStyle}
+            >
+              {departamento.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             {renderCodigoEquipo()}
           </section>
         )}
         {formStep >= 2 && (
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
-            <Autocomplete
+            <Select
               id="tarjetaTipo"
-              options={tarjetaTipo}
-              style={gnrStyle}
+              variant="outlined"
+              fullWidth
+              required
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={tarjetaTipoValue}
-              onInputChange={(event, newValue) => {
-                setTarjetaTipoValue(newValue);
-              }}
-            />
+              style={gnrStyle}
+              value={tarjetaTipoValue}
+              onChange={(e) => setTarjetaTipoValue(e.target.value)}
+            >
+              {tarjetaTipo.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
               id="tarjetaTitulo"
@@ -343,17 +419,22 @@ const Step2 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>Componente dañado</Typography>
-            <Autocomplete
+            <Select
               id="componente"
-              options={componente}
-              style={gnrStyle}
+              variant="outlined"
+              fullWidth
+              required
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={componenteValue}
-              onInputChange={(event, newValue) => {
-                setComponenteValue(newValue);
-              }}
-            />
+              style={gnrStyle}
+              value={componenteValue}
+              onChange={(e) => setComponenteValue(e.target.value)}
+            >
+              {componente.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             <Typography style={gnrStyle}>Causa de la averia</Typography>
             <Select
               id="causaAveria"
@@ -372,17 +453,22 @@ const Step2 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>Grupo planificador</Typography>
-            <Autocomplete
+            <Select
               id="tipoFalla"
-              options={tipoFalla}
-              style={gnrStyle}
+              variant="outlined"
+              fullWidth
               size="small"
-              renderInput={(params) => <TextField {...params} />}
-              inputValue={tipoFallaValue}
-              onInputChange={(event, newValue) => {
-                setTipoFallaValue(newValue);
-              }}
-            />
+              required
+              style={gnrStyle}
+              value={tipoFallaValue}
+              onChange={(e) => setTipoFallaValue(e.target.value)}
+            >
+              {tipoFalla.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
             <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
               variant="outlined"
