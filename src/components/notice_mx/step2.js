@@ -6,6 +6,7 @@ import {
   Select,
   Button,
   MenuItem,
+  Autocomplete,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -37,8 +38,6 @@ const Step2 = () => {
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
-
-  const [disButton, setDisButton] = useState(true);
 
   const history = useHistory();
 
@@ -93,8 +92,8 @@ const Step2 = () => {
   const btnBckStyle = {
     textTransform: "none",
     marginTop: "1rem",
-    marginBottom: "1rem",
     fontSize: 16,
+    marginBottom: "1rem",
     lineHeight: 1.5,
     backgroundColor: "#d06345",
     color: "#fff",
@@ -106,6 +105,7 @@ const Step2 = () => {
     marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
+    backgroundColor: "#2760B7",
     color: "#fff",
   };
 
@@ -146,7 +146,7 @@ const Step2 = () => {
         <Button
           type="submit"
           style={btnNxtStyle}
-          variant="contained"
+          variant="outlined"
           color="primary"
           onClick={submitForm}
         >
@@ -157,12 +157,44 @@ const Step2 = () => {
       return (
         <Button
           style={btnNxtStyle}
+          variant="outlined"
           onClick={completeFormStep}
-          variant="contained"
-          disabled={disButton}
         >
           Next
         </Button>
+      );
+    }
+  };
+
+  const renderCodigoEquipo = () => {
+    if (departamentoValue !== "") {
+      return (
+        <div style={gnrStyle}>
+          <Typography>SubArea</Typography>
+          <Autocomplete
+            id="lines"
+            options={lines}
+            style={gnrStyle}
+            size="small"
+            renderInput={(params) => <TextField {...params} />}
+            inputValue={lineValue}
+            onInputChange={(event, newValue) => {
+              setLineValue(newValue);
+            }}
+          />
+          <Typography>Equipo</Typography>
+          <Autocomplete
+            id="tipoEquipo"
+            options={tipoEquipo}
+            style={gnrStyle}
+            size="small"
+            renderInput={(params) => <TextField {...params} />}
+            inputValue={tipoEquipoValue}
+            onInputChange={(event, newValue) => {
+              setTipoEquipoValue(newValue);
+            }}
+          />
+        </div>
       );
     }
   };
@@ -228,58 +260,6 @@ const Step2 = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
-  const renderCodigoEquipo = () => {
-    if (departamentoValue !== "") {
-      return (
-        <div style={gnrStyle}>
-          <Typography>SubArea</Typography>
-          <Select
-            id="tipoEquipo"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            style={gnrStyle}
-            value={lineValue}
-            onChange={(e) => setLineValue(e.target.value)}
-            //TODO: setear el parametro para recibir lineas por lineas
-          >
-            {lines.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography>Tipo de Equipo</Typography>
-          <Select
-            id="tipoEquipo"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            style={gnrStyle}
-            value={tipoEquipoValue}
-            onChange={(e) => setTipoEquipoValue(e.target.value)}
-          >
-            {tipoEquipo.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      );
-    }
-  };
-
-  useEffect(() => {
-    if (failureTimes !== "") {
-      setDisButton(false);
-    } else {
-      setDisButton(true);
-    }
-  }, [failureTimes]);
-
   return (
     <div>
       <Container>
@@ -306,44 +286,34 @@ const Step2 = () => {
             <Typography align="left" variant="h5">
               Departamento
             </Typography>
-            <Select
-              id="departamento"
-              variant="outlined"
-              fullWidth
-              required
-              value={departamentoValue}
-              onChange={(e) => setDepartamentoValue(e.target.value)}
-              size="small"
+            <Autocomplete
+              id="Departamento"
+              options={departamento}
               style={gnrStyle}
-            >
-              {departamento.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+              size="small"
+              renderInput={(params) => <TextField {...params} />}
+              inputValue={departamentoValue}
+              onInputChange={(event, newValue) => {
+                setDepartamentoValue(newValue);
+              }}
+            />
             {renderCodigoEquipo()}
           </section>
         )}
         {formStep >= 2 && (
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
-            <Select
+            <Autocomplete
               id="tarjetaTipo"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
+              options={tarjetaTipo}
               style={gnrStyle}
-              value={tarjetaTipoValue}
-              onChange={(e) => setTarjetaTipoValue(e.target.value)}
-            >
-              {tarjetaTipo.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+              size="small"
+              renderInput={(params) => <TextField {...params} />}
+              inputValue={tarjetaTipoValue}
+              onInputChange={(event, newValue) => {
+                setTarjetaTipoValue(newValue);
+              }}
+            />
             <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
             <TextField
               id="tarjetaTitulo"
@@ -373,22 +343,17 @@ const Step2 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>Componente dañado</Typography>
-            <Select
+            <Autocomplete
               id="componente"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
+              options={componente}
               style={gnrStyle}
-              value={componenteValue}
-              onChange={(e) => setComponenteValue(e.target.value)}
-            >
-              {componente.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+              size="small"
+              renderInput={(params) => <TextField {...params} />}
+              inputValue={componenteValue}
+              onInputChange={(event, newValue) => {
+                setComponenteValue(newValue);
+              }}
+            />
             <Typography style={gnrStyle}>Causa de la averia</Typography>
             <Select
               id="causaAveria"
@@ -407,22 +372,17 @@ const Step2 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>Grupo planificador</Typography>
-            <Select
+            <Autocomplete
               id="tipoFalla"
-              variant="outlined"
-              fullWidth
-              size="small"
-              required
+              options={tipoFalla}
               style={gnrStyle}
-              value={tipoFallaValue}
-              onChange={(e) => setTipoFallaValue(e.target.value)}
-            >
-              {tipoFalla.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+              size="small"
+              renderInput={(params) => <TextField {...params} />}
+              inputValue={tipoFallaValue}
+              onInputChange={(event, newValue) => {
+                setTipoFallaValue(newValue);
+              }}
+            />
             <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
             <TextField
               variant="outlined"

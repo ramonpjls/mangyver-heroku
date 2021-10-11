@@ -20,13 +20,11 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 import axios from "../axiosinstance";
 
 import Protected from "./Potected";
 import Noticereport from "./noticeReport";
-import Notifications from "./notifications";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
@@ -213,16 +211,6 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
-          <Link to="/Notifications">
-            <ListItem>
-              <ListItemIcon>
-                <NotificationsActiveIcon
-                  style={{ color: "#3f51b5", fontSize: 40 }}
-                />
-              </ListItemIcon>
-              <ListItemText primary="Creacion de Notificaciones" />
-            </ListItem>
-          </Link>
           <Link to="/Noticereport">
             <ListItem>
               <ListItemIcon>
@@ -233,7 +221,7 @@ export default function MiniDrawer() {
           </Link>
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Route path="/Noticereport">
           <Protected component={Noticereport} />
@@ -243,9 +231,6 @@ export default function MiniDrawer() {
         </Route>
         <Route path="/Home">
           <Protected component={Home} />
-        </Route>
-        <Route path="/Notifications">
-          <Protected component={Notifications} />
         </Route>
       </Box>
     </Box>
