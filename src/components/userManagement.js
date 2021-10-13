@@ -169,10 +169,10 @@ function UserManagement() {
                   Nombre
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>Email</TableCell>
-                <TableCell className={classes.tableHeaderCell}>
+                <TableCell size="small" className={classes.tableHeaderCell}>
                   Codigo SAP
                 </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
+                <TableCell size="small" className={classes.tableHeaderCell}>
                   Usuario SAP
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>Area</TableCell>

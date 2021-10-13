@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Grid, MenuItem, TextField } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import LogoG from "../assets/LogoG.png";
 import PasswordStrengthIndicator from "./passwordStrengthIndicator";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const isNumberRegx = /\d/;
 // eslint-disable-next-line
@@ -77,6 +79,17 @@ const Register = () => {
 
   return (
     <div>
+      <Grid>
+        <Link to="/Login" replace>
+          <Button
+            color="info"
+            variant="contained"
+            startIcon={<KeyboardBackspaceIcon />}
+          >
+            Ir a inicio de sesion
+          </Button>
+        </Link>
+      </Grid>
       <Grid
         container
         direction="column"
@@ -263,7 +276,12 @@ const Register = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid container item alignItems="center" justifyContent="center">
+          <Grid
+            container
+            item
+            alignItems="center"
+            justifyContent="space-evenly"
+          >
             <Grid>
               <Button color="primary" variant="contained" disabled={buttonDis}>
                 Enviar solicitud
