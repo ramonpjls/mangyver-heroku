@@ -304,6 +304,9 @@ const Step2 = () => {
               })
               .map((item) => (
                 <ListItemButton
+                  dense
+                  divider
+                  disableGutters
                   selected={tipoEquipoValue === item.id}
                   onClick={(event) => handleListItemClick(event, item.id)}
                 >

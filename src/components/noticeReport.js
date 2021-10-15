@@ -99,7 +99,11 @@ const Noticereport = () => {
               />
             </Grid>
             <Grid container item justifyContent="flex-end">
-              <CSVLink {...ReportSet} separator={","}>
+              <CSVLink
+                style={{ textDecoration: "none" }}
+                {...ReportSet}
+                separator={","}
+              >
                 <Button
                   color="primary"
                   variant="contained"

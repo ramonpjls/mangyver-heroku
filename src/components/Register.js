@@ -80,7 +80,7 @@ const Register = () => {
   return (
     <div>
       <Grid>
-        <Link to="/Login" replace>
+        <Link style={{ textDecoration: "none" }} to="/Login" replace>
           <Button
             color="info"
             variant="contained"

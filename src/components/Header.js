@@ -201,7 +201,7 @@ export default function MiniDrawer() {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Link to="/UserManagement">
+                  <Link style={{ textDecoration: "none" }} to="/UserManagement">
                     <Button variant="text">Control de usuarios</Button>
                   </Link>
                 </Grid>
@@ -209,7 +209,7 @@ export default function MiniDrawer() {
             ) : null}
           </Grid>
           <Divider />
-          <Link to="/ShowAvisos">
+          <Link style={{ textDecoration: "none" }} to="/ShowAvisos">
             <ListItem>
               <ListItemIcon>
                 <ModeCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
@@ -217,7 +217,7 @@ export default function MiniDrawer() {
               <ListItemText primary="Avisos" />
             </ListItem>
           </Link>
-          <Link to="/Home">
+          <Link style={{ textDecoration: "none" }} to="/Home">
             <ListItem>
               <ListItemIcon>
                 <AddCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
@@ -225,7 +225,7 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
-          <Link to="/Notifications">
+          <Link style={{ textDecoration: "none" }} to="/Notifications">
             <ListItem>
               <ListItemIcon>
                 <NotificationsActiveIcon
@@ -235,7 +235,7 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de Notificaciones" />
             </ListItem>
           </Link>
-          <Link to="/Noticereport">
+          <Link style={{ textDecoration: "none" }} to="/Noticereport">
             <ListItem>
               <ListItemIcon>
                 <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />

@@ -198,7 +198,7 @@ const Login = () => {
                   spacing={2}
                   justifyContent="center"
                 >
-                  <Link to="/Register">
+                  <Link style={{ textDecoration: "none" }} to="/Register">
                     <Button variant="text">Registrate aqui</Button>
                   </Link>
                 </Grid>

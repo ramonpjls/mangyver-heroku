@@ -331,6 +331,9 @@ const Step1 = () => {
               })
               .map((item) => (
                 <ListItemButton
+                  dense
+                  divider
+                  disableGutters
                   selected={tipoEquipoValue === item.id}
                   onClick={(event) => handleListItemClick(event, item.id)}
                 >
@@ -340,22 +343,6 @@ const Step1 = () => {
                 </ListItemButton>
               ))}
           </List>
-          {/* <Select
-            id="tipoEquipo"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            style={gnrStyle}
-            value={tipoEquipoValue}
-            onChange={(e) => setTipoEquipoValue(e.target.value)}
-          >
-            {tipoEquipo.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select> */}
         </div>
       );
     }
