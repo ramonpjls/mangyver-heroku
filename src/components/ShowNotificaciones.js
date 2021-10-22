@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
-import ModeCommentIcon from "@mui/icons-material/ModeComment";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -51,11 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ShowAvisos() {
+function ShowNotificaciones() {
   const classes = useStyles();
-  const [notice, setNotice] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDone, setIsDone] = useState("");
 
   const HeaderSearch = {
     color: "white",
@@ -63,6 +64,7 @@ function ShowAvisos() {
     padding: "30px",
     maxWidth: "100%",
   };
+
   const Header = {
     backgroundColor: "#79A9D1",
     color: "white",
@@ -77,9 +79,9 @@ function ShowAvisos() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/notices")
+      .get("/notifications")
       .then((res) => {
-        setNotice(res.data);
+        setNotifications(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -88,15 +90,23 @@ function ShowAvisos() {
       });
   }, []);
 
+  useEffect(() => {
+    if (notifications.map((row) => row.isDone) === true) {
+      setIsDone("No");
+    } else {
+      setIsDone("Si");
+    }
+  }, [notifications]);
+
   return (
     <div>
       <Container className="header" style={Header}>
-        <ModeCommentIcon style={{ marginRight: "10px" }} />
+        <NotificationsIcon style={{ marginRight: "10px" }} />
         <Typography align="left" variant="h6">
-          Avisos
+          Notificaciones
         </Typography>
       </Container>
-      <Container className="header" style={HeaderSearch}>
+      <Container className="headerSearch" style={HeaderSearch}>
         <TextField
           name="keyword"
           id="keyword"
@@ -126,39 +136,30 @@ function ShowAvisos() {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
-                  Titulo de Aviso
+                  Numero de OT
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Ubicacion Tecnica
+                  Hora de Inicio
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Tipo de Tarjeta
+                  Hora de finalizacion
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Descripcion
+                  Comentario
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Causa de la averia
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Prioridad
+                  ¿Se realizo la orden?
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {notice
+              {notifications
                 // eslint-disable-next-line array-callback-return
                 .filter((row) => {
                   if (keyword === "") {
                     return row;
                   } else if (
-                    row.cardDescription
-                      .toLowerCase()
-                      .includes(keyword.toLowerCase()) ||
-                    row.priority
-                      .toLowerCase()
-                      .includes(keyword.toLowerCase()) ||
-                    row.breakdown.toLowerCase().includes(keyword.toLowerCase())
+                    row.OTCode.toLowerCase().includes(keyword.toLowerCase())
                   ) {
                     return row;
                   }
@@ -166,32 +167,27 @@ function ShowAvisos() {
                 .map((row) => (
                   <TableRow key={row.id}>
                     <TableCell>
-                      <Typography>{row.cardTitle}</Typography>
+                      <Typography>{row.OTCode}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.technicalLocation}</Typography>
+                      <Typography>{row.startHour}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.cardtype}</Typography>
+                      <Typography>{row.endHour}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.cardDescription}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.breakdown}</Typography>
+                      <Typography>{row.comments}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         className={classes.status}
                         style={{
                           backgroundColor:
-                            (row.priority === "Muy elevado" && "#B855E5") ||
-                            (row.priority === "Alto" && "#E05E54") ||
-                            (row.priority === "Medio" && "#E8AB51") ||
-                            (row.priority === "Bajo" && "#86A9E1"),
+                            (row.isDone === true && "#3364ff") ||
+                            (row.isDone === false && "#ff3333"),
                         }}
                       >
-                        {row.priority}
+                        {isDone}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -204,4 +200,4 @@ function ShowAvisos() {
   );
 }
 
-export default ShowAvisos;
+export default ShowNotificaciones;

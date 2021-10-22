@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Grid, Typography, Container } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import { CSVLink } from "react-csv";
 import axios from "../axiosinstance";
 
@@ -15,6 +16,9 @@ const Noticereport = () => {
     borderRadius: "3px",
     padding: "10px",
     maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   };
 
   useEffect(() => {
@@ -63,6 +67,7 @@ const Noticereport = () => {
   return (
     <div>
       <Container className="header" style={Header}>
+        <ArchiveIcon style={{ marginRight: "10px" }} />
         <Typography align="left" variant="h6">
           Descarga de Avisos
         </Typography>

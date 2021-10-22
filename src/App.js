@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/login";
 import Header from "./components/Header";
 import ShowAvisos from "./components/ShowAvisos";
+import ShowNotificaciones from "./components/ShowNotificaciones";
 import Home from "./components/notice_mx/home";
 import Protected from "./components/Potected";
 import Register from "./components/Register";
@@ -23,6 +24,9 @@ function App() {
             <Route path="/" component={Header} />
             <Route path="/ShowAvisos">
               <Protected component={ShowAvisos} />
+            </Route>
+            <Route path="/ShowNotificaciones">
+              <Protected component={ShowNotificaciones} />
             </Route>
             <Route path="/UserManagement">
               <Protected component={UserManagement} />

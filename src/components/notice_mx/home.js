@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, withRouter, Switch } from "react-router-dom";
 import { MenuItem, Select, Typography, Container } from "@mui/material";
+import AddCommentIcon from "@mui/icons-material/AddComment";
 import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
@@ -42,12 +43,16 @@ const Home = () => {
     borderRadius: "3px",
     padding: "10px",
     maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   };
 
   return (
     <BrowserRouter>
       <div className="App">
         <Container className="header" style={Header}>
+          <AddCommentIcon style={{ marginRight: "10px" }} />
           <Typography align="left" variant="h6">
             Creacion de Aviso
           </Typography>

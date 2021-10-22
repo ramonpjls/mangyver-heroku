@@ -11,14 +11,8 @@ import {
 } from "@mui/material";
 import TimePicker from "@mui/lab/TimePicker";
 import axios from "../axiosinstance";
-
-const Header = {
-  backgroundColor: "#79A9D1",
-  color: "white",
-  borderRadius: "3px",
-  padding: "10px",
-  maxWidth: "100%",
-};
+import { Redirect } from "react-router-dom";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 
 const Notifications = () => {
   const [horaInicio, setHoraInicio] = useState(null);
@@ -29,11 +23,11 @@ const Notifications = () => {
   const [noperacion, setNoperarion] = useState("");
   const [otCode, setOtCode] = useState("");
   const [disSelect, setDisSelect] = useState(true);
+  const [redirect, setRedirect] = useState(false);
 
   const [deviationArr, setDeviationArr] = useState([]);
   const [opNumArr, setOpNumArr] = useState([]);
 
-  // eslint-disable-next-line
   const data = {
     deviation: deviation,
     operationNum: noperacion,
@@ -42,6 +36,31 @@ const Notifications = () => {
     endHour: horaFin,
     isDone: norden,
     comments: observation,
+  };
+
+  const Header = {
+    backgroundColor: "#79A9D1",
+    color: "white",
+    borderRadius: "3px",
+    padding: "10px",
+    maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  };
+
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .post("/notifications", data)
+      .then((res) => {
+        console.log(res);
+        setRedirect(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -63,14 +82,19 @@ const Notifications = () => {
     });
   }, []);
 
+  if (redirect) {
+    return <Redirect to="/ShowNotificaciones" />;
+  }
+
   return (
     <div>
       <Container className="header" style={Header}>
+        <NotificationAddIcon style={{ marginRight: "10px" }} />
         <Typography align="left" variant="h6">
           Creacion de Notificaciones
         </Typography>
       </Container>
-      <form style={{ marginTop: "50px" }}>
+      <form onSubmit={HandleSubmit} style={{ marginTop: "50px" }}>
         <Grid
           container
           spacing={4}
@@ -118,6 +142,7 @@ const Notifications = () => {
               <TextField
                 size="small"
                 varian="outlined"
+                type="number"
                 fullWidth
                 value={otCode}
                 onChange={(e) => setOtCode(e.target.value)}
@@ -229,7 +254,7 @@ const Notifications = () => {
           </Grid>
           <Grid container item alignItems="center" justifyContent="center">
             <Grid>
-              <Button color="primary" variant="contained">
+              <Button type="submit" color="primary" variant="contained">
                 Enviar
               </Button>
             </Grid>

@@ -21,7 +21,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 
 import axios from "../axiosinstance";
 
@@ -29,6 +30,7 @@ import Protected from "./Potected";
 import Noticereport from "./noticeReport";
 import Notifications from "./notifications";
 import UserManagement from "./userManagement";
+import ShowNotificaciones from "./ShowNotificaciones";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
@@ -225,10 +227,18 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
+          <Link style={{ textDecoration: "none" }} to="/ShowNotificaciones">
+            <ListItem>
+              <ListItemIcon>
+                <NotificationsIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+              </ListItemIcon>
+              <ListItemText primary="Notificaciones" />
+            </ListItem>
+          </Link>
           <Link style={{ textDecoration: "none" }} to="/Notifications">
             <ListItem>
               <ListItemIcon>
-                <NotificationsActiveIcon
+                <NotificationAddIcon
                   style={{ color: "#3f51b5", fontSize: 40 }}
                 />
               </ListItemIcon>
@@ -252,6 +262,9 @@ export default function MiniDrawer() {
         </Route>
         <Route path="/ShowAvisos">
           <Protected component={ShowAvisos} />
+        </Route>
+        <Route path="/ShowNotificaciones">
+          <Protected component={ShowNotificaciones} />
         </Route>
         {/* ruta para el manejo de los usuarios */}
         <Route path="/UserManagement">
