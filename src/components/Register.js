@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Button, Grid, MenuItem, TextField } from "@mui/material";
+import {
+  Button,
+  Grid,
+  MenuItem,
+  TextField,
+  Select,
+  InputLabel,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import axios from "../axiosinstance";
 
 import LogoG from "../assets/LogoG.png";
 import PasswordStrengthIndicator from "./passwordStrengthIndicator";
@@ -21,6 +29,8 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [fullName, setFullName] = useState("");
+  const [operations, setOperations] = useState([]);
+  const [role, setRole] = useState([]);
 
   const [nameValue, setNameValue] = useState("");
   const [lastNameValue, setLastNameValue] = useState("");
@@ -28,7 +38,7 @@ const Register = () => {
   const [sapCodeValue, setSapCodeValue] = useState("");
   const [sapUserValue, setSapUserValue] = useState("");
   const [plantaValue, setPlantaValue] = useState("");
-  const [rolValue, setRolValue] = useState("");
+  const [roleValue, setRoleValue] = useState("");
   const [password, setPassword] = useState("");
   const [passwordValidity, setPasswordValidity] = useState({
     minChar: null,
@@ -69,13 +79,25 @@ const Register = () => {
     username: emailValue,
     password: password,
     email: emailValue,
-    role: rolValue,
+    role: roleValue,
     operation: plantaValue,
     area: null,
     line: null,
     SAPCode: sapCodeValue,
     SAPUser: sapUserValue,
   };
+
+  useEffect(() => {
+    axios.get("/operations").then((response) => {
+      setOperations(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("/roles").then((response) => {
+      setRole(response.data);
+    });
+  }, []);
 
   return (
     <div>
@@ -115,8 +137,8 @@ const Register = () => {
             justifyContent="center"
           >
             <Grid item xs={4}>
+              <InputLabel> Nombres </InputLabel>
               <TextField
-                label="Nombres"
                 variant="outlined"
                 fullWidth
                 size="small"
@@ -125,8 +147,8 @@ const Register = () => {
               />
             </Grid>
             <Grid item xs={4}>
+              <InputLabel> Apellidos </InputLabel>
               <TextField
-                label="Apellidos"
                 variant="outlined"
                 fullWidth
                 size="small"
@@ -144,8 +166,8 @@ const Register = () => {
             justifyContent="center"
           >
             <Grid item xs={8}>
+              <InputLabel> Email </InputLabel>
               <TextField
-                label="Email"
                 variant="outlined"
                 fullWidth
                 type="email"
@@ -164,8 +186,8 @@ const Register = () => {
             justifyContent="center"
           >
             <Grid item xs={4}>
+              <InputLabel> Codigo SAP </InputLabel>
               <TextField
-                label="Codigo SAP"
                 variant="outlined"
                 fullWidth
                 size="small"
@@ -175,8 +197,8 @@ const Register = () => {
               />
             </Grid>
             <Grid item xs={4}>
+              <InputLabel> Usuario SAP </InputLabel>
               <TextField
-                label="Usuario SAP"
                 variant="outlined"
                 fullWidth
                 size="small"
@@ -195,37 +217,40 @@ const Register = () => {
             justifyContent="center"
           >
             <Grid item xs={4}>
-              <TextField
-                label="Planta"
+              <InputLabel> Operacion </InputLabel>
+              <Select
+                id="departamento"
                 variant="outlined"
                 fullWidth
-                select
-                size="small"
+                required
                 value={plantaValue}
                 onChange={(e) => setPlantaValue(e.target.value)}
+                size="small"
               >
-                <MenuItem value={"Tropico"}>Tropico</MenuItem>
-                <MenuItem value={"Apan"}>Apan</MenuItem>
-                <MenuItem value={"Mexico"}>Mexico</MenuItem>
-                <MenuItem value={"Yucatan"}>Yucatan</MenuItem>
-                <MenuItem value={"Merida"}>Merida</MenuItem>
-              </TextField>
+                {operations.map((elemento) => (
+                  <MenuItem key={elemento.id} value={elemento.id}>
+                    {elemento.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
             <Grid item xs={4}>
-              <TextField
-                label="Rol"
+              <InputLabel> Rol </InputLabel>
+              <Select
+                id="role"
                 variant="outlined"
                 fullWidth
-                select
+                required
+                value={roleValue}
+                onChange={(e) => setRoleValue(e.target.value)}
                 size="small"
-                value={rolValue}
-                onChange={(e) => setRolValue(e.target.value)}
               >
-                <MenuItem value={"Rol1"}>Rol uno</MenuItem>
-                <MenuItem value={"Rol2"}>Rol dos</MenuItem>
-                <MenuItem value={"Rol3"}>Rol tres</MenuItem>
-                <MenuItem value={"Rol4"}>Rol cuatro</MenuItem>
-              </TextField>
+                {role.map((elemento) => (
+                  <MenuItem key={elemento.id} value={elemento.id}>
+                    {elemento.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
           </Grid>
           <Grid
@@ -237,8 +262,8 @@ const Register = () => {
             justifyContent="center"
           >
             <Grid item xs={4}>
+              <InputLabel> Contraseña </InputLabel>
               <TextField
-                label="Contraseña"
                 variant="outlined"
                 fullWidth
                 size="small"
@@ -249,9 +274,9 @@ const Register = () => {
               />
             </Grid>
             <Grid item xs={4}>
+              <InputLabel> Confirme su contraseña </InputLabel>
               <TextField
                 error={error}
-                label="Confirme su contraseña"
                 variant="outlined"
                 fullWidth
                 size="small"
