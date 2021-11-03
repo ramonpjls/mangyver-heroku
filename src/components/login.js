@@ -20,9 +20,9 @@ import axios from "../axiosinstance";
 import LogoG from "../assets/LogoG.png";
 import LandingLogin from "../assets/landing.png";
 
-function alertFunc(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
+// function alertFunc(props) {
+//   return <Alert elevation={6} variant="filled" {...props} />;
+// }
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -71,6 +71,7 @@ const Login = () => {
         setRedirect(true);
       })
       .catch((err) => {
+        console.log("error => ", err);
         setOpen(true);
         setLoading(false);
       });
@@ -214,9 +215,9 @@ const Login = () => {
             autoHideDuration={5000}
             onClose={handleClose}
           >
-            <alertFunc severity="error">
+            <Alert severity="error">
               Nombre de usuario y/o Contraseña incorectos
-            </alertFunc>
+            </Alert>
           </Snackbar>
         </Grid>
         <div />

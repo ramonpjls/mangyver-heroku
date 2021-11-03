@@ -15,6 +15,8 @@ import {
   Container,
   TextField,
   InputAdornment,
+  Modal,
+  Box,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -57,6 +59,11 @@ function ShowNotificaciones() {
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDone, setIsDone] = useState("");
+  const [open, setOpen] = useState(false);
+  const [idValue, setIdValue] = useState("");
+  const [newState, setNewState] = useState([]);
+
+  const handleClose = () => setOpen(false);
 
   const HeaderSearch = {
     color: "white",
@@ -76,6 +83,17 @@ function ShowNotificaciones() {
     alignItems: "center",
   };
 
+  const boxStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -86,9 +104,23 @@ function ShowNotificaciones() {
       })
       .catch((err) => {
         console.warn(err);
-        window.location.reload();
+        // window.location.reload();
       });
   }, []);
+
+  useEffect(() => {
+    if (idValue !== "") {
+      setOpen(true);
+      axios
+        .get(`/notifications/${idValue}`)
+        .then((res) => {
+          setNewState(res.data);
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
+    }
+  }, [idValue]);
 
   useEffect(() => {
     if (notifications.map((row) => row.isDone) === true) {
@@ -100,11 +132,35 @@ function ShowNotificaciones() {
 
   return (
     <div>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={boxStyle}>
+          <div key={newState.id}>
+            <Typography variant="body2">
+              <Typography variant="h6">Numero de OT: </Typography>
+              {newState.OTCode}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Hora de inicio: </Typography>
+              {newState.startHour}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Hora de fin: </Typography>
+              {newState.endHour}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Se realizo la tarea: </Typography>
+              {newState.isDone}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Comentario: </Typography>
+              {newState.comments}
+            </Typography>
+          </div>
+        </Box>
+      </Modal>
       <Container className="header" style={Header}>
         <NotificationsIcon style={{ marginRight: "10px" }} />
-        <Typography align="left" variant="h6">
-          Notificaciones
-        </Typography>
+        <Typography align="left">Notificaciones</Typography>
       </Container>
       <Container className="headerSearch" style={HeaderSearch}>
         <TextField
@@ -165,7 +221,11 @@ function ShowNotificaciones() {
                   }
                 })
                 .map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    hover
+                    onClick={() => setIdValue(row.id)}
+                  >
                     <TableCell>
                       <Typography>{row.OTCode}</Typography>
                     </TableCell>

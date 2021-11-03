@@ -86,8 +86,6 @@ const Notifications = () => {
     return <Redirect to="/ShowNotificaciones" />;
   }
 
-  console.log(horaFin);
-
   return (
     <div>
       <Container className="header" style={Header}>

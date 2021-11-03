@@ -14,6 +14,8 @@ import {
   CircularProgress,
   Container,
   TextField,
+  Modal,
+  Box,
   InputAdornment,
 } from "@mui/material";
 
@@ -55,7 +57,12 @@ function ShowAvisos() {
   const classes = useStyles();
   const [notice, setNotice] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [newState, setNewState] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [idValue, setIdValue] = useState("");
+
+  const handleClose = () => setOpen(false);
 
   const HeaderSearch = {
     color: "white",
@@ -74,6 +81,17 @@ function ShowAvisos() {
     alignItems: "center",
   };
 
+  const boxStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -84,12 +102,82 @@ function ShowAvisos() {
       })
       .catch((err) => {
         console.warn(err);
-        window.location.reload();
+        // window.location.reload();
       });
   }, []);
 
+  useEffect(() => {
+    if (idValue !== "") {
+      setOpen(true);
+      axios
+        .get(`/notices/${idValue}`)
+        .then((res) => {
+          setNewState(res.data);
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
+    }
+  }, [idValue]);
+
   return (
     <div>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={boxStyle}>
+          {newState.map((newRow) => (
+            <div key={newRow.id}>
+              <Typography variant="body2">
+                <Typography variant="h6">Creado por:</Typography>
+                {newRow.userName}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Departamento:</Typography>
+                {newRow.department}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Tipo de equipo:</Typography>
+                {newRow.equipment}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Numero de OT:</Typography>
+                {newRow.otCode}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Linea:</Typography>
+                {newRow.lineId}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Prioridad:</Typography>
+                {newRow.priority}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Titulo de la tarjeta:</Typography>
+                {newRow.cardTitle}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Tipo de tarjeta:</Typography>
+                {newRow.cardtypeId}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Descripcion de la tarjeta:</Typography>
+                {newRow.cardDescription}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Componente dañado:</Typography>
+                {newRow.componentsId}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Tipo de falla:</Typography>
+                {newRow.failureTypeId}
+              </Typography>
+              <Typography variant="body2">
+                <Typography variant="h6">Afecta a:</Typography>
+                {newRow.affectsId}
+              </Typography>
+            </div>
+          ))}
+        </Box>
+      </Modal>
       <Container className="header" style={Header}>
         <ModeCommentIcon style={{ marginRight: "10px" }} />
         <Typography align="left" variant="h6">
@@ -164,7 +252,11 @@ function ShowAvisos() {
                   }
                 })
                 .map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    hover
+                    onClick={() => setIdValue(row.id)}
+                  >
                     <TableCell>
                       <Typography>{row.cardTitle}</Typography>
                     </TableCell>
@@ -172,13 +264,13 @@ function ShowAvisos() {
                       <Typography>{row.technicalLocation}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.cardtype}</Typography>
+                      <Typography>{row.cardtypeId}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.cardDescription}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.breakdown}</Typography>
+                      <Typography>{row.breakdownId}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography

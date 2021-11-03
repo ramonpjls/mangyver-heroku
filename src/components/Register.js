@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "../axiosinstance";
+import Swal from "sweetalert2";
 
 import LogoG from "../assets/LogoG.png";
 import PasswordStrengthIndicator from "./passwordStrengthIndicator";
@@ -62,6 +63,7 @@ const Register = () => {
     if (password === confirmPassword) {
       setError(false);
       setHelperError("");
+      setButtonDis(false);
     } else {
       setButtonDis(true);
       setError(true);
@@ -85,6 +87,16 @@ const Register = () => {
     line: null,
     SAPCode: sapCodeValue,
     SAPUser: sapUserValue,
+  };
+
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      text: "Creado exitosamente",
+      icon: "success",
+      showConfirmButton: false,
+    });
   };
 
   useEffect(() => {
@@ -112,179 +124,22 @@ const Register = () => {
           </Button>
         </Link>
       </Grid>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-      >
+      <form onSubmit={HandleSubmit}>
         <Grid
           container
-          spacing={4}
-          alignItems="stretch"
           direction="column"
           justifyContent="center"
+          alignItems="center"
         >
-          <Grid container alignItems="center" justifyContent="center">
-            <img src={LogoG} alt={LogoG} />
-          </Grid>
           <Grid
             container
-            item
-            alignItems="center"
-            direction="row"
-            spacing={2}
+            spacing={4}
+            alignItems="stretch"
+            direction="column"
             justifyContent="center"
           >
-            <Grid item xs={4}>
-              <InputLabel> Nombres </InputLabel>
-              <TextField
-                variant="outlined"
-                fullWidth
-                size="small"
-                value={nameValue}
-                onChange={(e) => setNameValue(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <InputLabel> Apellidos </InputLabel>
-              <TextField
-                variant="outlined"
-                fullWidth
-                size="small"
-                type="Text"
-                value={lastNameValue}
-                onChange={(e) => setLastNameValue(e.target.value)}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            direction="row"
-            justifyContent="center"
-          >
-            <Grid item xs={8}>
-              <InputLabel> Email </InputLabel>
-              <TextField
-                variant="outlined"
-                fullWidth
-                type="email"
-                size="small"
-                value={emailValue}
-                onChange={(e) => setEmailValue(e.target.value)}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
-            <Grid item xs={4}>
-              <InputLabel> Codigo SAP </InputLabel>
-              <TextField
-                variant="outlined"
-                fullWidth
-                size="small"
-                type="number"
-                value={sapCodeValue}
-                onChange={(e) => setSapCodeValue(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <InputLabel> Usuario SAP </InputLabel>
-              <TextField
-                variant="outlined"
-                fullWidth
-                size="small"
-                type="number"
-                value={sapUserValue}
-                onChange={(e) => setSapUserValue(e.target.value)}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
-            <Grid item xs={4}>
-              <InputLabel> Operacion </InputLabel>
-              <Select
-                id="departamento"
-                variant="outlined"
-                fullWidth
-                required
-                value={plantaValue}
-                onChange={(e) => setPlantaValue(e.target.value)}
-                size="small"
-              >
-                {operations.map((elemento) => (
-                  <MenuItem key={elemento.id} value={elemento.id}>
-                    {elemento.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={4}>
-              <InputLabel> Rol </InputLabel>
-              <Select
-                id="role"
-                variant="outlined"
-                fullWidth
-                required
-                value={roleValue}
-                onChange={(e) => setRoleValue(e.target.value)}
-                size="small"
-              >
-                {role.map((elemento) => (
-                  <MenuItem key={elemento.id} value={elemento.id}>
-                    {elemento.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
-            <Grid item xs={4}>
-              <InputLabel> Contraseña </InputLabel>
-              <TextField
-                variant="outlined"
-                fullWidth
-                size="small"
-                type="Password"
-                value={password}
-                onChange={(e) => onChangePassword(e.target.value)}
-                onFocus={() => setPasswordFocused(true)}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <InputLabel> Confirme su contraseña </InputLabel>
-              <TextField
-                error={error}
-                variant="outlined"
-                fullWidth
-                size="small"
-                type="Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                helperText={helperError}
-              />
+            <Grid container alignItems="center" justifyContent="center">
+              <img src={LogoG} alt={LogoG} />
             </Grid>
             <Grid
               container
@@ -294,27 +149,191 @@ const Register = () => {
               spacing={2}
               justifyContent="center"
             >
-              <Grid item>
-                {passwordFocused && (
-                  <PasswordStrengthIndicator validity={passwordValidity} />
-                )}
+              <Grid item xs={4}>
+                <InputLabel> Nombres </InputLabel>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  value={nameValue}
+                  onChange={(e) => setNameValue(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <InputLabel> Apellidos </InputLabel>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  type="Text"
+                  value={lastNameValue}
+                  onChange={(e) => setLastNameValue(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              alignItems="center"
+              direction="row"
+              justifyContent="center"
+            >
+              <Grid item xs={8}>
+                <InputLabel> Email </InputLabel>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  type="email"
+                  size="small"
+                  value={emailValue}
+                  onChange={(e) => setEmailValue(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              alignItems="center"
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >
+              <Grid item xs={4}>
+                <InputLabel> Codigo SAP </InputLabel>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  type="number"
+                  value={sapCodeValue}
+                  onChange={(e) => setSapCodeValue(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <InputLabel> Usuario SAP </InputLabel>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  type="number"
+                  value={sapUserValue}
+                  onChange={(e) => setSapUserValue(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              alignItems="center"
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >
+              <Grid item xs={4}>
+                <InputLabel> Operacion </InputLabel>
+                <Select
+                  id="departamento"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={plantaValue}
+                  onChange={(e) => setPlantaValue(e.target.value)}
+                  size="small"
+                >
+                  {operations.map((elemento) => (
+                    <MenuItem key={elemento.id} value={elemento.id}>
+                      {elemento.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={4}>
+                <InputLabel> Rol </InputLabel>
+                <Select
+                  id="role"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={roleValue}
+                  onChange={(e) => setRoleValue(e.target.value)}
+                  size="small"
+                >
+                  {role.map((elemento) => (
+                    <MenuItem key={elemento.id} value={elemento.id}>
+                      {elemento.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              alignItems="center"
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >
+              <Grid item xs={4}>
+                <InputLabel> Contraseña </InputLabel>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  type="Password"
+                  value={password}
+                  onChange={(e) => onChangePassword(e.target.value)}
+                  onFocus={() => setPasswordFocused(true)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <InputLabel> Confirme su contraseña </InputLabel>
+                <TextField
+                  error={error}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  type="Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  helperText={helperError}
+                />
+              </Grid>
+              <Grid
+                container
+                item
+                alignItems="center"
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+              >
+                <Grid item>
+                  {passwordFocused && (
+                    <PasswordStrengthIndicator validity={passwordValidity} />
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              alignItems="center"
+              justifyContent="space-evenly"
+            >
+              <Grid>
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  disabled={buttonDis}
+                >
+                  Enviar solicitud
+                </Button>
               </Grid>
             </Grid>
           </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            justifyContent="space-evenly"
-          >
-            <Grid>
-              <Button color="primary" variant="contained" disabled={buttonDis}>
-                Enviar solicitud
-              </Button>
-            </Grid>
-          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </div>
   );
 };

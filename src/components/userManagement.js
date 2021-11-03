@@ -90,19 +90,6 @@ function UserManagement() {
       });
   }, [authValue, idValue]);
 
-  // const OnUpdate = (id, auth) => {
-  //   console.log(id);
-  //   console.log(auth);
-
-  // if (auth === "pending") {
-  //   setAuthValue("active");
-  // } else {
-  //   setAuthValue("pending");
-  // }
-
-  // console.log(authValue);
-  // };
-
   useEffect(() => {
     setLoading(true);
     axios
@@ -113,7 +100,7 @@ function UserManagement() {
       })
       .catch((err) => {
         console.warn(err);
-        window.location.reload();
+        // window.location.reload();
       });
   }, [idValue]);
 
@@ -224,13 +211,7 @@ function UserManagement() {
                         onChange={(e) => setAuthValue(e.target.value)}
                         fullWidth
                         disabled={checked}
-                        // className={classes.status}
                         size="small"
-                        // style={{
-                        //   backgroundColor:
-                        //     (row.auth === "pending" && "#fc0303") ||
-                        //     (row.auth === "active" && "#026300"),
-                        // }}
                       >
                         <MenuItem value={"pending"}>Pendiente</MenuItem>
                         <MenuItem value={"active"}>activo</MenuItem>
