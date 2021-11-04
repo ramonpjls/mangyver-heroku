@@ -148,8 +148,8 @@ function ShowNotificaciones() {
               {newState.endHour}
             </Typography>
             <Typography variant="body2">
-              <Typography variant="h6">Se realizo la tarea: </Typography>
-              {newState.isDone}
+              <Typography variant="h6">¿Se realizo la orden?: </Typography>
+              {isDone}
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">Comentario: </Typography>
