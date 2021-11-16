@@ -102,7 +102,7 @@ function ShowAvisos() {
       })
       .catch((err) => {
         console.warn(err);
-        // window.location.reload();
+        window.location.reload();
       });
   }, []);
 

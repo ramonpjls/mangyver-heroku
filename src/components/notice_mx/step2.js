@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@mui/styles";
 import {
   Container,
   Typography,
@@ -10,15 +11,24 @@ import {
   ListItem,
   ListItemText,
   ListItemButton,
-  InputAdornment,
   ListSubheader,
+  InputAdornment,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
-import SearchIcon from "@mui/icons-material/Search";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    color: "#fff",
+  },
+}));
 
 const Step2 = () => {
+  const classes = useStyles();
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState("");
   const [departamentoValue, setDepartamentoValue] = useState("");
@@ -49,23 +59,24 @@ const Step2 = () => {
 
   const [keyword, setKeyword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const history = useHistory();
 
   const data = {
     process: "CE2B8484-0901-EC11-B563-2818780EF919",
     failureTime: failureTimes,
     department: departamentoValue,
-    line: lineValue,
+    lineId: lineValue,
     equipmentType: tipoEquipoValue,
-
-    cardType: tarjetaTipoValue,
+    cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridadValue,
-    components: componenteValue,
-    breakdown: causaAveriaValue,
-    failureType: tipoFallaValue,
+    priorityId: prioridadValue,
+    componentsId: componenteValue,
+    breakdownId: causaAveriaValue,
+    failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
-    affects: afectaValue,
+    affectsId: afectaValue,
   };
 
   const completeFormStep = () => {
@@ -217,6 +228,7 @@ const Step2 = () => {
   }, [departamentoValue]);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("/machines", {
         params: {
@@ -225,6 +237,7 @@ const Step2 = () => {
       })
       .then((response) => {
         setTipoEquipo(response.data);
+        setLoading(false);
       });
   }, [lineValue]);
 
@@ -262,60 +275,66 @@ const Step2 = () => {
               </MenuItem>
             ))}
           </Select>
-          <Typography>Tipo de Equipo</Typography>
-          <List
-            sx={{
-              width: "100%",
-              maxWidth: 500,
-              bgcolor: "background.paper",
-              position: "relative",
-              overflow: "auto",
-              maxHeight: 300,
-            }}
-            style={gnrStyle}
-          >
-            <ListSubheader>
-              <TextField
-                type="text"
-                size="small"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Seleccione el campo"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="large" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListSubheader>
-            {tipoEquipo
-              // eslint-disable-next-line array-callback-return
-              .filter((item) => {
-                if (keyword === "") {
-                  return item;
-                } else if (
-                  item.name.toLowerCase().includes(keyword.toLowerCase())
-                ) {
-                  return item;
-                }
-              })
-              .map((item) => (
-                <ListItemButton
-                  dense
-                  divider
-                  disableGutters
-                  selected={tipoEquipoValue === item.id}
-                  onClick={(event) => handleListItemClick(event, item.id)}
-                >
-                  <ListItem key={item.id}>
-                    <ListItemText primary={item.name} />
-                  </ListItem>
-                </ListItemButton>
-              ))}
-          </List>
+          <Typography>Equipo</Typography>
+          {loading ? (
+            <Backdrop className={classes.backdrop} open>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          ) : (
+            <List
+              style={gnrStyle}
+              sx={{
+                width: "100%",
+                maxWidth: 500,
+                bgcolor: "background.paper",
+                position: "relative",
+                overflow: "auto",
+                maxHeight: 300,
+              }}
+            >
+              <ListSubheader>
+                <TextField
+                  type="text"
+                  size="small"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="Seleccione el campo"
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon fontSize="large" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListSubheader>
+              {tipoEquipo
+                // eslint-disable-next-line array-callback-return
+                .filter((item) => {
+                  if (keyword === "") {
+                    return item;
+                  } else if (
+                    item.name.toLowerCase().includes(keyword.toLowerCase())
+                  ) {
+                    return item;
+                  }
+                })
+                .map((item) => (
+                  <ListItemButton
+                    dense
+                    divider
+                    disableGutters
+                    selected={tipoEquipoValue === item.id}
+                    onClick={(event) => handleListItemClick(event, item.id)}
+                  >
+                    <ListItem key={item.id}>
+                      <ListItemText primary={item.name} />
+                    </ListItem>
+                  </ListItemButton>
+                ))}
+            </List>
+          )}
         </div>
       );
     }

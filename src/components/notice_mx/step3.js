@@ -22,7 +22,6 @@ const Step3 = () => {
   const [tipoFallaValue, setTipoFallaValue] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afectaValue, setAfectaValue] = useState("");
-
   const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
   const [componente, setComponente] = useState([]);
@@ -37,14 +36,14 @@ const Step3 = () => {
   const data = {
     process: "CF2B8484-0901-EC11-B563-2818780EF919",
     OTCode: nOt,
-    cardType: tarjetaTipoValue,
+    cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridadValue,
-    components: componenteValue,
-    breakdown: causaAveriaValue,
-    failureType: tipoFallaValue,
+    priorityId: prioridadValue,
+    componentsId: componenteValue,
+    breakdownId: causaAveriaValue,
+    failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
-    affects: afectaValue,
+    affectsId: afectaValue,
   };
 
   const completeFormStep = () => {

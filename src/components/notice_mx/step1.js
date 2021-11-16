@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@mui/styles";
 import {
   Container,
   Typography,
@@ -12,13 +13,22 @@ import {
   ListItemButton,
   ListSubheader,
   InputAdornment,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
 
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    color: "#fff",
+  },
+}));
+
 const Step1 = () => {
+  const classes = useStyles();
   const [formStep, setFormStep] = useState(0);
   const [tarjeta, setTarjeta] = useState("");
   const [failureTimes, setFailureTimes] = useState("");
@@ -50,24 +60,25 @@ const Step1 = () => {
   const [keyword, setKeyword] = useState("");
 
   const [disButton, setDisButton] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
   const data = {
-    process: "CD2B8484-0901-EC11-B563-2818780EF919",
+    processId: "CD2B8484-0901-EC11-B563-2818780EF919",
     didCard: tarjeta,
     failureTime: failureTimes,
     department: departamentoValue,
-    line: lineValue,
+    lineId: lineValue,
     equipmentType: tipoEquipoValue,
-    cardType: tarjetaTipoValue,
+    cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridadValue,
-    components: componenteValue,
-    breakdown: causaAveriaValue,
-    failureType: tipoFallaValue,
+    priorityId: prioridadValue,
+    componentsId: componenteValue,
+    breakdownId: causaAveriaValue,
+    failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
-    affects: afectaValue,
+    affectsId: afectaValue,
   };
 
   const completeFormStep = () => {
@@ -219,6 +230,7 @@ const Step1 = () => {
   }, [departamentoValue]);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("/machines", {
         params: {
@@ -227,6 +239,7 @@ const Step1 = () => {
       })
       .then((response) => {
         setTipoEquipo(response.data);
+        setLoading(false);
       });
   }, [lineValue]);
 
@@ -290,59 +303,65 @@ const Step1 = () => {
             ))}
           </Select>
           <Typography>Equipo</Typography>
-          <List
-            style={gnrStyle}
-            sx={{
-              width: "100%",
-              maxWidth: 500,
-              bgcolor: "background.paper",
-              position: "relative",
-              overflow: "auto",
-              maxHeight: 300,
-            }}
-          >
-            <ListSubheader>
-              <TextField
-                type="text"
-                size="small"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Seleccione el campo"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="large" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListSubheader>
-            {tipoEquipo
-              // eslint-disable-next-line array-callback-return
-              .filter((item) => {
-                if (keyword === "") {
-                  return item;
-                } else if (
-                  item.name.toLowerCase().includes(keyword.toLowerCase())
-                ) {
-                  return item;
-                }
-              })
-              .map((item) => (
-                <ListItemButton
-                  dense
-                  divider
-                  disableGutters
-                  selected={tipoEquipoValue === item.id}
-                  onClick={(event) => handleListItemClick(event, item.id)}
-                >
-                  <ListItem key={item.id}>
-                    <ListItemText primary={item.name} />
-                  </ListItem>
-                </ListItemButton>
-              ))}
-          </List>
+          {loading ? (
+            <Backdrop className={classes.backdrop} open>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          ) : (
+            <List
+              style={gnrStyle}
+              sx={{
+                width: "100%",
+                maxWidth: 500,
+                bgcolor: "background.paper",
+                position: "relative",
+                overflow: "auto",
+                maxHeight: 300,
+              }}
+            >
+              <ListSubheader>
+                <TextField
+                  type="text"
+                  size="small"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="Seleccione el campo"
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon fontSize="large" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListSubheader>
+              {tipoEquipo
+                // eslint-disable-next-line array-callback-return
+                .filter((item) => {
+                  if (keyword === "") {
+                    return item;
+                  } else if (
+                    item.name.toLowerCase().includes(keyword.toLowerCase())
+                  ) {
+                    return item;
+                  }
+                })
+                .map((item) => (
+                  <ListItemButton
+                    dense
+                    divider
+                    disableGutters
+                    selected={tipoEquipoValue === item.id}
+                    onClick={(event) => handleListItemClick(event, item.id)}
+                  >
+                    <ListItem key={item.id}>
+                      <ListItemText primary={item.name} />
+                    </ListItem>
+                  </ListItemButton>
+                ))}
+            </List>
+          )}
         </div>
       );
     }
@@ -376,22 +395,28 @@ const Step1 = () => {
             <Typography align="left" variant="h5">
               Departamento
             </Typography>
-            <Select
-              id="departamento"
-              variant="outlined"
-              fullWidth
-              required
-              value={departamentoValue}
-              onChange={(e) => setDepartamentoValue(e.target.value)}
-              size="small"
-              style={gnrStyle}
-            >
-              {departamento.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+            {loading ? (
+              <Backdrop className={classes.backdrop} open>
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            ) : (
+              <Select
+                id="departamento"
+                variant="outlined"
+                fullWidth
+                required
+                value={departamentoValue}
+                onChange={(e) => setDepartamentoValue(e.target.value)}
+                size="small"
+                style={gnrStyle}
+              >
+                {departamento.map((elemento) => (
+                  <MenuItem key={elemento.id} value={elemento.id}>
+                    {elemento.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
             {renderCodigoEquipo()}
           </section>
         )}
