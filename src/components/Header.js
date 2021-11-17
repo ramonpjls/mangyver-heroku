@@ -31,6 +31,7 @@ import Noticereport from "./noticeReport";
 import Notifications from "./notifications";
 import UserManagement from "./userManagement";
 import ShowNotificaciones from "./ShowNotificaciones";
+import Notificationsreport from "./notificationsReport";
 import Home from "./notice_mx/home";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
@@ -227,6 +228,14 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de avisos" />
             </ListItem>
           </Link>
+          <Link style={{ textDecoration: "none" }} to="/Noticereport">
+            <ListItem>
+              <ListItemIcon>
+                <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+              </ListItemIcon>
+              <ListItemText primary="Descargar Avisos" />
+            </ListItem>
+          </Link>
           <Link style={{ textDecoration: "none" }} to="/ShowNotificaciones">
             <ListItem>
               <ListItemIcon>
@@ -245,12 +254,12 @@ export default function MiniDrawer() {
               <ListItemText primary="Creacion de Notificaciones" />
             </ListItem>
           </Link>
-          <Link style={{ textDecoration: "none" }} to="/Noticereport">
+          <Link style={{ textDecoration: "none" }} to="/Notificationsreport">
             <ListItem>
               <ListItemIcon>
                 <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
               </ListItemIcon>
-              <ListItemText primary="Descargar Avisos" />
+              <ListItemText primary="Descargar de Notificaciones" />
             </ListItem>
           </Link>
         </List>
@@ -275,6 +284,9 @@ export default function MiniDrawer() {
         </Route>
         <Route path="/Notifications">
           <Protected component={Notifications} />
+        </Route>
+        <Route path="/Notificationsreport">
+          <Protected component={Notificationsreport} />
         </Route>
       </Box>
     </Box>
