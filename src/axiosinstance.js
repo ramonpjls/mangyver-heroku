@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instace = axios.create({
-  baseURL: "https://mangyver.herokuapp.com/api/v1",
+  baseURL: "https://sta-mangyver.herokuapp.com/api/v1",
   // headers: { "Content-Type": "application/json" },
 });
 

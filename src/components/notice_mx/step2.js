@@ -81,6 +81,7 @@ const Step2 = () => {
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+    setTipoEquipo([]);
   };
 
   const backBtn = () => {
@@ -339,6 +340,8 @@ const Step2 = () => {
       );
     }
   };
+
+  console.log(tipoEquipoValue);
 
   useEffect(() => {
     if (failureTimes !== "") {

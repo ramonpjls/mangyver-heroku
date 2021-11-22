@@ -81,8 +81,11 @@ const Step1 = () => {
     affectsId: afectaValue,
   };
 
+  console.log(tipoEquipoValue);
+
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+    setTipoEquipo([]);
   };
 
   const submitForm = () => {

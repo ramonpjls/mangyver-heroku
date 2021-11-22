@@ -198,6 +198,7 @@ const Login = () => {
                   direction="row"
                   spacing={2}
                   justifyContent="center"
+                  style={{ visibility: "hidden" }}
                 >
                   <Link style={{ textDecoration: "none" }} to="/Register">
                     <Button variant="text">Registrate aqui</Button>
