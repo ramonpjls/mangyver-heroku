@@ -264,23 +264,19 @@ function ShowAvisos() {
                       <Typography>{row.technicalLocation}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.cardtypeId}</Typography>
+                      <Typography>{row.cardtype}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.cardDescription}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.breakdownId}</Typography>
+                      <Typography>{row.breakdown}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         className={classes.status}
                         style={{
-                          backgroundColor:
-                            (row.priority === "Muy elevado" && "#B855E5") ||
-                            (row.priority === "Alto" && "#E05E54") ||
-                            (row.priority === "Medio" && "#E8AB51") ||
-                            (row.priority === "Bajo" && "#86A9E1"),
+                          backgroundColor: `#${row.priorityColor}`,
                         }}
                       >
                         {row.priority}
