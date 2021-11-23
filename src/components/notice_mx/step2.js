@@ -220,7 +220,7 @@ const Step2 = () => {
     axios
       .get("/lines", {
         params: {
-          area: departamentoValue,
+          areaId: departamentoValue,
         },
       })
       .then((response) => {
@@ -233,7 +233,7 @@ const Step2 = () => {
     axios
       .get("/machines", {
         params: {
-          line: lineValue,
+          lineId: lineValue,
         },
       })
       .then((response) => {
@@ -340,8 +340,6 @@ const Step2 = () => {
       );
     }
   };
-
-  console.log(tipoEquipoValue);
 
   useEffect(() => {
     if (failureTimes !== "") {

@@ -39,12 +39,17 @@ const Notificationsreport = () => {
   }, [start, end]);
 
   const headers = [
-    { label: "Numero de OT", key: "OTCode" },
-    { label: "Fecha de inicio de la tarea", key: "startHour" },
-    { label: "Fecha de finalizacion de la tarea", key: "endHour" },
-    { label: "Codigo del equipo", key: "equipmentCode" },
-    { label: "¿Se realizo la orden?", key: "isDone" },
-    { label: "Comentarios", key: "comments" },
+    { label: "ORDEN", key: "OTCode" },
+    { label: "OPERACION", key: "operationName" },
+    { label: "SAP", key: "SAP" },
+    { label: "FECHA DE NOTIFICACION", key: "notificationDate" },
+    { label: "TIEMPO REAL", key: "realTime" },
+    { label: "TIEMPO", key: "time" },
+    { label: "TEXTO1", key: "text1" },
+    { label: "TEXTO2", key: "text2" },
+    { label: "TEXTO3", key: "text3" },
+    { label: "TEXTO4", key: "text4" },
+    { label: "MOTIVO DESVIACION", key: "deviation" },
   ];
 
   const ReportSet = {

@@ -81,8 +81,6 @@ const Step1 = () => {
     affectsId: afectaValue,
   };
 
-  console.log(tipoEquipoValue);
-
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
     setTipoEquipo([]);
@@ -224,7 +222,7 @@ const Step1 = () => {
     axios
       .get("/lines", {
         params: {
-          area: departamentoValue,
+          areaId: departamentoValue,
         },
       })
       .then((response) => {
@@ -237,7 +235,7 @@ const Step1 = () => {
     axios
       .get("/machines", {
         params: {
-          line: lineValue,
+          lineId: lineValue,
         },
       })
       .then((response) => {
