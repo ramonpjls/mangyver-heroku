@@ -343,7 +343,10 @@ const Step1 = () => {
                   if (keyword === "") {
                     return item;
                   } else if (
-                    item.name.toLowerCase().includes(keyword.toLowerCase())
+                    item.label
+                      .replace(/ /g, " ")
+                      .toLowerCase()
+                      .includes(keyword.toLowerCase())
                   ) {
                     return item;
                   }
