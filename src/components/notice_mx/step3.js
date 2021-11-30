@@ -34,11 +34,11 @@ const Step3 = () => {
   const history = useHistory();
 
   const data = {
-    process: "CF2B8484-0901-EC11-B563-2818780EF919",
+    processId: "CF2B8484-0901-EC11-B563-2818780EF919",
     OTCode: nOt,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priorityId: prioridadValue,
+    priority: prioridadValue,
     componentsId: componenteValue,
     breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,

@@ -64,14 +64,14 @@ const Step2 = () => {
   const history = useHistory();
 
   const data = {
-    process: "CE2B8484-0901-EC11-B563-2818780EF919",
+    processId: "CE2B8484-0901-EC11-B563-2818780EF919",
     failureTime: failureTimes,
-    department: departamentoValue,
+    departmentId: departamentoValue,
     lineId: lineValue,
-    equipmentType: tipoEquipoValue,
+    equipmentId: tipoEquipoValue,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priorityId: prioridadValue,
+    priority: prioridadValue,
     componentsId: componenteValue,
     breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,
@@ -316,10 +316,7 @@ const Step2 = () => {
                   if (keyword === "") {
                     return item;
                   } else if (
-                    item.label
-                      .replace(/ /g, " ")
-                      .toLowerCase()
-                      .includes(keyword.toLowerCase())
+                    item.name.toLowerCase().includes(keyword.toLowerCase())
                   ) {
                     return item;
                   }

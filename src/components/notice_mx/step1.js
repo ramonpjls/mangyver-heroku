@@ -68,12 +68,12 @@ const Step1 = () => {
     processId: "CD2B8484-0901-EC11-B563-2818780EF919",
     didCard: tarjeta,
     failureTime: failureTimes,
-    department: departamentoValue,
+    departmentId: departamentoValue,
     lineId: lineValue,
-    equipmentType: tipoEquipoValue,
+    equipmentId: tipoEquipoValue,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priorityId: prioridadValue,
+    priority: prioridadValue,
     componentsId: componenteValue,
     breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,
@@ -343,10 +343,7 @@ const Step1 = () => {
                   if (keyword === "") {
                     return item;
                   } else if (
-                    item.label
-                      .replace(/ /g, " ")
-                      .toLowerCase()
-                      .includes(keyword.toLowerCase())
+                    item.name.toLowerCase().includes(keyword.toLowerCase())
                   ) {
                     return item;
                   }
