@@ -214,6 +214,9 @@ function ShowAvisos() {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
+                  Tipo de Aviso
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
                   Titulo de Aviso
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
@@ -257,6 +260,9 @@ function ShowAvisos() {
                     hover
                     onClick={() => setIdValue(row.id)}
                   >
+                    <TableCell>
+                      <Typography>{row.process}</Typography>
+                    </TableCell>
                     <TableCell>
                       <Typography>{row.cardTitle}</Typography>
                     </TableCell>
