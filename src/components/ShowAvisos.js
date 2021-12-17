@@ -128,7 +128,7 @@ function ShowAvisos() {
             <div key={newRow.id}>
               <Typography variant="body2">
                 <Typography variant="h6">Creado por:</Typography>
-                {newRow.userName}
+                {newRow.autor}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Departamento:</Typography>
@@ -156,7 +156,7 @@ function ShowAvisos() {
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Tipo de tarjeta:</Typography>
-                {newRow.cardtypeId}
+                {newRow.cardtype}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Descripcion de la tarjeta:</Typography>
@@ -164,11 +164,11 @@ function ShowAvisos() {
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Componente dañado:</Typography>
-                {newRow.componentsId}
+                {newRow.component}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Tipo de falla:</Typography>
-                {newRow.failureTypeId}
+                {newRow.GrupoPlanificador}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Afecta a:</Typography>

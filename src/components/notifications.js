@@ -64,7 +64,7 @@ const Notifications = () => {
   };
 
   useEffect(() => {
-    if (norden === true) {
+    if (norden === false) {
       setDisSelect(false);
     } else {
       setDeviation("");

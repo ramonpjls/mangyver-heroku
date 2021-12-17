@@ -31,8 +31,8 @@ const Step2 = () => {
   const classes = useStyles();
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState("");
-  const [departamentoValue, setDepartamentoValue] = useState("");
-  const [lineValue, setLineValue] = useState("");
+  const [departamentoValue, setDepartamentoValue] = useState(0);
+  const [lineValue, setLineValue] = useState(0);
   const [tipoEquipoValue, setTipoEquipoValue] = useState("");
 
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
@@ -229,7 +229,7 @@ const Step2 = () => {
   }, [departamentoValue]);
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     axios
       .get("/machines", {
         params: {
@@ -238,7 +238,7 @@ const Step2 = () => {
       })
       .then((response) => {
         setTipoEquipo(response.data);
-        setLoading(false);
+        // setLoading(false);
       });
   }, [lineValue]);
 

@@ -32,7 +32,9 @@ const Step1 = () => {
   const [formStep, setFormStep] = useState(0);
   const [tarjeta, setTarjeta] = useState("");
   const [failureTimes, setFailureTimes] = useState("");
-  const [departamentoValue, setDepartamentoValue] = useState("");
+
+  const [departamentoValue, setDepartamentoValue] = useState(0);
+  const [lineValue, setLineValue] = useState(0);
 
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
   const [tarjetaTitulo, setTarjetaTitulo] = useState("");
@@ -42,8 +44,6 @@ const Step1 = () => {
   const [tipoFallaValue, setTipoFallaValue] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afectaValue, setAfectaValue] = useState("");
-
-  const [lineValue, setLineValue] = useState("");
   const [tipoEquipoValue, setTipoEquipoValue] = useState("");
 
   const [departamento, setDepartamento] = useState([]);
@@ -199,11 +199,11 @@ const Step1 = () => {
   useEffect(async () => {
     await axios.get("/areas").then((response) => {
       setDepartamento(response.data);
+      setTipoEquipo([]);
     });
     await axios.get("/breakdowns").then((response) => {
       setCausaAveria(response.data);
     });
-
     await axios.get("/components").then((response) => {
       setComponente(response.data);
     });
@@ -227,11 +227,12 @@ const Step1 = () => {
       })
       .then((response) => {
         setLines(response.data);
+        setTipoEquipo([]);
       });
   }, [departamentoValue]);
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     axios
       .get("/machines", {
         params: {
@@ -240,7 +241,7 @@ const Step1 = () => {
       })
       .then((response) => {
         setTipoEquipo(response.data);
-        setLoading(false);
+        // setLoading(false);
       });
   }, [lineValue]);
 
@@ -253,6 +254,7 @@ const Step1 = () => {
       })
       .then((response) => {
         setTarjetaTipo(response.data);
+        setTipoEquipo([]);
       });
   }, []);
 

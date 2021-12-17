@@ -45,11 +45,11 @@ const Notificationsreport = () => {
     { label: "FECHA DE NOTIFICACION", key: "notificationDate" },
     { label: "TIEMPO REAL", key: "realTime" },
     { label: "TIEMPO", key: "time" },
-    { label: "TEXTO1", key: "text1" },
-    { label: "TEXTO2", key: "text2" },
-    { label: "TEXTO3", key: "text3" },
-    { label: "TEXTO4", key: "text4" },
-    { label: "MOTIVO DESVIACION", key: "deviation" },
+    { label: "TEXTO1", key: "Text1" },
+    { label: "TEXTO2", key: "Text2" },
+    { label: "TEXTO3", key: "Text3" },
+    { label: "TEXTO4", key: "Text4" },
+    { label: "MOTIVO DESVIACION", key: "Deviation" },
   ];
 
   const ReportSet = {
