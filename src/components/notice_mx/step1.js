@@ -73,7 +73,7 @@ const Step1 = () => {
     equipmentId: tipoEquipoValue,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridadValue,
+    priorityId: prioridadValue,
     componentsId: componenteValue,
     breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,

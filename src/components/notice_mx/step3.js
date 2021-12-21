@@ -38,7 +38,7 @@ const Step3 = () => {
     OTCode: nOt,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridadValue,
+    priorityId: prioridadValue,
     componentsId: componenteValue,
     breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,
