@@ -31,7 +31,7 @@ const Notifications = () => {
   const data = {
     deviation: deviation,
     operationNum: noperacion,
-    OTCode: otCode,
+    otCode: otCode,
     startHour: horaInicio,
     endHour: horaFin,
     isDone: norden,

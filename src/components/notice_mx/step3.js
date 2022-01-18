@@ -35,7 +35,7 @@ const Step3 = () => {
 
   const data = {
     processId: "CF2B8484-0901-EC11-B563-2818780EF919",
-    OTCode: nOt,
+    otCode: nOt,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priorityId: prioridadValue,
