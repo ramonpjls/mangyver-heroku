@@ -137,7 +137,7 @@ function ShowNotificaciones() {
           <div key={newState.id}>
             <Typography variant="body2">
               <Typography variant="h6">Numero de OT: </Typography>
-              {newState.OTCode}
+              {newState.otCode}
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">Hora de inicio: </Typography>
@@ -215,7 +215,7 @@ function ShowNotificaciones() {
                   if (keyword === "") {
                     return row;
                   } else if (
-                    row.OTCode.toLowerCase().includes(keyword.toLowerCase())
+                    row.otCode.toLowerCase().includes(keyword.toLowerCase())
                   ) {
                     return row;
                   }
@@ -227,7 +227,7 @@ function ShowNotificaciones() {
                     onClick={() => setIdValue(row.id)}
                   >
                     <TableCell>
-                      <Typography>{row.OTCode}</Typography>
+                      <Typography>{row.otCode}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.startHour}</Typography>
