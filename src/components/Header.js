@@ -30,6 +30,7 @@ import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.png";
 
 import { Link, Route } from "react-router-dom";
+import { set } from "react-hook-form";
 
 const drawerWidth = 300;
 
@@ -101,7 +102,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState("");
+  const [userInfo, setUserInfo] = useState("User Info");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -112,19 +113,29 @@ export default function MiniDrawer() {
   };
 
   const forgetToken = () => {
+    setUserInfo("");
     localStorage.clear();
+    console.log("se ejecuto el boton");
+  };
+
+  const forgetUser = () => {
+    console.log(userInfo, "hola este es el usuario");
+    // return setUserInfo("");
+    // localStorage.clear();
   };
 
   useEffect(() => {
     axios
       .get("/profiles")
       .then((res) => {
-        return setUserInfo(res.data.profile.name);
+        let userName = res.data.profile.name;
+        setUserInfo(userName);
+        console.log("se ejecuta el efecto");
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [userInfo]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -219,6 +230,16 @@ export default function MiniDrawer() {
               <ListItemText primary="Descargar Avisos" />
             </ListItem>
           </Link>
+          <Divider />
+          <ListItem>
+            <ListItemIcon>
+              <ModeCommentIcon
+                onClick={forgetUser}
+                style={{ color: "#3f51b5", fontSize: 40 }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="usuario" />
+          </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

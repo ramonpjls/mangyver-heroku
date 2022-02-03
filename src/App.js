@@ -22,7 +22,7 @@ function App() {
           <Route path="/Home">
             <Protected component={Home} />
           </Route>
-          <Route path="/Home">
+          <Route path="/home">
             <Protected component={Home} />
           </Route>
         </Switch>
