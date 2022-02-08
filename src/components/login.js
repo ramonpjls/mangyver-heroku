@@ -18,7 +18,7 @@ import { Redirect, Link } from "react-router-dom";
 import axios from "../axiosinstance";
 
 import LogoG from "../assets/LogoG.png";
-import LandingLogin from "../assets/landing.png";
+import LandingLogin from "../assets/landing.jpg";
 
 // function alertFunc(props) {
 //   return <Alert elevation={6} variant="filled" {...props} />;

@@ -110,7 +110,7 @@ const Step3 = () => {
     if (formStep === 0) {
       return (
         <Button style={gnrStyle} variant="outlined" disabled>
-          Back
+          Atras
         </Button>
       );
     } else if (formStep > 1) {
@@ -118,7 +118,7 @@ const Step3 = () => {
     } else {
       return (
         <Button style={btnBckStyle} variant="outlined" onClick={backBtn}>
-          Back
+          Atras
         </Button>
       );
     }
@@ -136,7 +136,7 @@ const Step3 = () => {
           color="primary"
           onClick={submitForm}
         >
-          Submit Form
+          Enviar Aviso
         </Button>
       );
     } else {
@@ -147,7 +147,7 @@ const Step3 = () => {
           onClick={completeFormStep}
           disabled={disButton}
         >
-          Next
+          Siguiente
         </Button>
       );
     }

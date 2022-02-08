@@ -151,7 +151,7 @@ const Step1 = () => {
     if (formStep < 0) {
       return (
         <Button style={gnrStyle} variant="outlined" disabled>
-          Back
+          Atras
         </Button>
       );
     } else if (formStep > 2) {
@@ -159,7 +159,7 @@ const Step1 = () => {
     } else {
       return (
         <Button style={btnBckStyle} variant="outlined" onClick={backBtn}>
-          Back
+          Atras
         </Button>
       );
     }
@@ -176,7 +176,7 @@ const Step1 = () => {
           color="primary"
           onClick={submitForm}
         >
-          Submit Form
+          Enviar Aviso
         </Button>
       );
     } else {
@@ -187,7 +187,7 @@ const Step1 = () => {
           onClick={completeFormStep}
           disabled={disButton}
         >
-          Next
+          Siguiente
         </Button>
       );
     }
@@ -197,66 +197,73 @@ const Step1 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/areas").then((response) => {
-      setDepartamento(response.data);
-      setTipoEquipo([]);
-    });
-    await axios.get("/breakdowns").then((response) => {
-      setCausaAveria(response.data);
-    });
-    await axios.get("/components").then((response) => {
-      setComponente(response.data);
-    });
-    await axios.get("/priorities").then((response) => {
-      setPrioridad(response.data);
-    });
-    await axios.get("/type-fails").then((response) => {
-      setTipoFalla(response.data);
-    });
-    await axios.get("/affects").then((response) => {
-      setAfecta(response.data);
-    });
-  }, []);
+    if (formStep === 2) {
+      setLoading(true);
+      await axios
+        .get("/cards", {
+          params: {
+            process: "CD2B8484-0901-EC11-B563-2818780EF919",
+          },
+        })
+        .then((response) => {
+          setTarjetaTipo(response.data);
+        });
+      await axios.get("/breakdowns").then((response) => {
+        setCausaAveria(response.data);
+      });
+      await axios.get("/components").then((response) => {
+        setComponente(response.data);
+      });
+      await axios.get("/priorities").then((response) => {
+        setPrioridad(response.data);
+      });
+      await axios.get("/type-fails").then((response) => {
+        setTipoFalla(response.data);
+      });
+      await axios.get("/affects").then((response) => {
+        setAfecta(response.data);
+        setLoading(false);
+      });
+    }
+  }, [formStep]);
 
   useEffect(() => {
-    axios
-      .get("/lines", {
-        params: {
-          areaId: departamentoValue,
-        },
-      })
-      .then((response) => {
-        setLines(response.data);
-        setTipoEquipo([]);
-      });
+    if (departamentoValue !== 0) {
+      axios
+        .get("/lines", {
+          params: {
+            areaId: departamentoValue,
+          },
+        })
+        .then((response) => {
+          setLines(response.data);
+          setLoading(false);
+        });
+    }
   }, [departamentoValue]);
 
   useEffect(() => {
-    // setLoading(true);
-    axios
-      .get("/machines", {
-        params: {
-          lineId: lineValue,
-        },
-      })
-      .then((response) => {
-        setTipoEquipo(response.data);
-        // setLoading(false);
-      });
+    if (lineValue !== 0) {
+      setLoading(true);
+      axios
+        .get("/machines", {
+          params: {
+            lineId: lineValue,
+          },
+        })
+        .then((response) => {
+          setTipoEquipo(response.data);
+          setLoading(false);
+        });
+    }
   }, [lineValue]);
 
   useEffect(() => {
-    axios
-      .get("/cards", {
-        params: {
-          process: "CD2B8484-0901-EC11-B563-2818780EF919",
-        },
-      })
-      .then((response) => {
-        setTarjetaTipo(response.data);
-        setTipoEquipo([]);
+    if (formStep === 0)
+      axios.get("/areas").then((response) => {
+        setDepartamento(response.data);
       });
-  }, []);
+  }, [formStep]);
 
   const rndrFalla = () => {
     if (tarjeta === "si") {

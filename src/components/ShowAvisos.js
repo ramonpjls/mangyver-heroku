@@ -93,17 +93,19 @@ function ShowAvisos() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get("/notices")
-      .then((res) => {
-        setNotice(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.warn(err);
-        window.location.reload();
-      });
+    if (setNotice !== []) {
+      setLoading(true);
+      axios
+        .get("/notices")
+        .then((res) => {
+          setNotice(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.warn(err);
+          window.location.reload();
+        });
+    }
   }, []);
 
   useEffect(() => {
