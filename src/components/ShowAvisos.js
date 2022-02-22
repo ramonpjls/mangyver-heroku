@@ -24,13 +24,12 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: 400,
+    minWidth: 40,
   },
   tableContainer: {
     borderRadius: 15,
     margin: "10px 0",
-    maxHeight: 540,
-    maxWidth: 1050,
+    maxHeight: 740,
   },
   tableHeaderCell: {
     fontWeight: "bold",
