@@ -7,96 +7,51 @@ import {
   Select,
   InputLabel,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import axios from "../axiosinstance";
-import Swal from "sweetalert2";
-
-import LogoG from "../assets/LogoG.png";
-import PasswordStrengthIndicator from "./passwordStrengthIndicator";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-
-const isNumberRegx = /\d/;
-// eslint-disable-next-line
-const specialCharacterRegx = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
-const alphaExp = /[A-Z]*$/g;
+import axios from "../../axiosinstance";
 
 //todos los campos seran requeridos menos codigo sap y subarea
 
-const Register = () => {
-  const [passwordFocused, setPasswordFocused] = useState(false);
-  const [error, setError] = useState(true);
-  const [buttonDis, setButtonDis] = useState(true);
-  const [helperError, setHelperError] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [fullName, setFullName] = useState("");
+const UserForm = (props) => {
   const [operations, setOperations] = useState([]);
   const [role, setRole] = useState([]);
-
-  const [nameValue, setNameValue] = useState("");
-  const [lastNameValue, setLastNameValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [sapCodeValue, setSapCodeValue] = useState("");
-  const [sapUserValue, setSapUserValue] = useState("");
-  const [plantaValue, setPlantaValue] = useState("");
-  const [roleValue, setRoleValue] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordValidity, setPasswordValidity] = useState({
-    minChar: null,
-    number: null,
-    mayusChar: null,
-    specialChar: null,
-  });
-
-  const onChangePassword = (password) => {
-    setPassword(password);
-
-    setPasswordValidity({
-      mayusChar: alphaExp.test(password) ? true : false,
-      minChar: password.length >= 8 ? true : false,
-      number: isNumberRegx.test(password) ? true : false,
-      specialChar: specialCharacterRegx.test(password) ? true : false,
-    });
-  };
-
-  useEffect(() => {
-    if (password === confirmPassword) {
-      setError(false);
-      setHelperError("");
-      setButtonDis(false);
-    } else {
-      setButtonDis(true);
-      setError(true);
-      setHelperError("debe coincidir las contraseñas");
-    }
-  }, [confirmPassword, password]);
-
-  useEffect(() => {
-    setFullName(nameValue + lastNameValue);
-  }, [nameValue, lastNameValue]);
+  const [area, setArea] = useState([]);
+  const [userId, setUserId] = useState(props.userValue.id);
+  const [authValue, setAuthValue] = useState(props.userValue.auth);
+  const [nameValue, setNameValue] = useState(props.userValue.name);
+  const [emailValue, setEmailValue] = useState(props.userValue.email);
+  const [sapCodeValue, setSapCodeValue] = useState(props.userValue.SAPCode);
+  const [sapUserValue, setSapUserValue] = useState(props.userValue.SAPUser);
+  const [plantaValue, setPlantaValue] = useState(props.userValue.operation.id);
+  const [roleValue, setRoleValue] = useState(props.userValue.role);
+  const [areaValue, setAreaValue] = useState(props.userValue.area);
 
   // eslint-disable-next-line
   const data = {
-    name: fullName,
-    username: emailValue,
-    password: password,
+    name: nameValue,
     email: emailValue,
     role: roleValue,
     operation: plantaValue,
-    area: null,
+    area: areaValue,
     line: null,
     SAPCode: sapCodeValue,
     SAPUser: sapUserValue,
+    auth: authValue,
   };
 
   const HandleSubmit = (e) => {
     e.preventDefault();
 
-    Swal.fire({
-      text: "Creado exitosamente",
-      icon: "success",
-      showConfirmButton: false,
-    });
+    console.log(data);
+
+    axios
+      .put(`/users/${userId}`, { data })
+      .then((res) => {
+        console.log(res);
+        //window.location.reload();
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
   };
 
   useEffect(() => {
@@ -111,20 +66,15 @@ const Register = () => {
     });
   }, []);
 
+  useEffect(() => {
+    axios.get("/areas").then((response) => {
+      setArea(response.data);
+    });
+  }, []);
+
   return (
     <div>
-      <Grid>
-        <Link style={{ textDecoration: "none" }} to="/Login" replace>
-          <Button
-            color="info"
-            variant="contained"
-            startIcon={<KeyboardBackspaceIcon />}
-          >
-            Ir a inicio de sesion
-          </Button>
-        </Link>
-      </Grid>
-      <form onSubmit={HandleSubmit}>
+      <form style={{ paddingTop: "1rem" }} onSubmit={HandleSubmit}>
         <Grid
           container
           direction="column"
@@ -138,9 +88,6 @@ const Register = () => {
             direction="column"
             justifyContent="center"
           >
-            <Grid container alignItems="center" justifyContent="center">
-              <img src={LogoG} alt={LogoG} />
-            </Grid>
             <Grid
               container
               item
@@ -149,7 +96,7 @@ const Register = () => {
               spacing={2}
               justifyContent="center"
             >
-              <Grid item xs={4}>
+              <Grid item xs={8}>
                 <InputLabel> Nombres </InputLabel>
                 <TextField
                   variant="outlined"
@@ -157,17 +104,6 @@ const Register = () => {
                   size="small"
                   value={nameValue}
                   onChange={(e) => setNameValue(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <InputLabel> Apellidos </InputLabel>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  type="Text"
-                  value={lastNameValue}
-                  onChange={(e) => setLastNameValue(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -204,7 +140,7 @@ const Register = () => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  type="number"
+                  type="text"
                   value={sapCodeValue}
                   onChange={(e) => setSapCodeValue(e.target.value)}
                 />
@@ -215,7 +151,7 @@ const Register = () => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  type="number"
+                  type="text"
                   value={sapUserValue}
                   onChange={(e) => setSapUserValue(e.target.value)}
                 />
@@ -275,43 +211,37 @@ const Register = () => {
               justifyContent="center"
             >
               <Grid item xs={4}>
-                <InputLabel> Contraseña </InputLabel>
-                <TextField
+                <InputLabel> Area </InputLabel>
+                <Select
+                  id="departamento"
                   variant="outlined"
                   fullWidth
+                  required
+                  value={areaValue}
+                  onChange={(e) => setAreaValue(e.target.value)}
                   size="small"
-                  type="Password"
-                  value={password}
-                  onChange={(e) => onChangePassword(e.target.value)}
-                  onFocus={() => setPasswordFocused(true)}
-                />
+                >
+                  {area.map((elemento) => (
+                    <MenuItem key={elemento.id} value={elemento.id}>
+                      {elemento.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={4}>
-                <InputLabel> Confirme su contraseña </InputLabel>
-                <TextField
-                  error={error}
+                <InputLabel> Estatus </InputLabel>
+                <Select
+                  id="role"
                   variant="outlined"
                   fullWidth
+                  required
+                  value={authValue}
+                  onChange={(e) => setAuthValue(e.target.value)}
                   size="small"
-                  type="Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  helperText={helperError}
-                />
-              </Grid>
-              <Grid
-                container
-                item
-                alignItems="center"
-                direction="row"
-                spacing={2}
-                justifyContent="center"
-              >
-                <Grid item>
-                  {passwordFocused && (
-                    <PasswordStrengthIndicator validity={passwordValidity} />
-                  )}
-                </Grid>
+                >
+                  <MenuItem value={"pending"}>Pendiente</MenuItem>
+                  <MenuItem value={"active"}>activo</MenuItem>
+                </Select>
               </Grid>
             </Grid>
             <Grid
@@ -321,13 +251,8 @@ const Register = () => {
               justifyContent="space-evenly"
             >
               <Grid>
-                <Button
-                  type="submit"
-                  color="primary"
-                  variant="contained"
-                  disabled={buttonDis}
-                >
-                  Enviar solicitud
+                <Button type="submit" color="primary" variant="contained">
+                  Actualizar usuario
                 </Button>
               </Grid>
             </Grid>
@@ -338,4 +263,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UserForm;

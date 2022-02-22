@@ -1,4 +1,4 @@
-import axios from "../axiosinstance";
+import axios from "../../axiosinstance";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import {
@@ -15,13 +15,13 @@ import {
   Container,
   TextField,
   InputAdornment,
-  Select,
   Grid,
-  Switch,
-  MenuItem,
+  Box,
+  Modal,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
+import UserForm from "./userForm";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -59,10 +59,11 @@ function UserManagement() {
   const [users, setUsers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [checked, setChecked] = useState(true);
-  const [authValue, setAuthValue] = useState("");
-  const [idValue, setIdValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [userValue, setUserValue] = useState("");
   // const [reload, setReload] = useState(false);
+
+  const handleClose = () => setOpen(false);
 
   const pageHeader = {
     backgroundColor: "#79A9D1",
@@ -78,17 +79,29 @@ function UserManagement() {
     maxWidth: "100%",
   };
 
-  useEffect(() => {
-    axios
-      .put(`/users/${idValue}`, { auth: authValue })
-      .then((res) => {
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.warn(err);
-        //window.location.reload();
-      });
-  }, [authValue, idValue]);
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 800,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  // useEffect(() => {
+  //   axios
+  //     .put(`/users/${idValue}`, { auth: authValue })
+  //     .then((res) => {
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.warn(err);
+  //       //window.location.reload();
+  //     });
+  // }, [authValue, idValue]);
 
   useEffect(() => {
     setLoading(true);
@@ -102,7 +115,13 @@ function UserManagement() {
         console.warn(err);
         window.location.reload();
       });
-  }, [idValue]);
+  }, [userValue]);
+
+  const getUsers = (item) => {
+    setOpen(true);
+    setUserValue(item);
+    console.log(userValue);
+  };
 
   return (
     <div>
@@ -132,14 +151,6 @@ function UserManagement() {
                 ),
               }}
             />
-          </Grid>
-          <Grid item xs={6} md={2}>
-            <Switch
-              color="default"
-              checked={checked}
-              onChange={(e) => setChecked(e.target.checked)}
-            />
-            <Typography variant="overline">Cambiar estatus</Typography>
           </Grid>
         </Grid>
       </Container>
@@ -183,7 +194,7 @@ function UserManagement() {
                   }
                 })
                 .map((row) => (
-                  <TableRow key={row.id} onClick={() => setIdValue(row.id)}>
+                  <TableRow key={row.id} onClick={() => getUsers(row)}>
                     <TableCell>
                       <Typography>{row.name}</Typography>
                     </TableCell>
@@ -203,19 +214,7 @@ function UserManagement() {
                       <Typography>{row.line}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Select
-                        variant="outlined"
-                        required
-                        id="authValue"
-                        value={row.auth}
-                        onChange={(e) => setAuthValue(e.target.value)}
-                        fullWidth
-                        disabled={checked}
-                        size="small"
-                      >
-                        <MenuItem value={"pending"}>Pendiente</MenuItem>
-                        <MenuItem value={"active"}>activo</MenuItem>
-                      </Select>
+                      <Typography>{row.auth}</Typography>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -223,6 +222,13 @@ function UserManagement() {
           </Table>
         </TableContainer>
       )}
+      <div>
+        <Modal open={open} onClose={handleClose}>
+          <Box sx={style}>
+            <UserForm userValue={userValue} />
+          </Box>
+        </Modal>
+      </div>
     </div>
   );
 }

@@ -10,8 +10,11 @@ import {
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSelector } from "react-redux";
 
 const Step3 = () => {
+  const noticeType = useSelector((state) => state.notice.noticeType);
   const [formStep, setFormStep] = useState(0);
   const [nOt, setNOt] = useState("");
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
@@ -34,7 +37,7 @@ const Step3 = () => {
   const history = useHistory();
 
   const data = {
-    processId: "CF2B8484-0901-EC11-B563-2818780EF919",
+    processId: noticeType.processId,
     otCode: nOt,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
@@ -106,6 +109,17 @@ const Step3 = () => {
     justifyContent: "space-between",
   };
 
+  const Header = {
+    backgroundColor: "#79A9D1",
+    color: "white",
+    borderRadius: "3px",
+    padding: "10px",
+    maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  };
+
   const renderBckBtn = () => {
     if (formStep === 0) {
       return (
@@ -175,16 +189,17 @@ const Step3 = () => {
   }, []);
 
   useEffect(() => {
+    console.log(noticeType.processId);
     axios
       .get("/cards", {
         params: {
-          process: "CF2B8484-0901-EC11-B563-2818780EF919",
+          process: noticeType.processId,
         },
       })
       .then((response) => {
         setTarjetaTipo(response.data);
-      });
-  }, []);
+      }); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nOt]);
 
   useEffect(() => {
     if (nOt !== "") {
@@ -194,9 +209,20 @@ const Step3 = () => {
     }
   }, [nOt]);
 
+  const backHome = () => {
+    window.location.reload();
+  };
+
   return (
     <div>
-      <Container>
+      <Container style={Header}>
+        <ArrowBackIcon
+          style={{ marginRight: "15px", fontWeight: "50px" }}
+          onClick={backHome}
+        />
+        <Typography variant="h5">{noticeType.name}</Typography>
+      </Container>
+      <Container className="formContainer" maxWidth="sm">
         {formStep >= 0 && (
           <section style={formStep === 0 ? {} : { display: "none" }} id="4">
             <Typography align="left" variant="h5">
@@ -346,7 +372,7 @@ const Step3 = () => {
           </section>
         )}
       </Container>
-      <Container style={btnContStyle}>
+      <Container style={btnContStyle} maxWidth="sm">
         {renderBckBtn()}
         {renderBtn()}
       </Container>

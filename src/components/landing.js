@@ -1,5 +1,7 @@
 import { Typography, Grid, Avatar } from "@mui/material";
-import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { types } from "../types/types";
@@ -8,6 +10,7 @@ import axios from "../axiosinstance";
 
 const Landing = () => {
   const user = useSelector((state) => state.user.user);
+  const [disButton, setDisButton] = useState(true);
 
   const dispatch = useDispatch();
   const configCall = {
@@ -15,6 +18,14 @@ const Landing = () => {
       auth: localStorage.getItem("token"),
     },
   };
+
+  useEffect(() => {
+    if (user?.role === null) {
+      setDisButton(true);
+    } else {
+      setDisButton(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     axios
@@ -45,6 +56,13 @@ const Landing = () => {
           <Typography variant="h6" gutterBottom>
             {user?.name}
           </Typography>
+        </Grid>
+        <Grid item>
+          <Link style={{ textDecoration: "none" }} to="/UserManagementLanding">
+            <Button variant="text" disabled={disButton}>
+              Control de usuarios
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </div>

@@ -20,6 +20,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Step2 = () => {
+  const noticeType = useSelector((state) => state.notice.noticeType);
   const classes = useStyles();
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState("");
@@ -64,7 +67,7 @@ const Step2 = () => {
   const history = useHistory();
 
   const data = {
-    processId: "CE2B8484-0901-EC11-B563-2818780EF919",
+    processId: noticeType.processId,
     failureTime: failureTimes,
     departmentId: departamentoValue,
     lineId: lineValue,
@@ -141,6 +144,17 @@ const Step2 = () => {
     justifyContent: "space-between",
   };
 
+  const Header = {
+    backgroundColor: "#79A9D1",
+    color: "white",
+    borderRadius: "3px",
+    padding: "10px",
+    maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  };
+
   const renderBckBtn = () => {
     if (formStep === 0) {
       return (
@@ -201,7 +215,7 @@ const Step2 = () => {
       await axios
         .get("/cards", {
           params: {
-            process: "CD2B8484-0901-EC11-B563-2818780EF919",
+            process: noticeType.processId,
           },
         })
         .then((response) => {
@@ -223,7 +237,7 @@ const Step2 = () => {
         setAfecta(response.data);
         setLoading(false);
       });
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStep]);
 
   useEffect(() => {
@@ -256,6 +270,10 @@ const Step2 = () => {
         });
     }
   }, [lineValue]);
+
+  const backHome = () => {
+    window.location.reload();
+  };
 
   useEffect(() => {
     if (formStep === 0)
@@ -335,6 +353,7 @@ const Step2 = () => {
                   <ListItemButton
                     dense
                     divider
+                    key={item.id}
                     disableGutters
                     selected={tipoEquipoValue === item.id}
                     onClick={(event) => handleListItemClick(event, item.id)}
@@ -361,7 +380,14 @@ const Step2 = () => {
 
   return (
     <div>
-      <Container>
+      <Container style={Header}>
+        <ArrowBackIcon
+          style={{ marginRight: "15px", fontWeight: "50px" }}
+          onClick={backHome}
+        />
+        <Typography variant="h5">{noticeType.name}</Typography>
+      </Container>
+      <Container className="formContainer" maxWidth="sm">
         {formStep >= 0 && (
           <section style={formStep === 0 ? {} : { display: "none" }} id="9">
             <Typography align="left" variant="h5">
@@ -535,7 +561,7 @@ const Step2 = () => {
           </section>
         )}
       </Container>
-      <Container style={btnContStyle}>
+      <Container style={btnContStyle} maxWidth="sm">
         {renderBckBtn()}
         {renderBtn()}
       </Container>

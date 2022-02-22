@@ -6,11 +6,12 @@ import ShowAvisos from "./components/ShowAvisos";
 import ShowNotificaciones from "./components/ShowNotificaciones";
 import Home from "./components/notice_mx/home";
 import Protected from "./components/Potected";
-import Register from "./components/Register";
+import Register from "./components/users/Register";
 import Notifications from "./components/notifications";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import UserManagement from "./components/userManagement";
+import UserManagement from "./components/users/userManagement";
+import UserManagementLanding from "./components/users/UserManagementLanding";
 
 function App() {
   return (
@@ -20,7 +21,6 @@ function App() {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/Login" exact component={Login} />
-            <Route path="/Register" exact component={Register} />
             <Route path="/" component={Header} />
             <Route path="/ShowAvisos">
               <Protected component={ShowAvisos} />
@@ -28,7 +28,13 @@ function App() {
             <Route path="/ShowNotificaciones">
               <Protected component={ShowNotificaciones} />
             </Route>
-            <Route path="/UserManagement">
+            <Route path="/Register">
+              <Protected component={Register} />
+            </Route>
+            <Route path="/UserManagementLanding">
+              <Protected component={UserManagementLanding} />
+            </Route>
+            <Route path="/users">
               <Protected component={UserManagement} />
             </Route>
             <Route path="/Notifications">

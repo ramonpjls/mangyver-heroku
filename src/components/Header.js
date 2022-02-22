@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
+
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -20,7 +20,9 @@ import AddAlertIcon from "@mui/icons-material/AddAlert";
 import Protected from "./Potected";
 import Noticereport from "./noticeReport";
 import Notifications from "./notifications";
-import UserManagement from "./userManagement";
+import UserManagementLanding from "./users/UserManagementLanding";
+import UserManagement from "./users/userManagement";
+import Register from "./users/Register";
 import ShowNotificaciones from "./ShowNotificaciones";
 import Notificationsreport from "./notificationsReport";
 import Home from "./notice_mx/home";
@@ -79,7 +81,7 @@ export default function MiniDrawer() {
           <Logout />
         </Toolbar>
       </AppBar>
-      <List style={{ border: "solid #EEEEEA 1px", height: "100rem" }}>
+      <List style={{ border: "solid #EEEEEA 1px", height: "50rem" }}>
         <Grid
           paddingTop="70px"
           container
@@ -88,11 +90,6 @@ export default function MiniDrawer() {
           alignItems="center"
         >
           <Landing />
-          <Grid item>
-            <Link style={{ textDecoration: "none" }} to="/UserManagement">
-              <Button variant="text">Control de usuarios</Button>
-            </Link>
-          </Grid>
         </Grid>
         <Divider />
         <Link style={{ textDecoration: "none" }} to="/ShowAvisos">
@@ -158,7 +155,13 @@ export default function MiniDrawer() {
           <Protected component={ShowNotificaciones} />
         </Route>
         {/* ruta para el manejo de los usuarios */}
-        <Route path="/UserManagement">
+        <Route path="/UserManagementLanding">
+          <Protected component={UserManagementLanding} />
+        </Route>
+        <Route path="/Register">
+          <Protected component={Register} />
+        </Route>
+        <Route path="/users">
           <Protected component={UserManagement} />
         </Route>
         <Route path="/Home">
