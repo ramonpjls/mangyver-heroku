@@ -15,7 +15,7 @@ const UserForm = (props) => {
   const [operations, setOperations] = useState([]);
   const [role, setRole] = useState([]);
   const [area, setArea] = useState([]);
-  const [userId, setUserId] = useState(props.userValue.id);
+
   const [authValue, setAuthValue] = useState(props.userValue.auth);
   const [nameValue, setNameValue] = useState(props.userValue.name);
   const [emailValue, setEmailValue] = useState(props.userValue.email);
@@ -44,7 +44,7 @@ const UserForm = (props) => {
     console.log(data);
 
     axios
-      .put(`/users/${userId}`, { data })
+      .put(`/users/${props.userValue.id}`, { data })
       .then((res) => {
         console.log(res);
         //window.location.reload();

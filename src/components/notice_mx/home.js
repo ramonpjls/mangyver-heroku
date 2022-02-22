@@ -11,7 +11,6 @@ import AddCommentIcon from "@mui/icons-material/AddComment";
 
 const Home = () => {
   const notice = useSelector((state) => state.notice.notice);
-  const noticeType = useSelector((state) => state.notice.noticeType);
   const [processValue, setProcessValue] = useState("");
 
   const dispatch = useDispatch();
@@ -53,17 +52,14 @@ const Home = () => {
     }); // eslint-disable-next-line
   }, [processValue]);
 
-  if (processValue?.processId === "CD2B8484-0901-EC11-B563-2818780EF919") {
+  if (processValue?.id === "CD2B8484-0901-EC11-B563-2818780EF919") {
     return <Step1 />;
-  } else if (
-    processValue?.processId === "CE2B8484-0901-EC11-B563-2818780EF919"
-  ) {
+  } else if (processValue?.id === "CE2B8484-0901-EC11-B563-2818780EF919") {
     return <Step2 />;
-  } else if (
-    processValue?.processId === "CF2B8484-0901-EC11-B563-2818780EF919"
-  ) {
+  } else if (processValue?.id === "CF2B8484-0901-EC11-B563-2818780EF919") {
     return <Step3 />;
   }
+
   return (
     <div>
       <Container style={Header}>
