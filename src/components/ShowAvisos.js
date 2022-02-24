@@ -24,7 +24,7 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: 40,
+    minWidth: 400,
   },
   tableContainer: {
     borderRadius: 15,
@@ -216,6 +216,9 @@ function ShowAvisos() {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.tableHeaderCell}>
+                  Numero de aviso MG
+                </TableCell>
+                <TableCell className={classes.tableHeaderCell}>
                   Tipo de Aviso
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
@@ -245,13 +248,9 @@ function ShowAvisos() {
                   if (keyword === "") {
                     return row;
                   } else if (
-                    row.cardDescription
+                    row.extendedRow
                       .toLowerCase()
-                      .includes(keyword.toLowerCase()) ||
-                    row.priority
-                      .toLowerCase()
-                      .includes(keyword.toLowerCase()) ||
-                    row.breakdown.toLowerCase().includes(keyword.toLowerCase())
+                      .includes(keyword.toLowerCase())
                   ) {
                     return row;
                   }
@@ -262,6 +261,9 @@ function ShowAvisos() {
                     hover
                     onClick={() => setIdValue(row.id)}
                   >
+                    <TableCell>
+                      <Typography>{row.numNotice}</Typography>
+                    </TableCell>
                     <TableCell>
                       <Typography>{row.process}</Typography>
                     </TableCell>
@@ -275,7 +277,9 @@ function ShowAvisos() {
                       <Typography>{row.cardtype}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography>{row.cardDescription}</Typography>
+                      <Typography style={{ maxWidth: "370px" }}>
+                        {row.cardDescription}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.breakdown}</Typography>
