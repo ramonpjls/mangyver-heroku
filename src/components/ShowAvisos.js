@@ -277,7 +277,7 @@ function ShowAvisos() {
                       <Typography>{row.cardtype}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography style={{ maxWidth: "370px" }}>
+                      <Typography style={{ maxWidth: "470px" }}>
                         {row.cardDescription}
                       </Typography>
                     </TableCell>
