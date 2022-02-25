@@ -29,8 +29,8 @@ const Notifications = () => {
   const [opNumArr, setOpNumArr] = useState([]);
 
   const data = {
-    deviation: deviation,
-    operationNum: noperacion,
+    deviationId: deviation,
+    operationNumId: noperacion,
     otCode: otCode,
     startHour: horaInicio,
     endHour: horaFin,
