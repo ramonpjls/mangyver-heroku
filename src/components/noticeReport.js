@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Grid, Typography, Container } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  Container,
+  MenuItem,
+  Select,
+  InputLabel,
+} from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import { CSVLink } from "react-csv";
@@ -7,8 +16,14 @@ import axios from "../axiosinstance";
 
 const Noticereport = () => {
   const [start, setStart] = useState("");
+  const [operation, setOperation] = useState([]);
+  const [operationValue, setOperationValue] = useState("");
+  const [timeEnd, setTimeEnd] = useState("");
+  const [timeFrom, setTimeFrom] = useState("");
   const [end, setEnd] = useState("");
   const [info, setInfo] = useState([]);
+
+  const data = [start, end, operationValue, timeEnd, timeFrom];
 
   const Header = {
     backgroundColor: "#79A9D1",
@@ -22,12 +37,22 @@ const Noticereport = () => {
   };
 
   useEffect(() => {
+    axios.get("/operations").then((response) => {
+      setOperation(response.data);
+    });
+  }, []);
+
+  const backBtn = () => {
+    console.log(data);
     axios
       .get("/notices", {
         params: {
+          sapForm: true,
           dateFrom: start,
           dateEnd: end,
-          sapForm: true,
+          operationId: operationValue,
+          timeEnd: timeEnd,
+          timeFrom: timeFrom,
         },
       })
       .then((res) => {
@@ -36,7 +61,7 @@ const Noticereport = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [start, end]);
+  };
 
   const headers = [
     { label: "ID del Aviso", key: "IDAviso" },
@@ -74,7 +99,56 @@ const Noticereport = () => {
       </Container>
       <Container maxWidth="md">
         <form style={{ marginTop: "30px" }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={5}>
+            <Grid item xs={12}>
+              <InputLabel> Operacion </InputLabel>
+              <Select
+                id="departamento"
+                variant="outlined"
+                fullWidth
+                required
+                value={operationValue}
+                onChange={(e) => setOperationValue(e.target.value)}
+                size="small"
+              >
+                <MenuItem value="">
+                  <em>-</em>
+                </MenuItem>
+                {operation.map((elemento) => (
+                  <MenuItem key={elemento.id} value={elemento.id}>
+                    {elemento.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="timeEnd"
+                value={timeFrom}
+                onChange={(e) => setTimeFrom(e.target.value)}
+                label="Hora de Inicio"
+                type="time"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="timeEnd"
+                value={timeEnd}
+                onChange={(e) => setTimeEnd(e.target.value)}
+                label="Hora de Finalizacion"
+                type="time"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 id="start"
@@ -113,6 +187,7 @@ const Noticereport = () => {
                   color="primary"
                   variant="contained"
                   startIcon={<CloudDownloadIcon />}
+                  onClick={backBtn}
                 >
                   Descargar
                 </Button>
