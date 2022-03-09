@@ -96,7 +96,11 @@ function ShowAvisos() {
     if (setNotice !== []) {
       setLoading(true);
       axios
-        .get("/notices")
+        .get("/notices", {
+          params: {
+            isWeb: true,
+          },
+        })
         .then((res) => {
           setNotice(res.data);
           setLoading(false);
