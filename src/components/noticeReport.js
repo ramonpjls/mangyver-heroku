@@ -23,6 +23,8 @@ const Noticereport = () => {
   const [end, setEnd] = useState("");
   const [info, setInfo] = useState([]);
 
+  const data = [start, end, operationValue, timeEnd, timeFrom];
+
   const Header = {
     backgroundColor: "#79A9D1",
     color: "white",
@@ -56,6 +58,10 @@ const Noticereport = () => {
         console.log(err);
       });
   }, [end, operationValue, start, timeEnd, timeFrom]);
+
+  const backBtn = () => {
+    console.log(data);
+  };
 
   const headers = [
     { label: "ID del Aviso", key: "IDAviso" },
@@ -181,6 +187,7 @@ const Noticereport = () => {
                   color="primary"
                   variant="contained"
                   startIcon={<CloudDownloadIcon />}
+                  onClick={backBtn}
                 >
                   Descargar
                 </Button>
