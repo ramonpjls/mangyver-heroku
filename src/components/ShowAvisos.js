@@ -116,7 +116,11 @@ function ShowAvisos() {
     if (idValue !== "") {
       setOpen(true);
       axios
-        .get(`/notices/${idValue}`)
+        .get(`/notices/${idValue}`, {
+          params: {
+            isWeb: true,
+          },
+        })
         .then((res) => {
           setNewState(res.data);
         })
@@ -165,7 +169,7 @@ function ShowAvisos() {
                 {newRow.cardtype}
               </Typography>
               <Typography variant="body2">
-                <Typography variant="h6">Descripcion de la tarjeta:</Typography>
+                <Typography variant="h6">Descripción de la tarjeta:</Typography>
                 {newRow.cardDescription}
               </Typography>
               <Typography variant="body2">
@@ -229,13 +233,13 @@ function ShowAvisos() {
                   Titulo de Aviso
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Ubicacion Tecnica
+                  Ubicación Técnica
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
                   Tipo de Tarjeta
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
-                  Descripcion
+                  Descripción
                 </TableCell>
                 <TableCell className={classes.tableHeaderCell}>
                   Causa de la averia

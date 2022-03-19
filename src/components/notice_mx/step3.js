@@ -243,7 +243,9 @@ const Step3 = () => {
         )}
         {formStep >= 1 && (
           <section style={formStep === 1 ? {} : { display: "none" }} id="6">
-            <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
+            <Typography style={gnrStyle}>
+              Codificacion / Tipo de tarjeta{" "}
+            </Typography>
             <Select
               id="departamento"
               variant="outlined"
@@ -260,7 +262,9 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
+            <Typography style={gnrStyle}>
+              Texto corto del aviso / Titulo de la tarjeta
+            </Typography>
             <TextField
               id="tarjetaTitulo"
               variant="outlined"
@@ -339,7 +343,9 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
+            <Typography style={gnrStyle}>
+              Descripción del aviso / Descripción de la tarjeta
+            </Typography>
             <TextField
               variant="outlined"
               fullWidth

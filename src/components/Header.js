@@ -29,7 +29,7 @@ import Home from "./notice_mx/home";
 import Logout from "./Logout";
 import Landing from "./landing";
 import ShowAvisos from "./ShowAvisos";
-import logopeq from "../assets/LogoP.png";
+import logopeq from "../assets/LogoP.jpeg";
 
 import { Link, Route } from "react-router-dom";
 
@@ -73,11 +73,15 @@ export default function MiniDrawer() {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            backgroundColor: "#3f51b5",
+            backgroundColor: "#fff",
           }}
         >
-          <div></div>
-          <img src={logopeq} alt="logo" />
+          <img
+            src={logopeq}
+            alt="logo"
+            width={"200px"}
+            style={{ margin: "10px" }}
+          />
           <Logout />
         </Toolbar>
       </AppBar>
@@ -105,7 +109,7 @@ export default function MiniDrawer() {
             <ListItemIcon>
               <AddCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
             </ListItemIcon>
-            <ListItemText primary="Creacion de avisos" />
+            <ListItemText primary="Creación de avisos" />
           </ListItem>
         </Link>
         <Link style={{ textDecoration: "none" }} to="/Noticereport">
@@ -130,7 +134,7 @@ export default function MiniDrawer() {
             <ListItemIcon>
               <AddAlertIcon style={{ color: "#3f51b5", fontSize: 40 }} />
             </ListItemIcon>
-            <ListItemText primary="Creacion de Notificaciones" />
+            <ListItemText primary="Creación de Notificaciones" />
           </ListItem>
         </Link>
         <Link style={{ textDecoration: "none" }} to="/Notificationsreport">

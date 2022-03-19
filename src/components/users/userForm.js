@@ -32,22 +32,19 @@ const UserForm = (props) => {
     role: roleValue,
     operation: plantaValue,
     area: areaValue,
-    line: null,
     SAPCode: sapCodeValue,
     SAPUser: sapUserValue,
-    auth: authValue,
+    isActive: authValue,
   };
 
   const HandleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(data);
-
     axios
       .put(`/users/${props.userValue.id}`, { data })
       .then((res) => {
-        console.log(res);
-        //window.location.reload();
+        console.log("LA RESPUESTA", res);
+        window.location.reload();
       })
       .catch((err) => {
         console.warn(err);
