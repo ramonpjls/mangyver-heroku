@@ -22,7 +22,7 @@ const Logout = () => {
         <Link to="/Login">
           <ExitToAppIcon
             onClick={forgetToken}
-            style={{ fontSize: 40, color: "white" }}
+            style={{ fontSize: 40, color: "#3f51b5" }}
           />
         </Link>
       </IconButton>
