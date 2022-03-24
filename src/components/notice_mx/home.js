@@ -33,7 +33,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("/process-web", configCall)
+      .get("/process/web", configCall)
       .then((useRes) => {
         dispatch({
           type: types.NOTICE,
