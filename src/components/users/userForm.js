@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   Grid,
@@ -6,72 +6,59 @@ import {
   TextField,
   Select,
   InputLabel,
-} from "@mui/material";
-import axios from "../../axiosinstance";
+} from '@mui/material'
+import axios from '../../axiosinstance'
 
 //todos los campos seran requeridos menos codigo sap y subarea
 
-const UserForm = (props) => {
-  const [operations, setOperations] = useState([]);
-  const [role, setRole] = useState([]);
-  const [area, setArea] = useState([]);
+const UserForm = ({ userValue }) => {
+  const [operations, setOperations] = useState([])
+  const [role, setRole] = useState([])
+  const [area, setArea] = useState([])
 
-  const [authValue, setAuthValue] = useState(props.userValue.auth);
-  const [nameValue, setNameValue] = useState(props.userValue.name);
-  const [emailValue, setEmailValue] = useState(props.userValue.email);
-  const [sapCodeValue, setSapCodeValue] = useState(props.userValue.SAPCode);
-  const [sapUserValue, setSapUserValue] = useState(props.userValue.SAPUser);
-  const [plantaValue, setPlantaValue] = useState(props.userValue.operation.id);
-  const [roleValue, setRoleValue] = useState(props.userValue.role);
-  const [areaValue, setAreaValue] = useState(props.userValue.area);
-
-  // eslint-disable-next-line
-  const data = {
-    name: nameValue,
-    email: emailValue,
-    role: roleValue,
-    operation: plantaValue,
-    area: areaValue,
-    SAPCode: sapCodeValue,
-    SAPUser: sapUserValue,
-    isActive: authValue,
-  };
-
+  const [user, setUser] = useState(userValue)
+  
   const HandleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    console.log(user)
 
     axios
-      .put(`/users/${props.userValue.id}`, { data })
+      .put(`/users/${userValue.id}?auth=${ user.auth === 'active'? 'true': 'false' }`, { user })
       .then((res) => {
-        console.log("LA RESPUESTA", res);
-        window.location.reload();
+        console.log('LA RESPUESTA', res)
+        window.location.reload()
       })
       .catch((err) => {
-        console.warn(err);
-      });
-  };
+        console.warn(err)
+      })
+  }
 
   useEffect(() => {
-    axios.get("/operations").then((response) => {
-      setOperations(response.data);
-    });
-  }, []);
+    const fetchData = async () => {
+      const res = await Promise.all([
+        axios.get('/operations'),
+        axios.get('/roles'),
+        axios.get('/areas'),
+      ])
 
-  useEffect(() => {
-    axios.get("/roles").then((response) => {
-      setRole(response.data);
-    });
-  }, []);
+      setOperations(res[0].data)
+      setRole(res[1].data)
+      setArea(res[2].data)
+    }
 
-  useEffect(() => {
-    axios.get("/areas").then((response) => {
-      setArea(response.data);
-    });
-  }, []);
+    fetchData()
+  }, [])
+
+  const handleChange = ({target}) => {
+    setUser({ 
+      ...user, 
+      [target.name]: target.value 
+    })
+  }
 
   return (
     <div>
-      <form style={{ paddingTop: "1rem" }} onSubmit={HandleSubmit}>
+      <form style={{ paddingTop: '1rem' }} onSubmit={HandleSubmit}>
         <Grid
           container
           direction="column"
@@ -99,8 +86,9 @@ const UserForm = (props) => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  value={nameValue}
-                  onChange={(e) => setNameValue(e.target.value)}
+                  name="name"
+                  value={ user?.name || '' }
+                  onChange={ handleChange }
                 />
               </Grid>
             </Grid>
@@ -118,8 +106,9 @@ const UserForm = (props) => {
                   fullWidth
                   type="email"
                   size="small"
-                  value={emailValue}
-                  onChange={(e) => setEmailValue(e.target.value)}
+                  name="email"
+                  value={ user?.email || '' }
+                  onChange={ handleChange }
                 />
               </Grid>
             </Grid>
@@ -138,8 +127,9 @@ const UserForm = (props) => {
                   fullWidth
                   size="small"
                   type="text"
-                  value={sapCodeValue}
-                  onChange={(e) => setSapCodeValue(e.target.value)}
+                  name="SAPCode"
+                  value={ user?.SAPCode || '' }
+                  onChange={ handleChange }
                 />
               </Grid>
               <Grid item xs={4}>
@@ -149,8 +139,9 @@ const UserForm = (props) => {
                   fullWidth
                   size="small"
                   type="text"
-                  value={sapUserValue}
-                  onChange={(e) => setSapUserValue(e.target.value)}
+                  name="SAPUser"
+                  value={ user?.SAPUser || '' }
+                  onChange={ handleChange }
                 />
               </Grid>
             </Grid>
@@ -169,8 +160,9 @@ const UserForm = (props) => {
                   variant="outlined"
                   fullWidth
                   required
-                  value={plantaValue}
-                  onChange={(e) => setPlantaValue(e.target.value)}
+                  name="operation"
+                  value={ user?.operation?.id || user?.operation || '' }
+                  onChange={ handleChange }
                   size="small"
                 >
                   {operations.map((elemento) => (
@@ -187,8 +179,9 @@ const UserForm = (props) => {
                   variant="outlined"
                   fullWidth
                   required
-                  value={roleValue}
-                  onChange={(e) => setRoleValue(e.target.value)}
+                  name="role"
+                  value={ user?.role?.id || user?.role || '' }
+                  onChange={ handleChange }
                   size="small"
                 >
                   {role.map((elemento) => (
@@ -214,8 +207,9 @@ const UserForm = (props) => {
                   variant="outlined"
                   fullWidth
                   required
-                  value={areaValue}
-                  onChange={(e) => setAreaValue(e.target.value)}
+                  name="area"
+                  value={ user?.area?.id || user?.area || '' }
+                  onChange={ handleChange }
                   size="small"
                 >
                   {area.map((elemento) => (
@@ -232,12 +226,13 @@ const UserForm = (props) => {
                   variant="outlined"
                   fullWidth
                   required
-                  value={authValue}
-                  onChange={(e) => setAuthValue(e.target.value)}
+                  name="auth"
+                  value={ user?.auth }
+                  onChange={ handleChange }
                   size="small"
                 >
-                  <MenuItem value={"pending"}>Pendiente</MenuItem>
-                  <MenuItem value={"active"}>activo</MenuItem>
+                  <MenuItem value={'pending'}>Pendiente</MenuItem>
+                  <MenuItem value={'active'}>activo</MenuItem>
                 </Select>
               </Grid>
             </Grid>
@@ -257,7 +252,7 @@ const UserForm = (props) => {
         </Grid>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default UserForm;
+export default UserForm
