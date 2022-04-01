@@ -81,6 +81,7 @@ const Noticereport = () => {
     { label: "Si/No", key: "SiNo" },
     { label: "Puesto de trabajo", key: "PuestoTrabajo" },
     { label: "Grupo planificador", key: "GrupoPlanificador" },
+    { label: "Centro", key: "Centro" },
   ];
 
   const ReportSet = {

@@ -189,7 +189,6 @@ const Step3 = () => {
   }, []);
 
   useEffect(() => {
-    console.log(noticeType.processId);
     axios
       .get("/cards", {
         params: {
@@ -375,6 +374,8 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
+            <Typography>Afecta File</Typography>
+            <input accept="image/*" multiple type="file" />
           </section>
         )}
       </Container>

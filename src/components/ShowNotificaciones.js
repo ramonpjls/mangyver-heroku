@@ -58,7 +58,6 @@ function ShowNotificaciones() {
   const [notifications, setNotifications] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isDone, setIsDone] = useState("");
   const [open, setOpen] = useState(false);
   const [idValue, setIdValue] = useState("");
   const [newState, setNewState] = useState([]);
@@ -122,14 +121,6 @@ function ShowNotificaciones() {
     }
   }, [idValue]);
 
-  useEffect(() => {
-    if (notifications.map((row) => row.isDone) === true) {
-      setIsDone("No");
-    } else {
-      setIsDone("Si");
-    }
-  }, [notifications]);
-
   return (
     <div>
       <Modal open={open} onClose={handleClose}>
@@ -149,7 +140,7 @@ function ShowNotificaciones() {
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">¿Se realizo la orden?: </Typography>
-              {isDone}
+              {newState.isDone}
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">Comentario: </Typography>
@@ -247,7 +238,7 @@ function ShowNotificaciones() {
                             (row.isDone === false && "#ff3333"),
                         }}
                       >
-                        {isDone}
+                        {row.isDone ? "Si" : "No"}
                       </Typography>
                     </TableCell>
                   </TableRow>

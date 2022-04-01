@@ -9,7 +9,6 @@ import {
   Select,
   InputLabel,
 } from "@mui/material";
-import TimePicker from "@mui/lab/TimePicker";
 import axios from "../axiosinstance";
 import { Redirect } from "react-router-dom";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
@@ -159,22 +158,24 @@ const Notifications = () => {
           >
             <Grid item xs={2}>
               <InputLabel>Hora inicio de ejecucion</InputLabel>
-              <TimePicker
+              <TextField
+                id="timeBeging"
                 value={horaInicio}
-                onChange={(newValue) => {
-                  setHoraInicio(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} />}
+                onChange={(e) => setHoraInicio(e.target.value)}
+                type="time"
+                variant="outlined"
+                fullWidth
               />
             </Grid>
             <Grid item xs={2}>
               <InputLabel>Hora fin de ejecucion</InputLabel>
-              <TimePicker
+              <TextField
+                id="timeEnd"
                 value={horaFin}
-                onChange={(newValue) => {
-                  setHoraFin(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} />}
+                onChange={(e) => setHoraFin(e.target.value)}
+                type="time"
+                variant="outlined"
+                fullWidth
               />
             </Grid>
           </Grid>
