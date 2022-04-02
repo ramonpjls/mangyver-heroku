@@ -21,6 +21,8 @@ import {
 
 import SearchIcon from "@mui/icons-material/Search";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
+import { Pagination } from "./pagination/Pagination";
+import { usePagination } from "../hooks/usePagination";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 function ShowAvisos() {
   const classes = useStyles();
   const [notice, setNotice] = useState([]);
+  const [totalInDB, setTotalInDB] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [newState, setNewState] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -92,25 +95,15 @@ function ShowAvisos() {
     p: 4,
   };
 
-  useEffect(() => {
-    if (setNotice !== []) {
-      setLoading(true);
-      axios
-        .get("/notices", {
-          params: {
-            isWeb: true,
-          },
-        })
-        .then((res) => {
-          setNotice(res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.warn(err);
-          window.location.reload();
-        });
-    }
-  }, []);
+  let  {
+    previousPage,
+    nextPage,
+    skipBase,
+    totalElementsInDB,
+    setElementsPerPage,
+    elementsPerPage,
+    elements
+  } = usePagination(notice, totalInDB)
 
   useEffect(() => {
     if (idValue !== "") {
@@ -129,6 +122,46 @@ function ShowAvisos() {
         });
     }
   }, [idValue]);
+
+  useEffect(() => {
+    if (setNotice !== []) {
+      setLoading(true);
+      axios
+        .get(`/notices?from=${skipBase}&top=${elementsPerPage}`, {
+          params: {
+            isWeb: true,
+          },
+        })
+        .then((res) => {
+          setNotice(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.warn(err);
+          window.location.reload();
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (setNotice !== []) {
+      setLoading(true);
+      axios
+        .get(`/notices?from=${skipBase}&top=${elementsPerPage}`, {
+          params: {
+            isWeb: true,
+          },
+        })
+        .then((res) => {
+          setNotice(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.warn(err);
+          window.location.reload();
+        });
+    }
+  }, [elementsPerPage, skipBase])
 
   return (
     <div>
@@ -219,94 +252,99 @@ function ShowAvisos() {
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
-        <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table stickyHeader className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.tableHeaderCell}>
-                  Numero de aviso MG
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Tipo de Aviso
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Titulo de Aviso
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Ubicación Técnica
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Tipo de Tarjeta
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Descripción
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Causa de la averia
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Prioridad
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {notice
-                // eslint-disable-next-line array-callback-return
-                .filter((row) => {
-                  if (keyword === "") {
-                    return row;
-                  } else if (
-                    row.extendedRow
-                      .toLowerCase()
-                      .includes(keyword.toLowerCase())
-                  ) {
-                    return row;
-                  }
-                })
-                .map((row) => (
-                  <TableRow
-                    key={row.id}
-                    hover
-                    onClick={() => setIdValue(row.id)}
-                  >
-                    <TableCell>
-                      <Typography>{row.numNotice}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.process}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.cardTitle}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.technicalLocation}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.cardtype}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography style={{ maxWidth: "470px" }}>
-                        {row.cardDescription}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.breakdown}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        className={classes.status}
-                        style={{
-                          backgroundColor: `#${row.priorityColor}`,
-                        }}
-                      >
-                        {row.priority}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <Box sx={{ display:'flex', justifyContent:'end'}}>
+            <Pagination  setElementsPerPage={setElementsPerPage} totalElementsInDB={totalElementsInDB} nextPage={nextPage} skipBase={skipBase} previousPage={previousPage} elementsPerPage={elementsPerPage} elements={notice} />
+          </Box>
+          <TableContainer component={Paper} className={classes.tableContainer}>
+            <Table stickyHeader className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Numero de aviso MG
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Tipo de Aviso
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Titulo de Aviso
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Ubicación Técnica
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Tipo de Tarjeta
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Descripción
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Causa de la averia
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Prioridad
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {elements
+                  // eslint-disable-next-line array-callback-return
+                  .filter((row) => {
+                    if (keyword === "") {
+                      return row;
+                    } else if (
+                      row.extendedRow
+                        .toLowerCase()
+                        .includes(keyword.toLowerCase())
+                    ) {
+                      return row;
+                    }
+                  })
+                  .map((row) => (
+                    <TableRow
+                      key={row.id}
+                      hover
+                      onClick={() => setIdValue(row.id)}
+                    >
+                      <TableCell>
+                        <Typography>{row.numNotice}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.process}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.cardTitle}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.technicalLocation}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.cardtype}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ maxWidth: "470px" }}>
+                          {row.cardDescription}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.breakdown}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          className={classes.status}
+                          style={{
+                            backgroundColor: `#${row.priorityColor}`,
+                          }}
+                        >
+                          {row.priority}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       )}
     </div>
   );
