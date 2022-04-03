@@ -30,11 +30,11 @@ import Logout from "./Logout";
 import Landing from "./landing";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.jpeg";
-import { Help } from '@mui/icons-material'
-import axiosinstance from '../axiosinstance';
+import { Help } from "@mui/icons-material";
+// import axiosinstance from '../axiosinstance';
 
 import { Link, Route } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 const drawerWidth = 291;
 
@@ -69,19 +69,17 @@ const styleLogOutContent = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-}
+};
 
 export default function MiniDrawer() {
-
   const getHelp = () => {
     //const help = await axiosinstance.get('/helps')
-
     //window.location = "https//google.com"
     //window.location.replace("https//google.com")
     //window.location.href = "https//google.com"
     //window.open("https//google.com")
     //history.go("https//google.com")
-  }
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -105,10 +103,14 @@ export default function MiniDrawer() {
           <div style={styleLogOutContent}>
             <Logout />
 
-            <a href="https://ab-inbev.acadia.sysalli.com/browse/HQM-500054/es-mx" target="_blank" rel="noreferrer">
-              <Tooltip title="Ayuda" sx={{ marginLeft: 2, color: '#3F51B5' }}>
-                <IconButton onClick={ getHelp }>
-                  <Help sx={{ fontSize: 25 }} />
+            <a
+              href="https://ab-inbev.acadia.sysalli.com/browse/HQM-500054/es-mx"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Tooltip title="Ayuda" sx={{ marginLeft: 2, color: "#3F51B5" }}>
+                <IconButton onClick={getHelp}>
+                  <Help sx={{ fontSize: 40 }} />
                 </IconButton>
               </Tooltip>
             </a>
