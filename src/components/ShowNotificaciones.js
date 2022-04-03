@@ -252,7 +252,7 @@ function ShowNotificaciones() {
                     }
                   })
                   .map((row) => (
-                    <TableRow key={row.id} hover>
+                    <TableRow key={row.id} hover3>
                       <TableCell>
                         <Typography>{row.otCode}</Typography>
                       </TableCell>
