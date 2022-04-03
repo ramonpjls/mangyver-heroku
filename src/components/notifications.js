@@ -9,13 +9,14 @@ import {
   Select,
   InputLabel,
 } from "@mui/material";
+import TimePicker from "@mui/lab/TimePicker";
 import axios from "../axiosinstance";
 import { Redirect } from "react-router-dom";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 
 const Notifications = () => {
-  const [horaInicio, setHoraInicio] = useState("");
-  const [horaFin, setHoraFin] = useState("");
+  const [horaInicio, setHoraInicio] = useState(null);
+  const [horaFin, setHoraFin] = useState(null);
   const [norden, setNorden] = useState("");
   const [deviation, setDeviation] = useState("");
   const [observation, setObservation] = useState("");
@@ -66,7 +67,7 @@ const Notifications = () => {
     if (norden === false) {
       setDisSelect(false);
     } else {
-      setDeviation("");
+      setDeviation(null);
       setDisSelect(true);
     }
   }, [norden]);
@@ -158,22 +159,22 @@ const Notifications = () => {
           >
             <Grid item xs={2}>
               <InputLabel>Hora inicio de ejecucion</InputLabel>
-              <TextField
-                id="timeBeging"
-                onChange={(e) => setHoraInicio(e.target.value)}
-                type="time"
-                variant="outlined"
-                fullWidth
+              <TimePicker
+                value={horaInicio}
+                onChange={(newValue) => {
+                  setHoraInicio(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
               />
             </Grid>
             <Grid item xs={2}>
               <InputLabel>Hora fin de ejecucion</InputLabel>
-              <TextField
-                id="timeEnd"
-                onChange={(e) => setHoraFin(e.target.value)}
-                type="time"
-                variant="outlined"
-                fullWidth
+              <TimePicker
+                value={horaFin}
+                onChange={(newValue) => {
+                  setHoraFin(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
               />
             </Grid>
           </Grid>
