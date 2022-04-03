@@ -17,12 +17,14 @@ import {
   Modal,
   Box,
   InputAdornment,
+  Button,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { Pagination } from "./pagination/Pagination";
 import { usePagination } from "../hooks/usePagination";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -56,16 +58,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ShowAvisos() {
+
+  const notice = useSelector((state) => state.notice.notice);
+  
   const classes = useStyles();
-  const [notice, setNotice] = useState([]);
   const [totalInDB, setTotalInDB] = useState(0);
   const [keyword, setKeyword] = useState("");
-  const [newState, setNewState] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [idValue, setIdValue] = useState("");
+  const [rowDetails, setRowDetails] = useState({});
 
   const handleClose = () => setOpen(false);
+
+  const openModal = (row) => {
+    setRowDetails(row)
+    setOpen(true);
+  }
+
+  const dispatch = useDispatch()
 
   const HeaderSearch = {
     color: "white",
@@ -89,136 +99,181 @@ function ShowAvisos() {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 600,
+    width: 700,
+    maxHeight: 620,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
+    height:'100%',
+    overflowY:'scroll',
+    scroll:true
   };
 
   let  {
+    firstPage,
     previousPage,
     nextPage,
+    lastPage,
     skipBase,
     totalElementsInDB,
     setElementsPerPage,
     elementsPerPage,
-    elements
+    elements,
+    totalPages,
+    currentPage,
+    // eslint-disable-next-line
   } = usePagination(notice, totalInDB)
 
-  useEffect(() => {
-    if (idValue !== "") {
+  /* useEffect(() => {
+    if (rowDetails !== "") {
       setOpen(true);
       axios
-        .get(`/notices/${idValue}`, {
+        .get(`/notices/${rowDetails}`, {
           params: {
             isWeb: true,
           },
         })
         .then((res) => {
+        console.log(res.data.length);
+          
           setNewState(res.data);
         })
         .catch((err) => {
           console.warn(err);
         });
     }
-  }, [idValue]);
+  }, [rowDetails]);
+ */
 
   useEffect(() => {
-    if (setNotice !== []) {
-      setLoading(true);
-      axios
-        .get(`/notices?from=${skipBase}&top=${elementsPerPage}`, {
-          params: {
-            isWeb: true,
-          },
+    setLoading(true);
+    axios
+      .get(`/notices`, {
+        params: {
+          isWeb: true,
+          totalRows:1,
+        },
+      })
+      .then((res) => {
+        setTotalInDB(res.data[0]?.totalRows);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+        window.location.reload();
+      });
+
+    axios
+      .get(`/notices`, {
+        params: {
+          isWeb: true,
+          from: Number(skipBase),
+          top: Number(elementsPerPage),
+        },
+      })
+      .then((res) => {
+        dispatch({
+          type: "NOTICE",
+          payload: res.data,
         })
-        .then((res) => {
-          setNotice(res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.warn(err);
-          window.location.reload();
-        });
+        // setNotice(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+        window.location.reload();
+      });
+
+    return () => {
+      dispatch({
+        type: "NOTICE",
+        payload: [],
+      })
     }
+// eslint-disable-next-line
   }, []);
 
+  
   useEffect(() => {
-    if (setNotice !== []) {
-      setLoading(true);
-      axios
-        .get(`/notices?from=${skipBase}&top=${elementsPerPage}`, {
-          params: {
-            isWeb: true,
-          },
+    setLoading(true);
+    axios
+      .get(`/notices`, {
+        params: {
+          isWeb: true,
+          from: Number(skipBase),
+          top: Number(elementsPerPage),
+        },
+      })
+      .then((res) => {
+        dispatch({
+          type: "NOTICE",
+          payload: res.data,
         })
-        .then((res) => {
-          setNotice(res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.warn(err);
-          window.location.reload();
-        });
-    }
+        // setNotice(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+        window.location.reload();
+      });
+    // eslint-disable-next-line
   }, [elementsPerPage, skipBase])
 
   return (
     <div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle}>
-          {newState.map((newRow) => (
-            <div key={newRow.id}>
+            <div>
+              <img src={rowDetails?.photo?.url} alt={rowDetails?.photo?.desc} ></img>
               <Typography variant="body2">
                 <Typography variant="h6">Creado por:</Typography>
-                {newRow.autor}
+                {rowDetails.userName}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Departamento:</Typography>
-                {newRow.department}
+                {rowDetails.department}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Tipo de equipo:</Typography>
-                {newRow.equipment}
+                {rowDetails.equipment}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Numero de OT:</Typography>
-                {newRow.otCode}
+                {rowDetails.otCode}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Linea:</Typography>
-                {newRow.lineId}
+                {rowDetails.lineId}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Prioridad:</Typography>
-                {newRow.priority}
+                {rowDetails.priority}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Titulo de la tarjeta:</Typography>
-                {newRow.cardTitle}
+                {rowDetails.cardTitle}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Tipo de tarjeta:</Typography>
-                {newRow.cardtype}
+                {rowDetails.cardtype}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Descripción de la tarjeta:</Typography>
-                {newRow.cardDescription}
+                {rowDetails.cardDescription}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Componente dañado:</Typography>
-                {newRow.component}
+                {rowDetails.components}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Tipo de falla:</Typography>
-                {newRow.GrupoPlanificador}
+                {rowDetails.failureType}
               </Typography>
               <Typography variant="body2">
                 <Typography variant="h6">Afecta a:</Typography>
-                {newRow.affectsId}
+                {rowDetails.affects}
               </Typography>
             </div>
-          ))}
         </Box>
       </Modal>
       <Container className="header" style={Header}>
@@ -254,7 +309,7 @@ function ShowAvisos() {
       ) : (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <Box sx={{ display:'flex', justifyContent:'end'}}>
-            <Pagination  setElementsPerPage={setElementsPerPage} totalElementsInDB={totalElementsInDB} nextPage={nextPage} skipBase={skipBase} previousPage={previousPage} elementsPerPage={elementsPerPage} elements={notice} />
+            <Pagination totalPages={totalPages} currentPage={currentPage} firstPage={firstPage} lastPage={lastPage} setElementsPerPage={setElementsPerPage} totalElementsInDB={totalElementsInDB} nextPage={nextPage} skipBase={skipBase} previousPage={previousPage} elementsPerPage={elementsPerPage} elements={notice} />
           </Box>
           <TableContainer component={Paper} className={classes.tableContainer}>
             <Table stickyHeader className={classes.table}>
@@ -284,6 +339,9 @@ function ShowAvisos() {
                   <TableCell className={classes.tableHeaderCell}>
                     Prioridad
                   </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Acciones
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -304,7 +362,6 @@ function ShowAvisos() {
                     <TableRow
                       key={row.id}
                       hover
-                      onClick={() => setIdValue(row.id)}
                     >
                       <TableCell>
                         <Typography>{row.numNotice}</Typography>
@@ -335,9 +392,17 @@ function ShowAvisos() {
                           style={{
                             backgroundColor: `#${row.priorityColor}`,
                           }}
-                        >
+                          >
                           {row.priority}
                         </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Button 
+                          onClick={() => openModal(row)}
+                          size="small"
+                          sx={{fontSize:12}} variant="contained" >
+                          Ver detalles
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
