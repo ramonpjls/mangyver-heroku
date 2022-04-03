@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Grid } from "@mui/material";
+import { Grid, IconButton, Tooltip } from "@mui/material";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
@@ -30,8 +30,11 @@ import Logout from "./Logout";
 import Landing from "./landing";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.jpeg";
+import { Help } from '@mui/icons-material'
+import axiosinstance from '../axiosinstance';
 
 import { Link, Route } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 291;
 
@@ -62,7 +65,24 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+const styleLogOutContent = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}
+
 export default function MiniDrawer() {
+
+  const getHelp = () => {
+    //const help = await axiosinstance.get('/helps')
+
+    //window.location = "https//google.com"
+    //window.location.replace("https//google.com")
+    //window.location.href = "https//google.com"
+    //window.open("https//google.com")
+    //history.go("https//google.com")
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -82,7 +102,17 @@ export default function MiniDrawer() {
             width={"200px"}
             style={{ margin: "10px" }}
           />
-          <Logout />
+          <div style={styleLogOutContent}>
+            <Logout />
+
+            <a href="https://ab-inbev.acadia.sysalli.com/browse/HQM-500054/es-mx" target="_blank" rel="noreferrer">
+              <Tooltip title="Ayuda" sx={{ marginLeft: 2, color: '#3F51B5' }}>
+                <IconButton onClick={ getHelp }>
+                  <Help sx={{ fontSize: 25 }} />
+                </IconButton>
+              </Tooltip>
+            </a>
+          </div>
         </Toolbar>
       </AppBar>
       <List style={{ border: "solid #EEEEEA 1px", height: "50rem" }}>
