@@ -1,6 +1,10 @@
 import axios from "../axiosinstance";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
+
+import { Pagination } from "./pagination/Pagination";
+import { usePagination } from "../hooks/usePagination";
+
 import {
   Table,
   TableBody,
@@ -54,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 function ShowNotificaciones() {
   const classes = useStyles();
   const [notifications, setNotifications] = useState([]);
+  const [totalInDB, setTotalInDB] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
   // const [open, setOpen] = useState(false);
@@ -91,10 +96,20 @@ function ShowNotificaciones() {
   //   p: 4,
   // };
 
+  let {
+    previousPage,
+    nextPage,
+    skipBase,
+    totalElementsInDB,
+    setElementsPerPage,
+    elementsPerPage,
+    elements,
+  } = usePagination(notifications, totalInDB);
+
   useEffect(() => {
     setLoading(true);
     axios
-      .get("/notifications")
+      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`)
       .then((res) => {
         setNotifications(res.data);
         setLoading(false);
@@ -105,19 +120,33 @@ function ShowNotificaciones() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   if (idValue !== "") {
-  //     setOpen(true);
-  //     axios
-  //       .get(`/notifications/${idValue}`)
-  //       .then((res) => {
-  //         setNewState(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.warn(err);
-  //       });
-  //   }
-  // }, [idValue]);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`)
+      .then((res) => {
+        setNotifications(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+        window.location.reload();
+      });
+  }, [elementsPerPage, skipBase]);
+
+  useEffect(() => {
+    if (idValue !== "") {
+      setOpen(true);
+      axios
+        .get(`/notifications/${idValue}`)
+        .then((res) => {
+          setNewState(res.data);
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
+    }
+  }, [idValue]);
 
   return (
     <div>
@@ -176,78 +205,87 @@ function ShowNotificaciones() {
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
-        <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table stickyHeader className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.tableHeaderCell}>
-                  Numero de OT
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>Fecha</TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Hora de Inicio
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Hora de finalizacion
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  Comentario
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>
-                  ¿Se realizo la orden?
-                </TableCell>
-                <TableCell className={classes.tableHeaderCell}>Autor</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {notifications
-                // eslint-disable-next-line array-callback-return
-                .filter((row) => {
-                  if (keyword === "") {
-                    return row;
-                  } else if (
-                    row.otCode.toLowerCase().includes(keyword.toLowerCase())
-                  ) {
-                    return row;
-                  }
-                })
-                .map((row) => (
-                  <TableRow key={row.id} hover>
-                    <TableCell>
-                      <Typography>{row.otCode}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.date}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.startHour}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.endHour}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.comments}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        className={classes.status}
-                        style={{
-                          backgroundColor:
-                            (row.isDone === true && "#3364ff") ||
-                            (row.isDone === false && "#ff3333"),
-                        }}
-                      >
-                        {row.isDone ? "Si" : "No"}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography>{row.author}</Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Pagination
+              setElementsPerPage={setElementsPerPage}
+              totalElementsInDB={totalElementsInDB}
+              nextPage={nextPage}
+              skipBase={skipBase}
+              previousPage={previousPage}
+              elementsPerPage={elementsPerPage}
+              elements={notifications}
+            />
+          </Box>
+          <TableContainer component={Paper} className={classes.tableContainer}>
+            <Table stickyHeader className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Numero de OT
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Hora de Inicio
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Hora de finalizacion
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Comentario
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    ¿Se realizo la orden?
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {elements
+                  // eslint-disable-next-line array-callback-return
+                  .filter((row) => {
+                    if (keyword === "") {
+                      return row;
+                    } else if (
+                      row.otCode.toLowerCase().includes(keyword.toLowerCase())
+                    ) {
+                      return row;
+                    }
+                  })
+                  .map((row) => (
+                    <TableRow
+                      key={row.id}
+                      hover
+                      onClick={() => setIdValue(row.id)}
+                    >
+                      <TableCell>
+                        <Typography>{row.otCode}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.startHour}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.endHour}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.comments}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          className={classes.status}
+                          style={{
+                            backgroundColor:
+                              (row.isDone === true && "#3364ff") ||
+                              (row.isDone === false && "#ff3333"),
+                          }}
+                        >
+                          {row.isDone ? "Si" : "No"}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       )}
     </div>
   );
