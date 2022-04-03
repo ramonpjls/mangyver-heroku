@@ -14,8 +14,8 @@ import { Redirect } from "react-router-dom";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 
 const Notifications = () => {
-  const [horaInicio, setHoraInicio] = useState(null);
-  const [horaFin, setHoraFin] = useState(null);
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
   const [norden, setNorden] = useState("");
   const [deviation, setDeviation] = useState("");
   const [observation, setObservation] = useState("");
@@ -160,7 +160,6 @@ const Notifications = () => {
               <InputLabel>Hora inicio de ejecucion</InputLabel>
               <TextField
                 id="timeBeging"
-                value={horaInicio}
                 onChange={(e) => setHoraInicio(e.target.value)}
                 type="time"
                 variant="outlined"
@@ -171,7 +170,6 @@ const Notifications = () => {
               <InputLabel>Hora fin de ejecucion</InputLabel>
               <TextField
                 id="timeEnd"
-                value={horaFin}
                 onChange={(e) => setHoraFin(e.target.value)}
                 type="time"
                 variant="outlined"

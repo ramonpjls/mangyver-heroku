@@ -50,12 +50,15 @@ const Landing = () => {
         alignItems="center"
       >
         <Grid item alignItems="center" justifyContent="center">
-          <Avatar alt={user?.name} src="./" />
+          <Avatar alt={user?.name || ""} src="./" />
         </Grid>
         <Grid item>
           <Typography variant="h6" gutterBottom>
-            {user?.name}
+            {user?.name || ""}
           </Typography>
+        </Grid>
+        <Grid item>
+          {user?.name ? <Typography>{user.operation.name}</Typography> : ""}
         </Grid>
         <Grid item>
           <Link style={{ textDecoration: "none" }} to="/UserManagementLanding">

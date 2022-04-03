@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useSelector } from "react-redux";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Step3 = () => {
   const noticeType = useSelector((state) => state.notice.noticeType);
@@ -32,6 +33,8 @@ const Step3 = () => {
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
 
+  const [photoPath, setPhotoPath] = useState({});
+
   const [disButton, setDisButton] = useState(true);
 
   const history = useHistory();
@@ -47,10 +50,22 @@ const Step3 = () => {
     failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
     affectsId: afectaValue,
+    urlPhoto: photoPath,
   };
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+  };
+
+  const fetchData = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
+    data.append("image", files[0]);
+
+    await axios.post(url, data).then((res) => {
+      setPhotoPath(res?.data);
+    });
   };
 
   const submitForm = () => {
@@ -65,6 +80,7 @@ const Step3 = () => {
         history.push("/ShowAvisos");
         window.location.reload();
       })
+
       .catch((err) => {
         console.log(err);
         Swal.fire({
@@ -374,8 +390,56 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography>Afecta File</Typography>
-            <input accept="image/*" multiple type="file" />
+            <Typography style={{ fontSize: "20px", padding: "10px" }}>
+              Foto
+            </Typography>
+            <div
+              style={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                border: "solid #bababa 1px",
+                borderRadius: "5px",
+              }}
+            >
+              <form>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <input accept="image/*" type="file" onChange={fetchData} />
+                  <Button accept="image/*" type="reset" color="error">
+                    <CancelIcon style={{ fontSize: "20px" }} />
+                  </Button>
+                </div>
+              </form>
+            </div>
+            <Typography style={{ fontSize: "20px", padding: "10px" }}>
+              Video
+            </Typography>
+            <div
+              style={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                border: "solid #bababa 1px",
+                borderRadius: "5px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <input accept="image/*" type="file" disabled />
+                <Button accept="image/*" disabled color="error">
+                  <CancelIcon style={{ fontSize: "20px" }} />
+                </Button>
+              </div>
+            </div>
           </section>
         )}
       </Container>

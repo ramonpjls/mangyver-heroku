@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useSelector } from "react-redux";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -73,6 +74,8 @@ const Step1 = () => {
   const [sintoma, setSintoma] = useState([]);
   const [txtCausa, setTxtCausa] = useState("");
   const [txtSintoma, setTxtSintoma] = useState("");
+  const [groupCode, setGroupCode] = useState("");
+  const [photoPath, setPhotoPath] = useState({});
 
   const history = useHistory();
 
@@ -96,11 +99,23 @@ const Step1 = () => {
     symptomId: sintomaValue,
     textCause: txtCausa,
     textSymptom: txtSintoma,
+    urlPhoto: photoPath,
   };
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
     setTipoEquipo([]);
+  };
+
+  const fetchData = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
+    data.append("image", files[0]);
+
+    await axios.post(url, data).then((res) => {
+      setPhotoPath(res?.data);
+    });
   };
 
   const submitForm = () => {
@@ -127,7 +142,8 @@ const Step1 = () => {
   };
 
   const handleListItemClick = (event, index) => {
-    setTipoEquipoValue(index);
+    setTipoEquipoValue(index.id);
+    setGroupCode(index.groupCode);
   };
 
   const backBtn = () => {
@@ -294,11 +310,11 @@ const Step1 = () => {
   }, [formStep]);
 
   useEffect(() => {
-    if (tipoEquipoValue !== "")
+    if (groupCode !== "")
       axios
         .get("/objects", {
           params: {
-            groupCode: tipoEquipoValue,
+            groupCode: groupCode,
           },
         })
         .then((response) => {
@@ -307,7 +323,7 @@ const Step1 = () => {
     axios
       .get("/causes", {
         params: {
-          groupCode: tipoEquipoValue,
+          groupCode: groupCode,
         },
       })
       .then((response) => {
@@ -316,13 +332,13 @@ const Step1 = () => {
     axios
       .get("/symptoms", {
         params: {
-          groupCode: tipoEquipoValue,
+          groupCode: groupCode,
         },
       })
       .then((response) => {
         setSintoma(response.data);
       });
-  }, [tipoEquipoValue]);
+  }, [groupCode]);
 
   const rndrFalla = () => {
     if (tarjeta === "si") {
@@ -433,7 +449,7 @@ const Step1 = () => {
                     style={{}}
                     key={item.id}
                     selected={tipoEquipoValue === item.id}
-                    onClick={(event) => handleListItemClick(event, item.id)}
+                    onClick={(event) => handleListItemClick(event, item)}
                   >
                     <ListItem key={item.id}>
                       <ListItemText primary={item.name} />
@@ -484,6 +500,7 @@ const Step1 = () => {
             style={gnrStyle}
             required
             size="small"
+            value={txtSintoma}
             onChange={(e) => setTxtSintoma(e.target.value)}
           ></TextField>
           <Typography>Causa avería</Typography>
@@ -495,7 +512,7 @@ const Step1 = () => {
             size="small"
             style={gnrStyle}
             value={setCausaValue}
-            onChange={(e) => setCausaAveria(e.target.value)}
+            onChange={(e) => setCausaValue(e.target.value)}
           >
             {causa.map((elemento) => (
               <MenuItem key={elemento.id} value={elemento.id}>
@@ -511,6 +528,7 @@ const Step1 = () => {
             style={gnrStyle}
             required
             size="small"
+            value={txtCausa}
             onChange={(e) => setTxtCausa(e.target.value)}
           ></TextField>
         </div>
@@ -713,8 +731,56 @@ const Step1 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography>Afecta File</Typography>
-            <input accept="image/*" multiple type="file" />
+            <Typography style={{ fontSize: "20px", padding: "10px" }}>
+              Foto
+            </Typography>
+            <div
+              style={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                border: "solid #bababa 1px",
+                borderRadius: "5px",
+              }}
+            >
+              <form>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <input accept="image/*" type="file" onChange={fetchData} />
+                  <Button accept="image/*" type="reset" color="error">
+                    <CancelIcon style={{ fontSize: "20px" }} />
+                  </Button>
+                </div>
+              </form>
+            </div>
+            <Typography style={{ fontSize: "20px", padding: "10px" }}>
+              Video
+            </Typography>
+            <div
+              style={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                border: "solid #bababa 1px",
+                borderRadius: "5px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <input accept="image/*" type="file" disabled />
+                <Button accept="image/*" disabled color="error">
+                  <CancelIcon style={{ fontSize: "20px" }} />
+                </Button>
+              </div>
+            </div>
           </section>
         )}
       </Container>
