@@ -58,9 +58,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ShowAvisos() {
-
   const notice = useSelector((state) => state.notice.notice);
-  
+
   const classes = useStyles();
   const [totalInDB, setTotalInDB] = useState(0);
   const [keyword, setKeyword] = useState("");
@@ -71,11 +70,11 @@ function ShowAvisos() {
   const handleClose = () => setOpen(false);
 
   const openModal = (row) => {
-    setRowDetails(row)
+    setRowDetails(row);
     setOpen(true);
-  }
+  };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const HeaderSearch = {
     color: "white",
@@ -104,12 +103,12 @@ function ShowAvisos() {
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
-    height:'100%',
-    overflowY:'scroll',
-    scroll:true
+    height: "100%",
+    overflowY: "scroll",
+    scroll: true,
   };
 
-  let  {
+  let {
     firstPage,
     previousPage,
     nextPage,
@@ -122,28 +121,7 @@ function ShowAvisos() {
     totalPages,
     currentPage,
     // eslint-disable-next-line
-  } = usePagination(notice, totalInDB)
-
-  /* useEffect(() => {
-    if (rowDetails !== "") {
-      setOpen(true);
-      axios
-        .get(`/notices/${rowDetails}`, {
-          params: {
-            isWeb: true,
-          },
-        })
-        .then((res) => {
-        console.log(res.data.length);
-          
-          setNewState(res.data);
-        })
-        .catch((err) => {
-          console.warn(err);
-        });
-    }
-  }, [rowDetails]);
- */
+  } = usePagination(notice, totalInDB);
 
   useEffect(() => {
     setLoading(true);
@@ -151,7 +129,7 @@ function ShowAvisos() {
       .get(`/notices`, {
         params: {
           isWeb: true,
-          totalRows:1,
+          totalRows: 1,
         },
       })
       .then((res) => {
@@ -175,7 +153,7 @@ function ShowAvisos() {
         dispatch({
           type: "NOTICE",
           payload: res.data,
-        })
+        });
         // setNotice(res.data);
         setLoading(false);
       })
@@ -188,12 +166,11 @@ function ShowAvisos() {
       dispatch({
         type: "NOTICE",
         payload: [],
-      })
-    }
-// eslint-disable-next-line
+      });
+    };
+    // eslint-disable-next-line
   }, []);
 
-  
   useEffect(() => {
     setLoading(true);
     axios
@@ -208,7 +185,7 @@ function ShowAvisos() {
         dispatch({
           type: "NOTICE",
           payload: res.data,
-        })
+        });
         // setNotice(res.data);
         setLoading(false);
       })
@@ -217,63 +194,62 @@ function ShowAvisos() {
         window.location.reload();
       });
     // eslint-disable-next-line
-  }, [elementsPerPage, skipBase])
+  }, [elementsPerPage, skipBase]);
 
   return (
     <div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle}>
-            <div>
-              <img src={rowDetails?.photo?.url} alt={rowDetails?.photo?.desc} ></img>
-              <Typography variant="body2">
-                <Typography variant="h6">Creado por:</Typography>
-                {rowDetails.userName}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Departamento:</Typography>
-                {rowDetails.department}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Tipo de equipo:</Typography>
-                {rowDetails.equipment}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Numero de OT:</Typography>
-                {rowDetails.otCode}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Linea:</Typography>
-                {rowDetails.lineId}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Prioridad:</Typography>
-                {rowDetails.priority}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Titulo de la tarjeta:</Typography>
-                {rowDetails.cardTitle}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Tipo de tarjeta:</Typography>
-                {rowDetails.cardtype}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Descripción de la tarjeta:</Typography>
-                {rowDetails.cardDescription}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Componente dañado:</Typography>
-                {rowDetails.components}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Tipo de falla:</Typography>
-                {rowDetails.failureType}
-              </Typography>
-              <Typography variant="body2">
-                <Typography variant="h6">Afecta a:</Typography>
-                {rowDetails.affects}
-              </Typography>
-            </div>
+          <div>
+            <Typography variant="body2">
+              <Typography variant="h6">Creado por:</Typography>
+              {rowDetails.userName}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Departamento:</Typography>
+              {rowDetails.department}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Tipo de equipo:</Typography>
+              {rowDetails.equipment}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Numero de OT:</Typography>
+              {rowDetails.otCode}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Linea:</Typography>
+              {rowDetails.lineId}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Prioridad:</Typography>
+              {rowDetails.priority}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Titulo de la tarjeta:</Typography>
+              {rowDetails.cardTitle}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Tipo de tarjeta:</Typography>
+              {rowDetails.cardtype}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Descripción de la tarjeta:</Typography>
+              {rowDetails.cardDescription}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Componente dañado:</Typography>
+              {rowDetails.components}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Afecta a:</Typography>
+              {rowDetails.affects}
+            </Typography>
+            <Typography variant="body2">
+              <Typography variant="h6">Foto:</Typography>
+              {rowDetails?.photo?.url}
+            </Typography>
+          </div>
         </Box>
       </Modal>
       <Container className="header" style={Header}>
@@ -307,9 +283,21 @@ function ShowAvisos() {
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <Box sx={{ display:'flex', justifyContent:'end'}}>
-            <Pagination totalPages={totalPages} currentPage={currentPage} firstPage={firstPage} lastPage={lastPage} setElementsPerPage={setElementsPerPage} totalElementsInDB={totalElementsInDB} nextPage={nextPage} skipBase={skipBase} previousPage={previousPage} elementsPerPage={elementsPerPage} elements={notice} />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              firstPage={firstPage}
+              lastPage={lastPage}
+              setElementsPerPage={setElementsPerPage}
+              totalElementsInDB={totalElementsInDB}
+              nextPage={nextPage}
+              skipBase={skipBase}
+              previousPage={previousPage}
+              elementsPerPage={elementsPerPage}
+              elements={notice}
+            />
           </Box>
           <TableContainer component={Paper} className={classes.tableContainer}>
             <Table stickyHeader className={classes.table}>
@@ -334,9 +322,6 @@ function ShowAvisos() {
                     Descripción
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
-                    Causa de la averia
-                  </TableCell>
-                  <TableCell className={classes.tableHeaderCell}>
                     Prioridad
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
@@ -359,10 +344,7 @@ function ShowAvisos() {
                     }
                   })
                   .map((row) => (
-                    <TableRow
-                      key={row.id}
-                      hover
-                    >
+                    <TableRow key={row.id} hover>
                       <TableCell>
                         <Typography>{row.numNotice}</Typography>
                       </TableCell>
@@ -384,23 +366,22 @@ function ShowAvisos() {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography>{row.breakdown}</Typography>
-                      </TableCell>
-                      <TableCell>
                         <Typography
                           className={classes.status}
                           style={{
                             backgroundColor: `#${row.priorityColor}`,
                           }}
-                          >
+                        >
                           {row.priority}
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Button 
+                        <Button
                           onClick={() => openModal(row)}
                           size="small"
-                          sx={{fontSize:12}} variant="contained" >
+                          sx={{ fontSize: 12 }}
+                          variant="contained"
+                        >
                           Ver detalles
                         </Button>
                       </TableCell>
