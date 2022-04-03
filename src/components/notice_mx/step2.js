@@ -470,7 +470,7 @@ const Step2 = () => {
             required
             size="small"
             style={gnrStyle}
-            value={setCausaValue}
+            value={causaValue}
             onChange={(e) => setCausaValue(e.target.value)}
           >
             {causa.map((elemento) => (
