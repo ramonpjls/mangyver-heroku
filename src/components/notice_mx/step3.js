@@ -21,14 +21,13 @@ const Step3 = () => {
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
   const [tarjetaTitulo, setTarjetaTitulo] = useState("");
   const [prioridadValue, setPrioridadValue] = useState("");
-  const [componenteValue, setComponenteValue] = useState("");
-  const [causaAveriaValue, setCausaAveriaValue] = useState("");
+
   const [tipoFallaValue, setTipoFallaValue] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afectaValue, setAfectaValue] = useState("");
-  const [causaAveria, setCausaAveria] = useState([]);
+
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
-  const [componente, setComponente] = useState([]);
+
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
@@ -45,8 +44,6 @@ const Step3 = () => {
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priorityId: prioridadValue,
-    componentsId: componenteValue,
-    breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
     affectsId: afectaValue,
@@ -187,12 +184,6 @@ const Step3 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/breakdowns").then((response) => {
-      setCausaAveria(response.data);
-    });
-    await axios.get("/components").then((response) => {
-      setComponente(response.data);
-    });
     await axios.get("/priorities").then((response) => {
       setPrioridad(response.data);
     });
@@ -307,40 +298,7 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Componente dañado</Typography>
-            <Select
-              id="componente"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={componenteValue}
-              onChange={(e) => setComponenteValue(e.target.value)}
-            >
-              {componente.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography style={gnrStyle}>Causa de la averia</Typography>
-            <Select
-              id="causaAveria"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={causaAveriaValue}
-              onChange={(e) => setCausaAveriaValue(e.target.value)}
-            >
-              {causaAveria.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+
             <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"

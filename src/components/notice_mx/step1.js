@@ -43,17 +43,15 @@ const Step1 = () => {
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
   const [tarjetaTitulo, setTarjetaTitulo] = useState("");
   const [prioridadValue, setPrioridadValue] = useState("");
-  const [componenteValue, setComponenteValue] = useState("");
-  const [causaAveriaValue, setCausaAveriaValue] = useState("");
+
   const [tipoFallaValue, setTipoFallaValue] = useState("");
   const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
   const [afectaValue, setAfectaValue] = useState("");
   const [tipoEquipoValue, setTipoEquipoValue] = useState("");
 
   const [departamento, setDepartamento] = useState([]);
-  const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
-  const [componente, setComponente] = useState([]);
+
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
@@ -89,8 +87,6 @@ const Step1 = () => {
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priorityId: prioridadValue,
-    componentsId: componenteValue,
-    breakdownId: causaAveriaValue,
     failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
     affectsId: afectaValue,
@@ -252,12 +248,6 @@ const Step1 = () => {
         .then((response) => {
           setTarjetaTipo(response.data);
         });
-      await axios.get("/breakdowns").then((response) => {
-        setCausaAveria(response.data);
-      });
-      await axios.get("/components").then((response) => {
-        setComponente(response.data);
-      });
       await axios.get("/priorities").then((response) => {
         setPrioridad(response.data);
       });
@@ -511,7 +501,7 @@ const Step1 = () => {
             required
             size="small"
             style={gnrStyle}
-            value={setCausaValue}
+            value={causaValue}
             onChange={(e) => setCausaValue(e.target.value)}
           >
             {causa.map((elemento) => (
@@ -643,40 +633,6 @@ const Step1 = () => {
               style={gnrStyle}
             >
               {prioridad.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography style={gnrStyle}>Componente dañado</Typography>
-            <Select
-              id="componente"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={componenteValue}
-              onChange={(e) => setComponenteValue(e.target.value)}
-            >
-              {componente.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography style={gnrStyle}>Causa de la avería</Typography>
-            <Select
-              id="causaAveria"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={causaAveriaValue}
-              onChange={(e) => setCausaAveriaValue(e.target.value)}
-            >
-              {causaAveria.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
                   {elemento.name}
                 </MenuItem>
