@@ -17,14 +17,14 @@ import CancelIcon from "@mui/icons-material/Cancel";
 const Step3 = () => {
   const noticeType = useSelector((state) => state.notice.noticeType);
   const [formStep, setFormStep] = useState(0);
-  const [nOt, setNOt] = useState("");
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
-  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
-  const [prioridadValue, setPrioridadValue] = useState("");
+  const [nOt, setNOt] = useState(null);
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
+  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
+  const [prioridadValue, setPrioridadValue] = useState(null);
 
-  const [tipoFallaValue, setTipoFallaValue] = useState("");
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
-  const [afectaValue, setAfectaValue] = useState("");
+  const [tipoFallaValue, setTipoFallaValue] = useState(null);
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
+  const [afectaValue, setAfectaValue] = useState(null);
 
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
 

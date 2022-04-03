@@ -34,20 +34,20 @@ const Step1 = () => {
   const noticeType = useSelector((state) => state.notice.noticeType);
   const classes = useStyles();
   const [formStep, setFormStep] = useState(0);
-  const [tarjeta, setTarjeta] = useState("");
-  const [failureTimes, setFailureTimes] = useState("");
+  const [tarjeta, setTarjeta] = useState(null);
+  const [failureTimes, setFailureTimes] = useState(null);
 
   const [departamentoValue, setDepartamentoValue] = useState(0);
   const [lineValue, setLineValue] = useState(0);
 
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
-  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
-  const [prioridadValue, setPrioridadValue] = useState("");
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
+  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
+  const [prioridadValue, setPrioridadValue] = useState(null);
 
-  const [tipoFallaValue, setTipoFallaValue] = useState("");
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
-  const [afectaValue, setAfectaValue] = useState("");
-  const [tipoEquipoValue, setTipoEquipoValue] = useState("");
+  const [tipoFallaValue, setTipoFallaValue] = useState(null);
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
+  const [afectaValue, setAfectaValue] = useState(null);
+  const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
 
   const [departamento, setDepartamento] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
@@ -64,14 +64,14 @@ const Step1 = () => {
   const [disButton, setDisButton] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const [objetoValue, setObjetoValue] = useState("");
-  const [causaValue, setCausaValue] = useState("");
-  const [sintomaValue, setSintomaValue] = useState("");
+  const [objetoValue, setObjetoValue] = useState(null);
+  const [causaValue, setCausaValue] = useState(null);
+  const [sintomaValue, setSintomaValue] = useState(null);
   const [objeto, setObjeto] = useState([]);
   const [causa, setCausa] = useState([]);
   const [sintoma, setSintoma] = useState([]);
-  const [txtCausa, setTxtCausa] = useState("");
-  const [txtSintoma, setTxtSintoma] = useState("");
+  const [txtCausa, setTxtCausa] = useState(null);
+  const [txtSintoma, setTxtSintoma] = useState(null);
   const [groupCode, setGroupCode] = useState("");
   const [photoPath, setPhotoPath] = useState({});
 
