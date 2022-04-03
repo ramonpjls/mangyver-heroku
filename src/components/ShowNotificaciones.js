@@ -14,6 +14,7 @@ import {
   TableRow,
   Paper,
   Typography,
+  Box,
   Backdrop,
   CircularProgress,
   Container,
@@ -134,19 +135,19 @@ function ShowNotificaciones() {
       });
   }, [elementsPerPage, skipBase]);
 
-  useEffect(() => {
-    if (idValue !== "") {
-      setOpen(true);
-      axios
-        .get(`/notifications/${idValue}`)
-        .then((res) => {
-          setNewState(res.data);
-        })
-        .catch((err) => {
-          console.warn(err);
-        });
-    }
-  }, [idValue]);
+  // useEffect(() => {
+  //   if (idValue !== "") {
+  //     setOpen(true);
+  //     axios
+  //       .get(`/notifications/${idValue}`)
+  //       .then((res) => {
+  //         setNewState(res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.warn(err);
+  //       });
+  //   }
+  // }, [idValue]);
 
   return (
     <div>
@@ -251,11 +252,7 @@ function ShowNotificaciones() {
                     }
                   })
                   .map((row) => (
-                    <TableRow
-                      key={row.id}
-                      hover
-                      onClick={() => setIdValue(row.id)}
-                    >
+                    <TableRow key={row.id} hover>
                       <TableCell>
                         <Typography>{row.otCode}</Typography>
                       </TableCell>
