@@ -61,7 +61,8 @@ const Step3 = () => {
     data.append("image", files[0]);
 
     axios.post(url, data).then((res) => {
-      setPhotoPath(res.data.url);
+      const response = res.data.url;
+      setPhotoPath(response);
     });
   };
 

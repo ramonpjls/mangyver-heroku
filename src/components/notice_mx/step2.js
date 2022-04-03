@@ -112,8 +112,9 @@ const Step2 = () => {
     const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
     data.append("image", files[0]);
 
-    await axios.post(url, data).then((res) => {
-      setPhotoPath(res?.data.url);
+    axios.post(url, data).then((res) => {
+      const response = res.data.url;
+      setPhotoPath(response);
     });
   };
 
