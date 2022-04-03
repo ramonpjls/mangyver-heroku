@@ -15,8 +15,6 @@ import {
   Container,
   TextField,
   InputAdornment,
-  Modal,
-  Box,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -58,11 +56,11 @@ function ShowNotificaciones() {
   const [notifications, setNotifications] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [idValue, setIdValue] = useState("");
-  const [newState, setNewState] = useState([]);
+  // const [open, setOpen] = useState(false);
+  // const [idValue, setIdValue] = useState("");
+  // const [newState, setNewState] = useState([]);
 
-  const handleClose = () => setOpen(false);
+  // const handleClose = () => setOpen(false);
 
   const HeaderSearch = {
     color: "white",
@@ -82,16 +80,16 @@ function ShowNotificaciones() {
     alignItems: "center",
   };
 
-  const boxStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 600,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-  };
+  // const boxStyle = {
+  //   position: "absolute",
+  //   top: "50%",
+  //   left: "50%",
+  //   transform: "translate(-50%, -50%)",
+  //   width: 600,
+  //   bgcolor: "background.paper",
+  //   boxShadow: 24,
+  //   p: 4,
+  // };
 
   useEffect(() => {
     setLoading(true);
@@ -107,23 +105,23 @@ function ShowNotificaciones() {
       });
   }, []);
 
-  useEffect(() => {
-    if (idValue !== "") {
-      setOpen(true);
-      axios
-        .get(`/notifications/${idValue}`)
-        .then((res) => {
-          setNewState(res.data);
-        })
-        .catch((err) => {
-          console.warn(err);
-        });
-    }
-  }, [idValue]);
+  // useEffect(() => {
+  //   if (idValue !== "") {
+  //     setOpen(true);
+  //     axios
+  //       .get(`/notifications/${idValue}`)
+  //       .then((res) => {
+  //         setNewState(res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.warn(err);
+  //       });
+  //   }
+  // }, [idValue]);
 
   return (
     <div>
-      <Modal open={open} onClose={handleClose}>
+      {/* <Modal onClose={handleClose}>
         <Box sx={boxStyle}>
           <div key={newState.id}>
             <Typography variant="body2">
@@ -148,7 +146,7 @@ function ShowNotificaciones() {
             </Typography>
           </div>
         </Box>
-      </Modal>
+      </Modal> */}
       <Container className="header" style={Header}>
         <NotificationsIcon style={{ marginRight: "10px" }} />
         <Typography align="left">Notificaciones</Typography>
@@ -185,6 +183,7 @@ function ShowNotificaciones() {
                 <TableCell className={classes.tableHeaderCell}>
                   Numero de OT
                 </TableCell>
+                <TableCell className={classes.tableHeaderCell}>Fecha</TableCell>
                 <TableCell className={classes.tableHeaderCell}>
                   Hora de Inicio
                 </TableCell>
@@ -197,6 +196,7 @@ function ShowNotificaciones() {
                 <TableCell className={classes.tableHeaderCell}>
                   ¿Se realizo la orden?
                 </TableCell>
+                <TableCell className={classes.tableHeaderCell}>Autor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -212,13 +212,12 @@ function ShowNotificaciones() {
                   }
                 })
                 .map((row) => (
-                  <TableRow
-                    key={row.id}
-                    hover
-                    onClick={() => setIdValue(row.id)}
-                  >
+                  <TableRow key={row.id} hover>
                     <TableCell>
                       <Typography>{row.otCode}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.date}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography>{row.startHour}</Typography>
@@ -240,6 +239,9 @@ function ShowNotificaciones() {
                       >
                         {row.isDone ? "Si" : "No"}
                       </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{row.author}</Typography>
                     </TableCell>
                   </TableRow>
                 ))}
