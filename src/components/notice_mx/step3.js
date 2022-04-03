@@ -32,7 +32,7 @@ const Step3 = () => {
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
 
-  const [photoPath, setPhotoPath] = useState({});
+  const [photoPath, setPhotoPath] = useState("");
 
   const [disButton, setDisButton] = useState(true);
 
@@ -54,14 +54,14 @@ const Step3 = () => {
     setFormStep((cur) => cur + 1);
   };
 
-  const fetchData = async (e) => {
+  const fetchData = (e) => {
     const files = e.target.files;
     const data = new FormData();
     const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
     data.append("image", files[0]);
 
-    await axios.post(url, data).then((res) => {
-      setPhotoPath(res?.data);
+    axios.post(url, data).then((res) => {
+      setPhotoPath(res.data.url);
     });
   };
 
