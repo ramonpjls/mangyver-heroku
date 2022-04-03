@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Grid, IconButton, Tooltip } from "@mui/material";
+import { Grid } from "@mui/material";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
@@ -26,12 +26,11 @@ import Register from "./users/Register";
 import ShowNotificaciones from "./ShowNotificaciones";
 import Notificationsreport from "./notificationsReport";
 import Home from "./notice_mx/home";
-import Logout from "./Logout";
 import Landing from "./landing";
 import ShowAvisos from "./ShowAvisos";
 import logopeq from "../assets/LogoP.jpeg";
-import { Help } from "@mui/icons-material";
 // import axiosinstance from '../axiosinstance';
+import SettingsMenu from "./settingsMenu";
 
 import { Link, Route } from "react-router-dom";
 // import { useHistory } from "react-router-dom";
@@ -72,15 +71,6 @@ const styleLogOutContent = {
 };
 
 export default function MiniDrawer() {
-  const getHelp = () => {
-    //const help = await axiosinstance.get('/helps')
-    //window.location = "https//google.com"
-    //window.location.replace("https//google.com")
-    //window.location.href = "https//google.com"
-    //window.open("https//google.com")
-    //history.go("https//google.com")
-  };
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -101,19 +91,7 @@ export default function MiniDrawer() {
             style={{ margin: "10px" }}
           />
           <div style={styleLogOutContent}>
-            <Logout />
-
-            <a
-              href="https://ab-inbev.acadia.sysalli.com/browse/HQM-500054/es-mx"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Tooltip title="Ayuda" sx={{ marginLeft: 2, color: "#3F51B5" }}>
-                <IconButton onClick={getHelp}>
-                  <Help sx={{ fontSize: 40 }} />
-                </IconButton>
-              </Tooltip>
-            </a>
+            <SettingsMenu />
           </div>
         </Toolbar>
       </AppBar>
