@@ -201,6 +201,7 @@ function ShowAvisos() {
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle}>
           <div>
+            {/* <img src={rowDetails?.Photo} alt="" /> */}
             <Typography variant="body2">
               <Typography variant="h6">Creado por:</Typography>
               {rowDetails.userName}
@@ -247,7 +248,7 @@ function ShowAvisos() {
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">Foto:</Typography>
-              {rowDetails?.photo?.url}
+              {rowDetails?.Photo}
             </Typography>
           </div>
         </Box>
