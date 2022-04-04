@@ -190,7 +190,7 @@ function ShowNotificaciones() {
           fullWidth
           size="small"
           variant="outlined"
-          placeholder="¿Cual aviso desea buscar?"
+          placeholder="¿Cual Notificacion desea buscar?"
           onChange={(e) => setKeyword(e.target.value)}
           InputProps={{
             endAdornment: (
@@ -226,6 +226,9 @@ function ShowNotificaciones() {
                     Numero de OT
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
+                    Fecha
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
                     Hora de Inicio
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
@@ -236,6 +239,9 @@ function ShowNotificaciones() {
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
                     ¿Se realizo la orden?
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
+                    Autor
                   </TableCell>
                 </TableRow>
               </TableHead>
