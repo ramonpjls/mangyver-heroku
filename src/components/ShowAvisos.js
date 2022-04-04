@@ -248,7 +248,9 @@ function ShowAvisos() {
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">Foto:</Typography>
-              {rowDetails?.Photo}
+              <a href={rowDetails?.Photo} target="_blank" rel="noreferrer">
+                Ver Imagen
+              </a>
             </Typography>
           </div>
         </Box>

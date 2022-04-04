@@ -257,6 +257,9 @@ function ShowNotificaciones() {
                         <Typography>{row.otCode}</Typography>
                       </TableCell>
                       <TableCell>
+                        <Typography>{row.date}</Typography>
+                      </TableCell>
+                      <TableCell>
                         <Typography>{row.startHour}</Typography>
                       </TableCell>
                       <TableCell>
@@ -276,6 +279,9 @@ function ShowNotificaciones() {
                         >
                           {row.isDone ? "Si" : "No"}
                         </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>{row.author}</Typography>
                       </TableCell>
                     </TableRow>
                   ))}

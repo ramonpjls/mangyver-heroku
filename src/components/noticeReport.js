@@ -83,6 +83,9 @@ const Noticereport = () => {
     { label: "Grupo planificador", key: "GrupoPlanificador" },
     { label: "Centro", key: "Centro" },
     { label: "repercucion", key: "repercucion" },
+    { label: "sintoma", key: "sintoma" },
+    { label: "textoCausa", key: "textoCausa" },
+    { label: "textoSintoma", key: "textoSintoma" },
   ];
 
   const ReportSet = {
