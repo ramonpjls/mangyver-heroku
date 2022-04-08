@@ -86,6 +86,13 @@ const Noticereport = () => {
     { label: "sintoma", key: "sintoma" },
     { label: "textoCausa", key: "textoCausa" },
     { label: "textoSintoma", key: "textoSintoma" },
+    { label: "Grupo Parte Objeto", key: "grupoObjeto" },
+    { label: "Parte Objeto", key: "parteObjeto" },
+    { label: "Grupo Sintoma", key: "grupoSintoma" },
+    { label: "Grupo Causa", key: "grupoCausa" },
+    { label: "Responsable", key: "Responsable" },
+    { label: "Estado Instalacion", key: "estadoInstalacion" },
+    { label: "Revision", key: "Revision" },
   ];
 
   const ReportSet = {
