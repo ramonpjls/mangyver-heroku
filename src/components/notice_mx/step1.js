@@ -344,7 +344,7 @@ const Step1 = () => {
           onChange={(e) => setFailureTimes(e.target.value)}
           size="small"
           type="number"
-          placeholder="Duracion de falla en minutos"
+          placeholder="Duración de falla en minutos"
         ></TextField>
       );
     }

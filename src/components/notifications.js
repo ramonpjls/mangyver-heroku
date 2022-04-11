@@ -111,6 +111,26 @@ const Notifications = () => {
             justifyContent="center"
           >
             <Grid item xs={4}>
+              <InputLabel>Numero de OT</InputLabel>
+              <TextField
+                size="small"
+                varian="outlined"
+                type="number"
+                fullWidth
+                value={otCode}
+                onChange={(e) => setOtCode(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            item
+            alignItems="center"
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+          >
+            <Grid item xs={4}>
               <InputLabel>Numero de operacion</InputLabel>
               <Select
                 variant="outlined"
@@ -127,26 +147,6 @@ const Notifications = () => {
                   </MenuItem>
                 ))}
               </Select>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-          >
-            <Grid item xs={4}>
-              <InputLabel>Numero de OT</InputLabel>
-              <TextField
-                size="small"
-                varian="outlined"
-                type="number"
-                fullWidth
-                value={otCode}
-                onChange={(e) => setOtCode(e.target.value)}
-              />
             </Grid>
           </Grid>
           <Grid
@@ -187,7 +187,7 @@ const Notifications = () => {
             justifyContent="center"
           >
             <Grid item xs={4}>
-              <InputLabel>¿Se realizo la orden?</InputLabel>
+              <InputLabel>Notificación Final</InputLabel>
               <TextField
                 variant="outlined"
                 fullWidth

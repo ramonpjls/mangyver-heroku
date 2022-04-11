@@ -515,7 +515,7 @@ const Step2 = () => {
         {formStep >= 0 && (
           <section style={formStep === 0 ? {} : { display: "none" }} id="9">
             <Typography align="left" variant="h5">
-              Duracion de la falla
+              Duración de la falla
             </Typography>
             <TextField
               variant="outlined"

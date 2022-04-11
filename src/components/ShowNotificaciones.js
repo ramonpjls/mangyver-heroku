@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ShowNotificaciones() {
   const classes = useStyles();
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([]); // eslint-disable-next-line
   const [totalInDB, setTotalInDB] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -118,7 +118,7 @@ function ShowNotificaciones() {
       .catch((err) => {
         console.warn(err);
         window.location.reload();
-      });
+      }); // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -190,7 +190,7 @@ function ShowNotificaciones() {
           fullWidth
           size="small"
           variant="outlined"
-          placeholder="¿Cual Notificacion desea buscar?"
+          placeholder="¿Cual Notificación desea buscar?"
           onChange={(e) => setKeyword(e.target.value)}
           InputProps={{
             endAdornment: (

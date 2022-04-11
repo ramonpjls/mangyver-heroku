@@ -41,7 +41,7 @@ const Notificationsreport = () => {
   const headers = [
     { label: "ORDEN", key: "OTCode" },
     { label: "OPERACION", key: "operationName" },
-    { label: "SAP", key: "SAP" },
+    { label: "Notificacion final", key: "lastNotification" },
     { label: "FECHA DE NOTIFICACION", key: "notificationDate" },
     { label: "TIEMPO REAL", key: "realTime" },
     { label: "TIEMPO", key: "time" },
@@ -50,6 +50,7 @@ const Notificationsreport = () => {
     { label: "TEXTO3", key: "Text3" },
     { label: "TEXTO4", key: "Text4" },
     { label: "MOTIVO DESVIACION", key: "Deviation" },
+    { labe: "Centro", key: "Centro" },
   ];
 
   const ReportSet = {
