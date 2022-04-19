@@ -101,6 +101,9 @@ const Step1 = () => {
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
     setTipoEquipo([]);
+    setSintoma([]);
+    setCausa([]);
+    setObjeto([]);
   };
 
   const fetchData = async (e) => {
@@ -236,6 +239,79 @@ const Step1 = () => {
 
   //TODO: setear el parametro para recibir lineas por machines
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    await axios.get("/areas").then((response) => {
+      setDepartamento(response.data);
+    });
+  }, [formStep]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (departamentoValue !== 0) {
+      await axios
+        .get("/lines", {
+          params: {
+            areaId: departamentoValue,
+          },
+        })
+        .then((response) => {
+          setLines(response.data);
+          setLoading(false);
+        });
+    }
+  }, [departamentoValue]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (lineValue !== 0) {
+      setLoading(true);
+      await axios
+        .get("/machines", {
+          params: {
+            lineId: lineValue,
+          },
+        })
+        .then((response) => {
+          setTipoEquipo(response.data);
+          setLoading(false);
+        });
+    }
+  }, [lineValue]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (groupCode !== "") {
+      await axios
+        .get("/objects", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setObjeto(response.data);
+        });
+      await axios
+        .get("/causes", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setCausa(response.data);
+        });
+      await axios
+        .get("/symptoms", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setSintoma(response.data);
+        });
+    }
+  }, [groupCode]);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     if (formStep === 2) {
@@ -261,75 +337,6 @@ const Step1 = () => {
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStep]);
-
-  useEffect(() => {
-    if (departamentoValue !== 0) {
-      axios
-        .get("/lines", {
-          params: {
-            areaId: departamentoValue,
-          },
-        })
-        .then((response) => {
-          setLines(response.data);
-          setLoading(false);
-        });
-    }
-  }, [departamentoValue]);
-
-  useEffect(() => {
-    if (lineValue !== 0) {
-      setLoading(true);
-      axios
-        .get("/machines", {
-          params: {
-            lineId: lineValue,
-          },
-        })
-        .then((response) => {
-          setTipoEquipo(response.data);
-          setLoading(false);
-        });
-    }
-  }, [lineValue]);
-
-  useEffect(() => {
-    if (formStep === 0)
-      axios.get("/areas").then((response) => {
-        setDepartamento(response.data);
-      });
-  }, [formStep]);
-
-  useEffect(() => {
-    if (groupCode !== "")
-      axios
-        .get("/objects", {
-          params: {
-            groupCode: groupCode,
-          },
-        })
-        .then((response) => {
-          setObjeto(response.data);
-        });
-    axios
-      .get("/causes", {
-        params: {
-          groupCode: groupCode,
-        },
-      })
-      .then((response) => {
-        setCausa(response.data);
-      });
-    axios
-      .get("/symptoms", {
-        params: {
-          groupCode: groupCode,
-        },
-      })
-      .then((response) => {
-        setSintoma(response.data);
-      });
-  }, [groupCode]);
 
   const rndrFalla = () => {
     if (tarjeta === "si") {

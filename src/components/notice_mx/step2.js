@@ -70,7 +70,7 @@ const Step2 = () => {
   const [sintoma, setSintoma] = useState([]);
   const [txtCausa, setTxtCausa] = useState(null);
   const [txtSintoma, setTxtSintoma] = useState(null);
-  const [groupCode, setGroupCode] = useState(null);
+  const [groupCode, setGroupCode] = useState("");
 
   const history = useHistory();
 
@@ -234,7 +234,78 @@ const Step2 = () => {
     setGroupCode(index.groupCode);
   };
 
-  //TODO: setear el parametro para recibir lineas por machines
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    await axios.get("/areas").then((response) => {
+      setDepartamento(response.data);
+    });
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (departamentoValue !== 0) {
+      await axios
+        .get("/lines", {
+          params: {
+            areaId: departamentoValue,
+          },
+        })
+        .then((response) => {
+          setLines(response.data);
+          setLoading(false);
+        });
+    }
+  }, [departamentoValue]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (lineValue !== 0) {
+      setLoading(true);
+      await axios
+        .get("/machines", {
+          params: {
+            lineId: lineValue,
+          },
+        })
+        .then((response) => {
+          setTipoEquipo(response.data);
+          setLoading(false);
+        });
+    }
+  }, [lineValue]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (groupCode !== "") {
+      await axios
+        .get("/objects", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setObjeto(response.data);
+        });
+      await axios
+        .get("/causes", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setCausa(response.data);
+        });
+      await axios
+        .get("/symptoms", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setSintoma(response.data);
+        });
+    }
+  }, [groupCode]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -262,78 +333,9 @@ const Step2 = () => {
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStep]);
 
-  useEffect(() => {
-    if (departamentoValue !== 0) {
-      axios
-        .get("/lines", {
-          params: {
-            areaId: departamentoValue,
-          },
-        })
-        .then((response) => {
-          setLines(response.data);
-          setLoading(false);
-        });
-    }
-  }, [departamentoValue]);
-
-  useEffect(() => {
-    if (lineValue !== 0) {
-      setLoading(true);
-      axios
-        .get("/machines", {
-          params: {
-            lineId: lineValue,
-          },
-        })
-        .then((response) => {
-          setTipoEquipo(response.data);
-          setLoading(false);
-        });
-    }
-  }, [lineValue]);
-
   const backHome = () => {
     window.location.reload();
   };
-
-  useEffect(() => {
-    if (formStep === 0)
-      axios.get("/areas").then((response) => {
-        setDepartamento(response.data);
-      });
-  }, [formStep]);
-
-  useEffect(() => {
-    if (groupCode !== "")
-      axios
-        .get("/objects", {
-          params: {
-            groupCode: groupCode,
-          },
-        })
-        .then((response) => {
-          setObjeto(response.data);
-        });
-    axios
-      .get("/causes", {
-        params: {
-          groupCode: groupCode,
-        },
-      })
-      .then((response) => {
-        setCausa(response.data);
-      });
-    axios
-      .get("/symptoms", {
-        params: {
-          groupCode: groupCode,
-        },
-      })
-      .then((response) => {
-        setSintoma(response.data);
-      });
-  }, [groupCode]);
 
   const renderCodigoEquipo = () => {
     if (departamentoValue !== "") {
