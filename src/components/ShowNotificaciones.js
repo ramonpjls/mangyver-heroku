@@ -107,10 +107,16 @@ function ShowNotificaciones() {
     elements,
   } = usePagination(notifications, totalInDB);
 
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`)
+      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, configCall)
       .then((res) => {
         setNotifications(res.data);
         setLoading(false);
@@ -124,7 +130,7 @@ function ShowNotificaciones() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`)
+      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, configCall)
       .then((res) => {
         setNotifications(res.data);
         setLoading(false);
@@ -132,7 +138,7 @@ function ShowNotificaciones() {
       .catch((err) => {
         console.warn(err);
         window.location.reload();
-      });
+      }); // eslint-disable-next-line
   }, [elementsPerPage, skipBase]);
 
   // useEffect(() => {

@@ -15,8 +15,8 @@ import { Redirect } from "react-router-dom";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 
 const Notifications = () => {
-  const [horaInicio, setHoraInicio] = useState(null);
-  const [horaFin, setHoraFin] = useState(null);
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
   const [norden, setNorden] = useState("");
   const [deviation, setDeviation] = useState("");
   const [observation, setObservation] = useState("");
@@ -49,11 +49,17 @@ const Notifications = () => {
     alignItems: "center",
   };
 
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   const HandleSubmit = (e) => {
     e.preventDefault();
 
     axios
-      .post("/notifications", data)
+      .post("/notifications", configCall, data)
       .then((res) => {
         console.log(res);
         setRedirect(true);

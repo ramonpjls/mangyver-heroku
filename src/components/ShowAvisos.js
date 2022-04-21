@@ -108,6 +108,12 @@ function ShowAvisos() {
     scroll: true,
   };
 
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   let {
     firstPage,
     previousPage,
@@ -126,7 +132,7 @@ function ShowAvisos() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notices`, {
+      .get(`/notices`, configCall, {
         params: {
           isWeb: true,
           totalRows: 1,
@@ -142,7 +148,7 @@ function ShowAvisos() {
       });
 
     axios
-      .get(`/notices`, {
+      .get(`/notices`, configCall, {
         params: {
           isWeb: true,
           from: Number(skipBase),
@@ -174,7 +180,7 @@ function ShowAvisos() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notices`, {
+      .get(`/notices`, configCall, {
         params: {
           isWeb: true,
           from: Number(skipBase),

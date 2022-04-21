@@ -118,9 +118,15 @@ const Step2 = () => {
     });
   };
 
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   const submitForm = () => {
     axios
-      .post("/notices", data)
+      .post("/notices", configCall, data)
       .then((res) => {
         console.log(res);
         Swal.fire({

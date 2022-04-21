@@ -66,9 +66,15 @@ const Step3 = () => {
     });
   };
 
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   const submitForm = () => {
     axios
-      .post("/notices", data)
+      .post("/notices", configCall, data)
       .then((res) => {
         Swal.fire({
           text: "Aviso creado exitosamente",

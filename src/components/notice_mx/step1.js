@@ -118,9 +118,15 @@ const Step1 = () => {
     });
   };
 
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   const submitForm = () => {
     axios
-      .post("/notices", data)
+      .post("/notices", configCall, data)
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -239,7 +245,7 @@ const Step1 = () => {
 
   //TODO: setear el parametro para recibir lineas por machines
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     await axios.get("/areas").then((response) => {
       setDepartamento(response.data);
