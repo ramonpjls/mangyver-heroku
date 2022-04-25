@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@mui/styles";
 import {
   Container,
   Typography,
@@ -6,64 +7,126 @@ import {
   Select,
   Button,
   MenuItem,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  ListSubheader,
+  InputAdornment,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSelector } from "react-redux";
+import CancelIcon from "@mui/icons-material/Cancel";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    color: "#fff",
+  },
+}));
 
 const Step2 = () => {
+  const noticeType = useSelector((state) => state.notice.noticeType);
+  const classes = useStyles();
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState("");
-  const [departamentoValue, setDepartamentoValue] = useState("");
-  const [lineValue, setLineValue] = useState("");
-  const [tipoEquipoValue, setTipoEquipoValue] = useState("");
-  const [tarjetaTipoValue, setTarjetaTipoValue] = useState("");
-  const [tarjetaTitulo, setTarjetaTitulo] = useState("");
-  const [prioridadValue, setPrioridadValue] = useState("");
-  const [componenteValue, setComponenteValue] = useState("");
-  const [causaAveriaValue, setCausaAveriaValue] = useState("");
-  const [tipoFallaValue, setTipoFallaValue] = useState("");
-  const [descripcionTarjeta, setDescripcionTarjeta] = useState("");
-  const [afectaValue, setAfectaValue] = useState("");
+  const [departamentoValue, setDepartamentoValue] = useState(0);
+  const [lineValue, setLineValue] = useState(0);
+  const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
+
+  const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
+  const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
+  const [prioridadValue, setPrioridadValue] = useState(null);
+  const [tipoFallaValue, setTipoFallaValue] = useState(null);
+  const [descripcionTarjeta, setDescripcionTarjeta] = useState(null);
+  const [afectaValue, setAfectaValue] = useState(null);
+
   const [departamento, setDepartamento] = useState([]);
-  const [causaAveria, setCausaAveria] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
   const [lines, setLines] = useState([]);
   const [tipoEquipo, setTipoEquipo] = useState([]);
-  const [componente, setComponente] = useState([]);
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
 
+  const [disButton, setDisButton] = useState(true);
+
+  const [keyword, setKeyword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const [photoPath, setPhotoPath] = useState({});
+
+  const [objetoValue, setObjetoValue] = useState(null);
+  const [causaValue, setCausaValue] = useState(null);
+  const [sintomaValue, setSintomaValue] = useState(null);
+  const [objeto, setObjeto] = useState([]);
+  const [causa, setCausa] = useState([]);
+  const [sintoma, setSintoma] = useState([]);
+  const [txtCausa, setTxtCausa] = useState(null);
+  const [txtSintoma, setTxtSintoma] = useState(null);
+  const [groupCode, setGroupCode] = useState("");
+
   const history = useHistory();
 
   const data = {
-    process: "CE2B8484-0901-EC11-B563-2818780EF919",
+    processId: noticeType.processId,
     failureTime: failureTimes,
-    department: departamentoValue,
-    line: lineValue,
-    equipmentType: tipoEquipoValue,
-    cardType: tarjetaTipoValue,
+    departmentId: departamentoValue,
+    lineId: lineValue,
+    equipmentId: tipoEquipoValue,
+    cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
-    priority: prioridadValue,
-    components: componenteValue,
-    breakdown: causaAveriaValue,
-    failureType: tipoFallaValue,
+    priorityId: prioridadValue,
+    failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
-    affects: afectaValue,
+    affectsId: afectaValue,
+    objectId: objetoValue,
+    causeId: causaValue,
+    symptomId: sintomaValue,
+    textCause: txtCausa,
+    textSymptom: txtSintoma,
+    urlPhoto: photoPath,
   };
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+    setTipoEquipo([]);
+    setSintoma([]);
+    setCausa([]);
+    setObjeto([]);
   };
 
   const backBtn = () => {
     setFormStep((cur) => cur - 1);
   };
 
+  const fetchData = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
+    data.append("image", files[0]);
+
+    axios.post(url, data).then((res) => {
+      const response = res.data.url;
+      setPhotoPath(response);
+    });
+  };
+
+  const configCall = {
+    headers: {
+      auth: localStorage.getItem("token"),
+    },
+  };
+
   const submitForm = () => {
     axios
-      .post("/notices​/old_notice", data)
+      .post("/notices", configCall, data)
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -87,8 +150,8 @@ const Step2 = () => {
   const btnBckStyle = {
     textTransform: "none",
     marginTop: "1rem",
-    fontSize: 16,
     marginBottom: "1rem",
+    fontSize: 16,
     lineHeight: 1.5,
     backgroundColor: "#d06345",
     color: "#fff",
@@ -100,7 +163,6 @@ const Step2 = () => {
     marginBottom: "1rem",
     fontSize: 16,
     lineHeight: 1.5,
-    backgroundColor: "#2760B7",
     color: "#fff",
   };
 
@@ -115,11 +177,22 @@ const Step2 = () => {
     justifyContent: "space-between",
   };
 
+  const Header = {
+    backgroundColor: "#79A9D1",
+    color: "white",
+    borderRadius: "3px",
+    padding: "10px",
+    maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  };
+
   const renderBckBtn = () => {
     if (formStep === 0) {
       return (
         <Button style={gnrStyle} variant="outlined" disabled>
-          Back
+          Atras
         </Button>
       );
     } else if (formStep > 2) {
@@ -127,7 +200,7 @@ const Step2 = () => {
     } else {
       return (
         <Button style={btnBckStyle} variant="outlined" onClick={backBtn}>
-          Back
+          Atras
         </Button>
       );
     }
@@ -141,24 +214,133 @@ const Step2 = () => {
         <Button
           type="submit"
           style={btnNxtStyle}
-          variant="outlined"
+          variant="contained"
           color="primary"
           onClick={submitForm}
         >
-          Submit Form
+          Enviar Aviso
         </Button>
       );
     } else {
       return (
         <Button
           style={btnNxtStyle}
-          variant="outlined"
           onClick={completeFormStep}
+          variant="contained"
+          disabled={disButton}
         >
-          Next
+          Siguiente
         </Button>
       );
     }
+  };
+
+  const handleListItemClick = (event, index) => {
+    setTipoEquipoValue(index.id);
+    setGroupCode(index.groupCode);
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    await axios.get("/areas").then((response) => {
+      setDepartamento(response.data);
+    });
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (departamentoValue !== 0) {
+      await axios
+        .get("/lines", {
+          params: {
+            areaId: departamentoValue,
+          },
+        })
+        .then((response) => {
+          setLines(response.data);
+          setLoading(false);
+        });
+    }
+  }, [departamentoValue]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (lineValue !== 0) {
+      setLoading(true);
+      await axios
+        .get("/machines", {
+          params: {
+            lineId: lineValue,
+          },
+        })
+        .then((response) => {
+          setTipoEquipo(response.data);
+          setLoading(false);
+        });
+    }
+  }, [lineValue]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (groupCode !== "") {
+      await axios
+        .get("/objects", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setObjeto(response.data);
+        });
+      await axios
+        .get("/causes", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setCausa(response.data);
+        });
+      await axios
+        .get("/symptoms", {
+          params: {
+            groupCode: groupCode,
+          },
+        })
+        .then((response) => {
+          setSintoma(response.data);
+        });
+    }
+  }, [groupCode]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (formStep === 2) {
+      setLoading(true);
+      await axios
+        .get("/cards", {
+          params: {
+            process: noticeType.processId,
+          },
+        })
+        .then((response) => {
+          setTarjetaTipo(response.data);
+        });
+      await axios.get("/priorities").then((response) => {
+        setPrioridad(response.data);
+      });
+      await axios.get("/type-fails").then((response) => {
+        setTipoFalla(response.data);
+      });
+      await axios.get("/affects").then((response) => {
+        setAfecta(response.data);
+        setLoading(false);
+      });
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formStep]);
+
+  const backHome = () => {
+    window.location.reload();
   };
 
   const renderCodigoEquipo = () => {
@@ -183,95 +365,165 @@ const Step2 = () => {
               </MenuItem>
             ))}
           </Select>
-          <Typography>Tipo de Equipo</Typography>
+          <Typography>Equipo</Typography>
+          {loading ? (
+            <Backdrop className={classes.backdrop} open>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          ) : (
+            <List
+              style={gnrStyle}
+              sx={{
+                width: "100%",
+                maxWidth: 500,
+                bgcolor: "background.paper",
+                position: "relative",
+                overflow: "auto",
+                maxHeight: 300,
+              }}
+            >
+              <ListSubheader>
+                <TextField
+                  type="text"
+                  size="small"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="Seleccione el campo"
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon fontSize="large" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </ListSubheader>
+              {tipoEquipo
+                // eslint-disable-next-line array-callback-return
+                .filter((item) => {
+                  if (keyword === "") {
+                    return item;
+                  } else if (
+                    item.name.toLowerCase().includes(keyword.toLowerCase())
+                  ) {
+                    return item;
+                  }
+                })
+                .map((item) => (
+                  <ListItemButton
+                    dense
+                    divider
+                    key={item.id}
+                    disableGutters
+                    selected={tipoEquipoValue === item.id}
+                    onClick={(event) => handleListItemClick(event, item)}
+                  >
+                    <ListItem key={item.id}>
+                      <ListItemText primary={item.name} />
+                    </ListItem>
+                  </ListItemButton>
+                ))}
+            </List>
+          )}
+          <Typography>Parte Objeto | Componente dañado</Typography>
           <Select
-            id="tipoEquipo"
+            id="Linea"
             variant="outlined"
             fullWidth
             required
             size="small"
             style={gnrStyle}
-            value={tipoEquipoValue}
-            onChange={(e) => setTipoEquipoValue(e.target.value)}
+            value={objetoValue}
+            onChange={(e) => setObjetoValue(e.target.value)}
           >
-            {tipoEquipo.map((elemento) => (
+            {objeto.map((elemento) => (
               <MenuItem key={elemento.id} value={elemento.id}>
                 {elemento.name}
               </MenuItem>
             ))}
           </Select>
+          <Typography>Sintoma avería</Typography>
+          <Select
+            id="Linea"
+            variant="outlined"
+            fullWidth
+            required
+            size="small"
+            style={gnrStyle}
+            value={sintomaValue}
+            onChange={(e) => setSintomaValue(e.target.value)}
+          >
+            {sintoma.map((elemento) => (
+              <MenuItem key={elemento.id} value={elemento.id}>
+                {elemento.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography>Texto sintoma</Typography>
+          <TextField
+            id="tarjetaTitulo"
+            variant="outlined"
+            fullWidth
+            style={gnrStyle}
+            required
+            size="small"
+            onChange={(e) => setTxtSintoma(e.target.value)}
+          ></TextField>
+          <Typography>Causa avería</Typography>
+          <Select
+            id="Linea"
+            variant="outlined"
+            fullWidth
+            required
+            size="small"
+            style={gnrStyle}
+            value={causaValue}
+            onChange={(e) => setCausaValue(e.target.value)}
+          >
+            {causa.map((elemento) => (
+              <MenuItem key={elemento.id} value={elemento.id}>
+                {elemento.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography>Texto causa</Typography>
+          <TextField
+            id="tarjetaTitulo"
+            variant="outlined"
+            fullWidth
+            style={gnrStyle}
+            required
+            size="small"
+            onChange={(e) => setTxtCausa(e.target.value)}
+          ></TextField>
         </div>
       );
     }
   };
 
-  //TODO: setear el parametro para recibir lineas por machines
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    await axios.get("/areas").then((response) => {
-      setDepartamento(response.data);
-    });
-    await axios.get("/breakdowns").then((response) => {
-      setCausaAveria(response.data);
-    });
-    await axios.get("/components").then((response) => {
-      setComponente(response.data);
-    });
-    await axios.get("/priorities").then((response) => {
-      setPrioridad(response.data);
-    });
-    await axios.get("/type-fails").then((response) => {
-      setTipoFalla(response.data);
-    });
-    await axios.get("/affects").then((response) => {
-      setAfecta(response.data);
-    });
-  }, []);
-
   useEffect(() => {
-    axios
-      .get("/lines", {
-        params: {
-          area: departamentoValue,
-        },
-      })
-      .then((response) => {
-        setLines(response.data);
-      });
-  }, [departamentoValue]);
-
-  useEffect(() => {
-    axios
-      .get("/machines", {
-        params: {
-          line: lineValue,
-        },
-      })
-      .then((response) => {
-        setTipoEquipo(response.data);
-      });
-  }, [lineValue]);
-
-  useEffect(() => {
-    axios
-      .get("/cards", {
-        params: {
-          process: "CE2B8484-0901-EC11-B563-2818780EF919",
-        },
-      })
-      .then((response) => {
-        setTarjetaTipo(response.data);
-      });
-  });
+    if (failureTimes !== "") {
+      setDisButton(false);
+    } else {
+      setDisButton(true);
+    }
+  }, [failureTimes]);
 
   return (
     <div>
-      <Container>
+      <Container style={Header}>
+        <ArrowBackIcon
+          style={{ marginRight: "15px", fontWeight: "50px" }}
+          onClick={backHome}
+        />
+        <Typography variant="h5">{noticeType.name}</Typography>
+      </Container>
+      <Container className="formContainer" maxWidth="sm">
         {formStep >= 0 && (
           <section style={formStep === 0 ? {} : { display: "none" }} id="9">
             <Typography align="left" variant="h5">
-              Duracion de la falla
+              Duración de la falla
             </Typography>
             <TextField
               variant="outlined"
@@ -312,7 +564,9 @@ const Step2 = () => {
         )}
         {formStep >= 2 && (
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
-            <Typography style={gnrStyle}>Tipo de tarjeta</Typography>
+            <Typography style={gnrStyle}>
+              Codificacion / Tipo de tarjeta
+            </Typography>
             <Select
               id="tarjetaTipo"
               variant="outlined"
@@ -329,7 +583,9 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Titulo de la tarjeta</Typography>
+            <Typography style={gnrStyle}>
+              Texto corto del aviso / Titulo de la tarjeta
+            </Typography>
             <TextField
               id="tarjetaTitulo"
               variant="outlined"
@@ -357,40 +613,6 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Componente dañado</Typography>
-            <Select
-              id="componente"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={componenteValue}
-              onChange={(e) => setComponenteValue(e.target.value)}
-            >
-              {componente.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography style={gnrStyle}>Causa de la averia</Typography>
-            <Select
-              id="causaAveria"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={causaAveriaValue}
-              onChange={(e) => setCausaAveriaValue(e.target.value)}
-            >
-              {causaAveria.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
             <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"
@@ -408,7 +630,9 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Descripcion de la tarjeta</Typography>
+            <Typography style={gnrStyle}>
+              Descripción del aviso / Descripción de la tarjeta
+            </Typography>
             <TextField
               variant="outlined"
               fullWidth
@@ -438,10 +662,60 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
+            <Typography style={{ fontSize: "20px", padding: "10px" }}>
+              Foto
+            </Typography>
+            <div
+              style={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                border: "solid #bababa 1px",
+                borderRadius: "5px",
+              }}
+            >
+              <form>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <input accept="image/*" type="file" onChange={fetchData} />
+                  <Button accept="image/*" type="reset" color="error">
+                    <CancelIcon style={{ fontSize: "20px" }} />
+                  </Button>
+                </div>
+              </form>
+            </div>
+            <Typography style={{ fontSize: "20px", padding: "10px" }}>
+              Video
+            </Typography>
+            <div
+              style={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                border: "solid #bababa 1px",
+                borderRadius: "5px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <input accept="image/*" type="file" disabled />
+                <Button accept="image/*" disabled color="error">
+                  <CancelIcon style={{ fontSize: "20px" }} />
+                </Button>
+              </div>
+            </div>
           </section>
         )}
       </Container>
-      <Container style={btnContStyle}>
+      <Container style={btnContStyle} maxWidth="sm">
         {renderBckBtn()}
         {renderBtn()}
       </Container>

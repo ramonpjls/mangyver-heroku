@@ -18,11 +18,11 @@ import { Redirect, Link } from "react-router-dom";
 import axios from "../axiosinstance";
 
 import LogoG from "../assets/LogoG.png";
-import LandingLogin from "../assets/landing.png";
+import LandingLogin from "../assets/landing.jpg";
 
-function alertFunc(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
+// function alertFunc(props) {
+//   return <Alert elevation={6} variant="filled" {...props} />;
+// }
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -71,6 +71,7 @@ const Login = () => {
         setRedirect(true);
       })
       .catch((err) => {
+        console.log("error => ", err);
         setOpen(true);
         setLoading(false);
       });
@@ -197,8 +198,9 @@ const Login = () => {
                   direction="row"
                   spacing={2}
                   justifyContent="center"
+                  style={{ visibility: "hidden" }}
                 >
-                  <Link to="/Register">
+                  <Link style={{ textDecoration: "none" }} to="/Register">
                     <Button variant="text">Registrate aqui</Button>
                   </Link>
                 </Grid>
@@ -214,9 +216,9 @@ const Login = () => {
             autoHideDuration={5000}
             onClose={handleClose}
           >
-            <alertFunc severity="error">
+            <Alert severity="error">
               Nombre de usuario y/o Contraseña incorectos
-            </alertFunc>
+            </Alert>
           </Snackbar>
         </Grid>
         <div />

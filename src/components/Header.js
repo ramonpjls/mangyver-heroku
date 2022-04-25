@@ -1,59 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import React from "react";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
+
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Avatar, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import MenuIcon from "@mui/icons-material/Menu";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
-import axios from "../axiosinstance";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import AddAlertIcon from "@mui/icons-material/AddAlert";
 
 import Protected from "./Potected";
 import Noticereport from "./noticeReport";
+import Notifications from "./notifications";
+import UserManagementLanding from "./users/UserManagementLanding";
+import UserManagement from "./users/userManagement";
+import Register from "./users/Register";
+import ShowNotificaciones from "./ShowNotificaciones";
+import Notificationsreport from "./notificationsReport";
 import Home from "./notice_mx/home";
+import Landing from "./landing";
 import ShowAvisos from "./ShowAvisos";
-import logopeq from "../assets/LogoP.png";
+import logopeq from "../assets/LogoP.jpeg";
+// import axiosinstance from '../axiosinstance';
+import SettingsMenu from "./settingsMenu";
 
 import { Link, Route } from "react-router-dom";
-import { set } from "react-hook-form";
+// import { useHistory } from "react-router-dom";
 
-const drawerWidth = 300;
-
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
-  },
-});
+const drawerWidth = 291;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -82,167 +64,100 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
+const styleLogOutContent = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
 
 export default function MiniDrawer() {
-  const theme = useTheme();
-  const [open, setOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState("User Info");
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const forgetToken = () => {
-    setUserInfo("");
-    localStorage.clear();
-    console.log("se ejecuto el boton");
-  };
-
-  const forgetUser = () => {
-    console.log(userInfo, "hola este es el usuario");
-    // return setUserInfo("");
-    // localStorage.clear();
-  };
-
-  useEffect(() => {
-    axios
-      .get("/profiles")
-      .then((res) => {
-        let userName = res.data.profile.name;
-        setUserInfo(userName);
-        console.log("se ejecuta el efecto");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [userInfo]);
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed">
         <Toolbar
           style={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            backgroundColor: "#3f51b5",
+            backgroundColor: "#fff",
           }}
         >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: "36px",
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon style={{ fontSize: 40 }} />
-          </IconButton>
-          <img src={logopeq} alt="logo" />
-          <IconButton edge="end">
-            <Link to="/Login">
-              <ExitToAppIcon
-                onClick={forgetToken}
-                style={{ fontSize: 40, color: "white" }}
-              />
-            </Link>
-          </IconButton>
+          <img
+            src={logopeq}
+            alt="logo"
+            width={"200px"}
+            style={{ margin: "10px" }}
+          />
+          <div style={styleLogOutContent}>
+            <SettingsMenu />
+          </div>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
+      <List style={{ border: "solid #EEEEEA 1px", height: "50rem" }}>
+        <Grid
+          paddingTop="70px"
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Landing />
+        </Grid>
         <Divider />
-        <List>
-          <Grid
-            container
-            spacing={3}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Grid item>
-              <Avatar alt={userInfo} src="./" />
-            </Grid>
-            {open !== false ? (
-              <Grid item>
-                <Typography variant="h6" gutterBottom>
-                  {userInfo}
-                </Typography>
-              </Grid>
-            ) : null}
-          </Grid>
-          <Divider />
-          <Link to="/ShowAvisos">
-            <ListItem>
-              <ListItemIcon>
-                <ModeCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
-              </ListItemIcon>
-              <ListItemText primary="Avisos" />
-            </ListItem>
-          </Link>
-          <Link to="/Home">
-            <ListItem>
-              <ListItemIcon>
-                <AddCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
-              </ListItemIcon>
-              <ListItemText primary="Creacion de avisos" />
-            </ListItem>
-          </Link>
-          <Link to="/Noticereport">
-            <ListItem>
-              <ListItemIcon>
-                <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
-              </ListItemIcon>
-              <ListItemText primary="Descargar Avisos" />
-            </ListItem>
-          </Link>
-          <Divider />
+        <Link style={{ textDecoration: "none" }} to="/ShowAvisos">
           <ListItem>
             <ListItemIcon>
-              <ModeCommentIcon
-                onClick={forgetUser}
-                style={{ color: "#3f51b5", fontSize: 40 }}
-              />
+              <ModeCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
             </ListItemIcon>
-            <ListItemText primary="usuario" />
+            <ListItemText primary="Avisos" />
           </ListItem>
-        </List>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/Home">
+          <ListItem>
+            <ListItemIcon>
+              <AddCommentIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+            </ListItemIcon>
+            <ListItemText primary="Creación de avisos" />
+          </ListItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/Noticereport">
+          <ListItem>
+            <ListItemIcon>
+              <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+            </ListItemIcon>
+            <ListItemText primary="Descargar Avisos" />
+          </ListItem>
+        </Link>
+        <Divider />
+        <Link style={{ textDecoration: "none" }} to="/ShowNotificaciones">
+          <ListItem>
+            <ListItemIcon>
+              <NotificationsIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+            </ListItemIcon>
+            <ListItemText primary="Notificaciones" />
+          </ListItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/Notifications">
+          <ListItem>
+            <ListItemIcon>
+              <AddAlertIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+            </ListItemIcon>
+            <ListItemText primary="Creación de Notificaciones" />
+          </ListItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/Notificationsreport">
+          <ListItem>
+            <ListItemIcon>
+              <ArchiveIcon style={{ color: "#3f51b5", fontSize: 40 }} />
+            </ListItemIcon>
+            <ListItemText primary="Descargar de Notificaciones" />
+          </ListItem>
+        </Link>
+      </List>
+      {/* </Drawer> */}
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <DrawerHeader />
         <Route path="/Noticereport">
           <Protected component={Noticereport} />
@@ -250,8 +165,27 @@ export default function MiniDrawer() {
         <Route path="/ShowAvisos">
           <Protected component={ShowAvisos} />
         </Route>
+        <Route path="/ShowNotificaciones">
+          <Protected component={ShowNotificaciones} />
+        </Route>
+        {/* ruta para el manejo de los usuarios */}
+        <Route path="/UserManagementLanding">
+          <Protected component={UserManagementLanding} />
+        </Route>
+        <Route path="/Register">
+          <Protected component={Register} />
+        </Route>
+        <Route path="/users">
+          <Protected component={UserManagement} />
+        </Route>
         <Route path="/Home">
           <Protected component={Home} />
+        </Route>
+        <Route path="/Notifications">
+          <Protected component={Notifications} />
+        </Route>
+        <Route path="/Notificationsreport">
+          <Protected component={Notificationsreport} />
         </Route>
       </Box>
     </Box>

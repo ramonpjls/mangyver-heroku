@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Grid, Typography, Container } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  Container,
+  MenuItem,
+  Select,
+  InputLabel,
+} from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import { CSVLink } from "react-csv";
 import axios from "../axiosinstance";
 
 const Noticereport = () => {
   const [start, setStart] = useState("");
+  const [operation, setOperation] = useState([]);
+  const [operationValue, setOperationValue] = useState("");
+  const [timeEnd, setTimeEnd] = useState("");
+  const [timeFrom, setTimeFrom] = useState("");
   const [end, setEnd] = useState("");
   const [info, setInfo] = useState([]);
+
+  const data = [start, end, operationValue, timeEnd, timeFrom];
 
   const Header = {
     backgroundColor: "#79A9D1",
@@ -15,15 +31,24 @@ const Noticereport = () => {
     borderRadius: "3px",
     padding: "10px",
     maxWidth: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   };
 
   useEffect(() => {
+    axios.get("/operations").then((response) => {
+      setOperation(response.data);
+    });
     axios
       .get("/notices", {
         params: {
+          sapForm: true,
           dateFrom: start,
           dateEnd: end,
-          sapForm: true,
+          operationId: operationValue,
+          timeEnd: timeEnd,
+          timeFrom: timeFrom,
         },
       })
       .then((res) => {
@@ -32,7 +57,11 @@ const Noticereport = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [start, end]);
+  }, [end, operationValue, start, timeEnd, timeFrom]);
+
+  const backBtn = () => {
+    console.log(data);
+  };
 
   const headers = [
     { label: "ID del Aviso", key: "IDAviso" },
@@ -50,8 +79,20 @@ const Noticereport = () => {
     { label: "Tipo de Aviso", key: "TipoAviso" },
     { label: "Numero de OT", key: "OT" },
     { label: "Si/No", key: "SiNo" },
-    { label: "Puesto de trabajo", key: "PuestroTrabajo" },
+    { label: "Puesto de trabajo", key: "PuestoTrabajo" },
     { label: "Grupo planificador", key: "GrupoPlanificador" },
+    { label: "Centro", key: "Centro" },
+    { label: "repercucion", key: "repercucion" },
+    { label: "sintoma", key: "sintoma" },
+    { label: "textoCausa", key: "textoCausa" },
+    { label: "textoSintoma", key: "textoSintoma" },
+    { label: "Grupo Parte Objeto", key: "grupoObjeto" },
+    { label: "Parte Objeto", key: "parteObjeto" },
+    { label: "Grupo Sintoma", key: "grupoSintoma" },
+    { label: "Grupo Causa", key: "grupoCausa" },
+    { label: "Responsable", key: "Responsable" },
+    { label: "Estado Instalacion", key: "estadoInstalacion" },
+    { label: "Revision", key: "Revision" },
   ];
 
   const ReportSet = {
@@ -63,13 +104,63 @@ const Noticereport = () => {
   return (
     <div>
       <Container className="header" style={Header}>
+        <ArchiveIcon style={{ marginRight: "10px" }} />
         <Typography align="left" variant="h6">
           Descarga de Avisos
         </Typography>
       </Container>
       <Container maxWidth="md">
         <form style={{ marginTop: "30px" }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={5}>
+            <Grid item xs={12}>
+              <InputLabel> Operacion </InputLabel>
+              <Select
+                id="departamento"
+                variant="outlined"
+                fullWidth
+                required
+                value={operationValue}
+                onChange={(e) => setOperationValue(e.target.value)}
+                size="small"
+              >
+                <MenuItem value="">
+                  <em>-</em>
+                </MenuItem>
+                {operation.map((elemento) => (
+                  <MenuItem key={elemento.id} value={elemento.id}>
+                    {elemento.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="timeEnd"
+                value={timeFrom}
+                onChange={(e) => setTimeFrom(e.target.value)}
+                label="Hora de Inicio"
+                type="time"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="timeEnd"
+                value={timeEnd}
+                onChange={(e) => setTimeEnd(e.target.value)}
+                label="Hora de Finalizacion"
+                type="time"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 id="start"
@@ -99,11 +190,16 @@ const Noticereport = () => {
               />
             </Grid>
             <Grid container item justifyContent="flex-end">
-              <CSVLink {...ReportSet} separator={","}>
+              <CSVLink
+                style={{ textDecoration: "none" }}
+                {...ReportSet}
+                separator={","}
+              >
                 <Button
                   color="primary"
                   variant="contained"
                   startIcon={<CloudDownloadIcon />}
+                  onClick={backBtn}
                 >
                   Descargar
                 </Button>
