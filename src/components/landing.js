@@ -13,11 +13,11 @@ const Landing = () => {
   const [disButton, setDisButton] = useState(true);
 
   const dispatch = useDispatch();
-  const configCall = {
-    headers: {
-      auth: localStorage.getItem("token"),
-    },
-  };
+  // const configCall = {
+  //   headers: {
+  //     auth: localStorage.getItem("token"),
+  //   },
+  // };
 
   useEffect(() => {
     if (user?.role === null) {
@@ -29,7 +29,9 @@ const Landing = () => {
 
   useEffect(() => {
     axios
-      .get("/profiles", configCall)
+      .get("/profiles", {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((useRes) => {
         dispatch({
           type: types.LOGIN,

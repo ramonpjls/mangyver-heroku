@@ -14,11 +14,6 @@ const Home = () => {
   const [processValue, setProcessValue] = useState("");
 
   const dispatch = useDispatch();
-  const configCall = {
-    headers: {
-      auth: localStorage.getItem("token"),
-    },
-  };
 
   const Header = {
     backgroundColor: "#79A9D1",
@@ -33,7 +28,9 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("/processes/web", configCall)
+      .get("/processes/web", {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((useRes) => {
         dispatch({
           type: types.NOTICE,

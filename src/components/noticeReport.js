@@ -37,9 +37,13 @@ const Noticereport = () => {
   };
 
   useEffect(() => {
-    axios.get("/operations").then((response) => {
-      setOperation(response.data);
-    });
+    axios
+      .get("/operations", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setOperation(response.data);
+      });
     axios
       .get("/notices", {
         params: {
@@ -50,6 +54,7 @@ const Noticereport = () => {
           timeEnd: timeEnd,
           timeFrom: timeFrom,
         },
+        headers: { auth: localStorage.getItem("token") },
       })
       .then((res) => {
         return setInfo(res.data);

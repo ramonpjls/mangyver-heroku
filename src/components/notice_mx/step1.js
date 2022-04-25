@@ -117,15 +117,11 @@ const Step1 = () => {
     });
   };
 
-  const configCall = {
-    headers: {
-      auth: localStorage.getItem("token"),
-    },
-  };
-
   const submitForm = () => {
     axios
-      .post("/notices", configCall, data)
+      .post("/notices", data, {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -247,9 +243,11 @@ const Step1 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/areas").then((response) => {
-      setDepartamento(response.data);
-    });
+    await axios
+      .get("/areas", { headers: { auth: localStorage.getItem("token") } })
+      .then((response) => {
+        setDepartamento(response.data);
+      });
   }, [formStep]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -260,6 +258,7 @@ const Step1 = () => {
           params: {
             areaId: departamentoValue,
           },
+          headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
           setLines(response.data);
@@ -277,6 +276,7 @@ const Step1 = () => {
           params: {
             lineId: lineValue,
           },
+          headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
           setTipoEquipo(response.data);
@@ -293,6 +293,7 @@ const Step1 = () => {
           params: {
             groupCode: groupCode,
           },
+          headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
           setObjeto(response.data);
@@ -302,6 +303,7 @@ const Step1 = () => {
           params: {
             groupCode: groupCode,
           },
+          headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
           setCausa(response.data);
@@ -311,6 +313,7 @@ const Step1 = () => {
           params: {
             groupCode: groupCode,
           },
+          headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
           setSintoma(response.data);
@@ -327,20 +330,33 @@ const Step1 = () => {
           params: {
             process: noticeType.processId,
           },
+          headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
           setTarjetaTipo(response.data);
         });
-      await axios.get("/priorities").then((response) => {
-        setPrioridad(response.data);
-      });
-      await axios.get("/type-fails").then((response) => {
-        setTipoFalla(response.data);
-      });
-      await axios.get("/affects").then((response) => {
-        setAfecta(response.data);
-        setLoading(false);
-      });
+      await axios
+        .get("/priorities", {
+          headers: { auth: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          setPrioridad(response.data);
+        });
+      await axios
+        .get("/type-fails", {
+          headers: { auth: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          setTipoFalla(response.data);
+        });
+      await axios
+        .get("/affects", {
+          headers: { auth: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          setAfecta(response.data);
+          setLoading(false);
+        });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStep]);
 

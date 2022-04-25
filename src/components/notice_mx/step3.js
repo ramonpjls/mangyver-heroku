@@ -66,15 +66,11 @@ const Step3 = () => {
     });
   };
 
-  const configCall = {
-    headers: {
-      auth: localStorage.getItem("token"),
-    },
-  };
-
   const submitForm = () => {
     axios
-      .post("/notices", configCall, data)
+      .post("/notices", data, {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((res) => {
         Swal.fire({
           text: "Aviso creado exitosamente",
@@ -191,15 +187,27 @@ const Step3 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await axios.get("/priorities").then((response) => {
-      setPrioridad(response.data);
-    });
-    await axios.get("/type-fails").then((response) => {
-      setTipoFalla(response.data);
-    });
-    await axios.get("/affects").then((response) => {
-      setAfecta(response.data);
-    });
+    await axios
+      .get("/priorities", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setPrioridad(response.data);
+      });
+    await axios
+      .get("/type-fails", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setTipoFalla(response.data);
+      });
+    await axios
+      .get("/affects", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setAfecta(response.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -208,6 +216,7 @@ const Step3 = () => {
         params: {
           process: noticeType.processId,
         },
+        headers: { auth: localStorage.getItem("token") },
       })
       .then((response) => {
         setTarjetaTipo(response.data);

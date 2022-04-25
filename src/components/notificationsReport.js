@@ -29,6 +29,7 @@ const Notificationsreport = () => {
           dateEnd: end,
           sapForm: true,
         },
+        headers: { auth: localStorage.getItem("token") },
       })
       .then((res) => {
         return setInfo(res.data);

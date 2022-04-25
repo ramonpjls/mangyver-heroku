@@ -49,17 +49,13 @@ const Notifications = () => {
     alignItems: "center",
   };
 
-  const configCall = {
-    headers: {
-      auth: localStorage.getItem("token"),
-    },
-  };
-
   const HandleSubmit = (e) => {
     e.preventDefault();
 
     axios
-      .post("/notifications", configCall, data)
+      .post("/notifications", data, {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((res) => {
         console.log(res);
         setRedirect(true);
@@ -80,12 +76,20 @@ const Notifications = () => {
 
   // eslint-disable-next-line
   useEffect(async () => {
-    await axios.get("/deviations").then((response) => {
-      setDeviationArr(response.data);
-    });
-    await axios.get("/operation-numbers").then((response) => {
-      setOpNumArr(response.data);
-    });
+    await axios
+      .get("/deviations", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setDeviationArr(response.data);
+      });
+    await axios
+      .get("/operation-numbers", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setOpNumArr(response.data);
+      });
   }, []);
 
   if (redirect) {

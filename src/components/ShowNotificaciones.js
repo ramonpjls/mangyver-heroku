@@ -107,16 +107,12 @@ function ShowNotificaciones() {
     elements,
   } = usePagination(notifications, totalInDB);
 
-  const configCall = {
-    headers: {
-      auth: localStorage.getItem("token"),
-    },
-  };
-
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, configCall)
+      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((res) => {
         setNotifications(res.data);
         setLoading(false);
@@ -130,7 +126,9 @@ function ShowNotificaciones() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, configCall)
+      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, {
+        headers: { auth: localStorage.getItem("token") },
+      })
       .then((res) => {
         setNotifications(res.data);
         setLoading(false);
@@ -141,48 +139,8 @@ function ShowNotificaciones() {
       }); // eslint-disable-next-line
   }, [elementsPerPage, skipBase]);
 
-  // useEffect(() => {
-  //   if (idValue !== "") {
-  //     setOpen(true);
-  //     axios
-  //       .get(`/notifications/${idValue}`)
-  //       .then((res) => {
-  //         setNewState(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.warn(err);
-  //       });
-  //   }
-  // }, [idValue]);
-
   return (
     <div>
-      {/* <Modal onClose={handleClose}>
-        <Box sx={boxStyle}>
-          <div key={newState.id}>
-            <Typography variant="body2">
-              <Typography variant="h6">Numero de OT: </Typography>
-              {newState.otCode}
-            </Typography>
-            <Typography variant="body2">
-              <Typography variant="h6">Hora de inicio: </Typography>
-              {newState.startHour}
-            </Typography>
-            <Typography variant="body2">
-              <Typography variant="h6">Hora de fin: </Typography>
-              {newState.endHour}
-            </Typography>
-            <Typography variant="body2">
-              <Typography variant="h6">¿Se realizo la orden?: </Typography>
-              {newState.isDone}
-            </Typography>
-            <Typography variant="body2">
-              <Typography variant="h6">Comentario: </Typography>
-              {newState.comments}
-            </Typography>
-          </div>
-        </Box>
-      </Modal> */}
       <Container className="header" style={Header}>
         <NotificationsIcon style={{ marginRight: "10px" }} />
         <Typography align="left">Notificaciones</Typography>

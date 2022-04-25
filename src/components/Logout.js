@@ -10,7 +10,7 @@ const Logout = () => {
   const dispatch = useDispatch();
 
   const forgetToken = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     dispatch({
       type: types.LOGOUT,
       payload: {},
