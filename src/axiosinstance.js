@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instace = axios.create({
-  // baseURL: "http://sta-mangyver.herokuapp.com/api/v1",
-  baseURL: "https://mazappsupply.ab-inbev.com/mangyver-back",
+  baseURL: "http://sta-mangyver.herokuapp.com/api/v1",
+  // baseURL: "https://mazappsupply.ab-inbev.com/mangyver-back",
   // headers: { "Content-Type": "application/json" },
 });
 
