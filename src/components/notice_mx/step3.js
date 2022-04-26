@@ -31,6 +31,8 @@ const Step3 = () => {
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
+  const [responsable, setResponsable] = useState([]);
+  const [responsableValue, setResponsableValue] = useState("");
 
   const [photoPath, setPhotoPath] = useState("");
 
@@ -48,10 +50,15 @@ const Step3 = () => {
     cardDescription: descripcionTarjeta,
     affectsId: afectaValue,
     urlPhoto: photoPath,
+    responsableId: responsableValue,
   };
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const fetchData = (e) => {
@@ -208,6 +215,13 @@ const Step3 = () => {
       .then((response) => {
         setAfecta(response.data);
       });
+    await axios
+      .get("/responsable", {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((response) => {
+        setResponsable(response.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -327,6 +341,23 @@ const Step3 = () => {
               onChange={(e) => setTipoFallaValue(e.target.value)}
             >
               {tipoFalla.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography style={gnrStyle}>Responsable</Typography>
+            <Select
+              id="responsable"
+              variant="outlined"
+              fullWidth
+              size="small"
+              required
+              style={gnrStyle}
+              value={responsableValue}
+              onChange={(e) => setResponsableValue(e.target.value)}
+            >
+              {responsable.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
                   {elemento.name}
                 </MenuItem>

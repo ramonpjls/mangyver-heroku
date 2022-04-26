@@ -73,6 +73,8 @@ const Step1 = () => {
   const [txtSintoma, setTxtSintoma] = useState(null);
   const [groupCode, setGroupCode] = useState("");
   const [photoPath, setPhotoPath] = useState({});
+  const [responsable, setResponsable] = useState([]);
+  const [responsableValue, setResponsableValue] = useState("");
 
   const history = useHistory();
 
@@ -95,14 +97,16 @@ const Step1 = () => {
     textCause: txtCausa,
     textSymptom: txtSintoma,
     urlPhoto: photoPath,
+    responsableId: responsableValue,
   };
 
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     setTipoEquipo([]);
-    setSintoma([]);
-    setCausa([]);
-    setObjeto([]);
   };
 
   const fetchData = async (e) => {
@@ -200,7 +204,7 @@ const Step1 = () => {
           Atras
         </Button>
       );
-    } else if (formStep > 2) {
+    } else if (formStep > 3) {
       return undefined;
     } else {
       return (
@@ -213,8 +217,6 @@ const Step1 = () => {
 
   const renderBtn = () => {
     if (formStep > 2) {
-      return undefined;
-    } else if (formStep === 2) {
       return (
         <Button
           style={btnNxtStyle}
@@ -350,6 +352,13 @@ const Step1 = () => {
           setTipoFalla(response.data);
         });
       await axios
+        .get("/responsable", {
+          headers: { auth: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          setResponsable(response.data);
+        });
+      await axios
         .get("/affects", {
           headers: { auth: localStorage.getItem("token") },
         })
@@ -478,79 +487,6 @@ const Step1 = () => {
                 ))}
             </List>
           )}
-          <Typography>Parte Objeto | Componente dañado</Typography>
-          <Select
-            id="Linea"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            style={gnrStyle}
-            value={objetoValue}
-            onChange={(e) => setObjetoValue(e.target.value)}
-          >
-            {objeto.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography>Sintoma avería</Typography>
-          <Select
-            id="Linea"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            style={gnrStyle}
-            value={sintomaValue}
-            onChange={(e) => setSintomaValue(e.target.value)}
-          >
-            {sintoma.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography>Texto sintoma</Typography>
-          <TextField
-            id="tarjetaTitulo"
-            variant="outlined"
-            fullWidth
-            style={gnrStyle}
-            required
-            size="small"
-            value={txtSintoma}
-            onChange={(e) => setTxtSintoma(e.target.value)}
-          ></TextField>
-          <Typography>Causa avería</Typography>
-          <Select
-            id="Linea"
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            style={gnrStyle}
-            value={causaValue}
-            onChange={(e) => setCausaValue(e.target.value)}
-          >
-            {causa.map((elemento) => (
-              <MenuItem key={elemento.id} value={elemento.id}>
-                {elemento.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography>Texto causa</Typography>
-          <TextField
-            id="tarjetaTitulo"
-            variant="outlined"
-            fullWidth
-            style={gnrStyle}
-            required
-            size="small"
-            value={txtCausa}
-            onChange={(e) => setTxtCausa(e.target.value)}
-          ></TextField>
         </div>
       );
     }
@@ -618,6 +554,83 @@ const Step1 = () => {
         )}
         {formStep >= 2 && (
           <section style={formStep === 2 ? {} : { display: "none" }} id="6">
+            <Typography>Parte Objeto | Componente dañado</Typography>
+            <Select
+              id="Linea"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              style={gnrStyle}
+              value={objetoValue}
+              onChange={(e) => setObjetoValue(e.target.value)}
+            >
+              {objeto.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography>Sintoma avería</Typography>
+            <Select
+              id="Linea"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              style={gnrStyle}
+              value={sintomaValue}
+              onChange={(e) => setSintomaValue(e.target.value)}
+            >
+              {sintoma.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography>Texto sintoma</Typography>
+            <TextField
+              id="tarjetaTitulo"
+              variant="outlined"
+              fullWidth
+              style={gnrStyle}
+              required
+              size="small"
+              value={txtSintoma}
+              onChange={(e) => setTxtSintoma(e.target.value)}
+            ></TextField>
+            <Typography>Causa avería</Typography>
+            <Select
+              id="Linea"
+              variant="outlined"
+              fullWidth
+              required
+              size="small"
+              style={gnrStyle}
+              value={causaValue}
+              onChange={(e) => setCausaValue(e.target.value)}
+            >
+              {causa.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography>Texto causa</Typography>
+            <TextField
+              id="tarjetaTitulo"
+              variant="outlined"
+              fullWidth
+              style={gnrStyle}
+              required
+              size="small"
+              value={txtCausa}
+              onChange={(e) => setTxtCausa(e.target.value)}
+            ></TextField>
+          </section>
+        )}
+        {formStep >= 3 && (
+          <section style={formStep === 3 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>
               {" "}
               Codificacion / Tipo de tarjeta{" "}
@@ -680,6 +693,23 @@ const Step1 = () => {
               onChange={(e) => setTipoFallaValue(e.target.value)}
             >
               {tipoFalla.map((elemento) => (
+                <MenuItem key={elemento.id} value={elemento.id}>
+                  {elemento.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography style={gnrStyle}>Responsable</Typography>
+            <Select
+              id="responsable"
+              variant="outlined"
+              fullWidth
+              size="small"
+              required
+              style={gnrStyle}
+              value={responsableValue}
+              onChange={(e) => setResponsableValue(e.target.value)}
+            >
+              {responsable.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
                   {elemento.name}
                 </MenuItem>
