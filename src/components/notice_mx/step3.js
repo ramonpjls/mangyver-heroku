@@ -216,7 +216,7 @@ const Step3 = () => {
         setAfecta(response.data);
       });
     await axios
-      .get("/responsable", {
+      .get("/responsables", {
         headers: { auth: localStorage.getItem("token") },
       })
       .then((response) => {

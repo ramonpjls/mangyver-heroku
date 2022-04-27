@@ -325,7 +325,7 @@ const Step1 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    if (formStep === 2) {
+    if (formStep === 3) {
       setLoading(true);
       await axios
         .get("/cards", {
@@ -352,7 +352,7 @@ const Step1 = () => {
           setTipoFalla(response.data);
         });
       await axios
-        .get("/responsable", {
+        .get("/responsables", {
           headers: { auth: localStorage.getItem("token") },
         })
         .then((response) => {
