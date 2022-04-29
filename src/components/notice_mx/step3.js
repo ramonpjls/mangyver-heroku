@@ -40,6 +40,21 @@ const Step3 = () => {
 
   const history = useHistory();
 
+  const [leyendaTituloCorto, setLeyendaTituloCorto] = useState("");
+  const [errorTituloCorto, setErrorTituloCorto] = useState(false);
+
+  const [leyendaNOt, setLeyendaNOt] = useState(""); // department
+  const [errorNOt, setErrorNOt] = useState(false); // department
+ 
+  const [leyendaTarjetaTipo, setLeyendaTarjetaTipo] = useState(""); // cardType
+  const [errorTarjetaTipo, setErrorTarjetaTipo] = useState(false); // cardType
+  const [leyendaPrioridadValue, setLeyendaPrioridadValue] = useState(""); // priority
+  const [errorPrioridadValue, setErrorPrioridadValue] = useState(false); // priority
+  const [leyendaTipoFallaValue, setLeyendaTipoFallaValue] = useState(""); // failureType
+  const [errorTipoFallaValue, setErrorTipoFallaValue] = useState(false); // failureType
+  const [leyendaDescripcionTarjeta, setLeyendaDescripcionTarjeta] = useState(""); // cardDescription
+  const [errorDescripcionTarjeta, setErrorDescripcionTarjeta] = useState(false); // cardDescription
+
   const data = {
     processId: noticeType.processId,
     otCode: nOt,
@@ -54,11 +69,22 @@ const Step3 = () => {
   };
 
   const completeFormStep = () => {
-    setFormStep((cur) => cur + 1);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (formStep === 0) {
+      if (data?.otCode === null) {
+        console.log("OT", nOt)
+        setLeyendaNOt("Campo Requerido")
+        setErrorNOt(true)
+      } else {
+        setLeyendaNOt("")
+        setErrorNOt(false)
+
+        setFormStep((cur) => cur + 1);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    } 
   };
 
   const fetchData = (e) => {
@@ -74,7 +100,36 @@ const Step3 = () => {
   };
 
   const submitForm = () => {
-    axios
+    if (data?.cardTypeId === null) {
+      setLeyendaTarjetaTipo("Campo requerido");
+      setErrorTarjetaTipo(true);
+
+    } else if (data?.cardTitle === null) {
+      setLeyendaTarjetaTipo("");
+      setErrorTarjetaTipo(false);
+      setLeyendaTituloCorto("Campo requerido");
+      setErrorTituloCorto(true);
+
+    } else if (data?.priorityId === null) {
+      setLeyendaTituloCorto("");
+      setErrorTituloCorto(false);
+      setLeyendaPrioridadValue("Campo requerido");
+      setErrorPrioridadValue(true);
+
+    } else if (data?.failureTypeId === null) {
+      setLeyendaPrioridadValue("");
+      setErrorPrioridadValue(false);
+      setLeyendaTipoFallaValue("Campo requerido");
+      setErrorTipoFallaValue(true);
+
+    } else if (data?.cardDescription === null) {
+      setLeyendaTipoFallaValue("");
+      setErrorTipoFallaValue(false);
+      setLeyendaDescripcionTarjeta("Campo requerido");
+      setErrorDescripcionTarjeta(true);
+
+    } else {
+      axios
       .post("/notices", data, {
         headers: { auth: localStorage.getItem("token") },
       })
@@ -96,6 +151,8 @@ const Step3 = () => {
           showConfirmButton: false,
         });
       });
+    }
+    
   };
 
   const backBtn = () => {
@@ -266,10 +323,18 @@ const Step3 = () => {
             </Typography>
             <TextField
               variant="outlined"
-              onChange={(e) => setNOt(e.target.value)}
+              onChange={(e) => {
+                setNOt(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorNOt(false);
+                  setLeyendaNOt("")
+                }
+              }}
               value={nOt}
               type="number"
               required
+              error={errorNOt}
+              helperText={leyendaNOt}
               fullWidth
               style={gnrStyle}
               size="small"
@@ -280,17 +345,25 @@ const Step3 = () => {
         {formStep >= 1 && (
           <section style={formStep === 1 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>
-              Codificacion / Tipo de tarjeta{" "}
+              Codificacion / Tipo de tarjeta *{" "}
             </Typography>
             <Select
               id="departamento"
               variant="outlined"
               fullWidth
               required
+              error={errorTarjetaTipo}
+              helperText={leyendaTarjetaTipo}
               size="small"
               style={gnrStyle}
               value={tarjetaTipoValue}
-              onChange={(e) => setTarjetaTipoValue(e.target.value)}
+              onChange={(e) => {
+                setTarjetaTipoValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorTarjetaTipo(false);
+                  setLeyendaTarjetaTipo("")
+                }
+              }}
             >
               {tarjetaTipo.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
@@ -298,8 +371,10 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
+            {leyendaTarjetaTipo ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
+
             <Typography style={gnrStyle}>
-              Texto corto del aviso / Titulo de la tarjeta
+              Texto corto del aviso / Titulo de la tarjeta *
             </Typography>
             <TextField
               id="tarjetaTitulo"
@@ -307,19 +382,36 @@ const Step3 = () => {
               fullWidth
               style={gnrStyle}
               required
+              error={errorTituloCorto}
+              helperText={leyendaTituloCorto}
               size="small"
               value={tarjetaTitulo}
-              onChange={(e) => setTarjetaTitulo(e.target.value)}
+              onChange={(e) => {
+                setTarjetaTitulo(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorTituloCorto(false);
+                  setLeyendaTituloCorto("")
+                }
+              }}
             ></TextField>
-            <Typography style={gnrStyle}>Prioridad</Typography>
+
+            <Typography style={gnrStyle}>Prioridad *</Typography>
             <Select
               id="prioridad"
               variant="outlined"
               required
               fullWidth
+              error={errorPrioridadValue}
+              helperText={leyendaPrioridadValue}
               size="small"
               value={prioridadValue}
-              onChange={(e) => setPrioridadValue(e.target.value)}
+              onChange={(e) => {
+                setPrioridadValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorPrioridadValue(false);
+                  setLeyendaPrioridadValue("")
+                }
+              }}
               style={gnrStyle}
             >
               {prioridad.map((elemento) => (
@@ -328,17 +420,26 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
+            {leyendaPrioridadValue ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
 
-            <Typography style={gnrStyle}>Grupo planificador</Typography>
+            <Typography style={gnrStyle}>Grupo planificador *</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"
               fullWidth
               size="small"
+              error={errorTipoFallaValue}
+              helperText={leyendaTipoFallaValue}
               required
               style={gnrStyle}
               value={tipoFallaValue}
-              onChange={(e) => setTipoFallaValue(e.target.value)}
+              onChange={(e) => {
+                setTipoFallaValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setLeyendaTipoFallaValue("");
+                  setErrorTipoFallaValue(false);
+                }
+              }}
             >
               {tipoFalla.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
@@ -346,6 +447,8 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
+            {leyendaTipoFallaValue ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
+
             <Typography style={gnrStyle}>Responsable</Typography>
             <Select
               id="responsable"
@@ -364,7 +467,7 @@ const Step3 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>
-              Descripción del aviso / Descripción de la tarjeta
+              Descripción del aviso / Descripción de la tarjeta *
             </Typography>
             <TextField
               variant="outlined"
@@ -373,10 +476,18 @@ const Step3 = () => {
               size="small"
               style={gnrStyle}
               multiline
+              error={errorDescripcionTarjeta}
+              helperText={leyendaDescripcionTarjeta}
               rows="6"
               id={descripcionTarjeta}
               value={descripcionTarjeta}
-              onChange={(e) => setDescripcionTarjeta(e.target.value)}
+              onChange={(e) => {
+                setDescripcionTarjeta(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorDescripcionTarjeta(false);
+                  setLeyendaDescripcionTarjeta("")
+                }
+              }}
             ></TextField>
             <Typography style={gnrStyle}>Afecta a</Typography>
             <Select

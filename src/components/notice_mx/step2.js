@@ -76,6 +76,23 @@ const Step2 = () => {
 
   const history = useHistory();
 
+  const [leyendaTituloCorto, setLeyendaTituloCorto] = useState("");
+  const [errorTituloCorto, setErrorTituloCorto] = useState(false);
+  const [leyendaDepartment, setLeyendaDepartment] = useState(""); // department
+  const [errorDepartment, setErrorDepartment] = useState(false); // department
+  const [leyendaLineValue, setLeyendaLineValue] = useState(""); // line
+  const [errorLineValue, setErrorLineValue] = useState(false); // line
+  const [leyendaTipoEquipo, setLeyendaTipoEquipo] = useState(""); // equipmentType
+  const [errorTipoEquipo, setErrorTipoEquipo] = useState(false); // equipmentType
+  const [leyendaTarjetaTipo, setLeyendaTarjetaTipo] = useState(""); // cardType
+  const [errorTarjetaTipo, setErrorTarjetaTipo] = useState(false); // cardType
+  const [leyendaPrioridadValue, setLeyendaPrioridadValue] = useState(""); // priority
+  const [errorPrioridadValue, setErrorPrioridadValue] = useState(false); // priority
+  const [leyendaTipoFallaValue, setLeyendaTipoFallaValue] = useState(""); // failureType
+  const [errorTipoFallaValue, setErrorTipoFallaValue] = useState(false); // failureType
+  const [leyendaDescripcionTarjeta, setLeyendaDescripcionTarjeta] = useState(""); // cardDescription
+  const [errorDescripcionTarjeta, setErrorDescripcionTarjeta] = useState(false); // cardDescription
+
   const data = {
     processId: noticeType.processId,
     failureTime: failureTimes,
@@ -98,12 +115,49 @@ const Step2 = () => {
   };
 
   const completeFormStep = () => {
-    setFormStep((cur) => cur + 1);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    setTipoEquipo([]);
+    if (formStep === 0) {
+      setFormStep((cur) => cur + 1);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setTipoEquipo([]);
+
+    } else if (formStep === 1) {    // ------------------------ Validacion Departamento Lista
+      console.log("Formulario 1", formStep)
+
+      if (data?.departmentId === 0) {
+        setLeyendaDepartment("Campo Requerido")
+        setErrorDepartment(true)
+      } else if (data?.lineId === 0) {
+        setLeyendaLineValue("Campo Requerido")
+        setErrorLineValue(true)
+      } else if (keyword === "") {
+        console.log("Equipo")
+        setLeyendaTipoEquipo("Campo Requerido")
+        setErrorTipoEquipo(true)
+      } else {
+        setLeyendaTipoEquipo("")
+        setErrorTipoEquipo(false)
+
+        setFormStep((cur) => cur + 1);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        setTipoEquipo([]);
+      }
+
+    } else if (formStep === 2) {    // ------------------------ Validacion Departamento Lista
+      console.log("Formulario 2", formStep)
+
+      setFormStep((cur) => cur + 1);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setTipoEquipo([]);
+    }
   };
 
   const backBtn = () => {
@@ -123,7 +177,36 @@ const Step2 = () => {
   };
 
   const submitForm = () => {
-    axios
+    if (data?.cardTypeId === null) {
+      setLeyendaTarjetaTipo("Campo requerido");
+      setErrorTarjetaTipo(true);
+
+    } else if (data?.cardTitle === null) {
+      setLeyendaTarjetaTipo("");
+      setErrorTarjetaTipo(false);
+      setLeyendaTituloCorto("Campo requerido");
+      setErrorTituloCorto(true);
+
+    } else if (data?.priorityId === null) {
+      setLeyendaTituloCorto("");
+      setErrorTituloCorto(false);
+      setLeyendaPrioridadValue("Campo requerido");
+      setErrorPrioridadValue(true);
+
+    } else if (data?.failureTypeId === null) {
+      setLeyendaPrioridadValue("");
+      setErrorPrioridadValue(false);
+      setLeyendaTipoFallaValue("Campo requerido");
+      setErrorTipoFallaValue(true);
+
+    } else if (data?.cardDescription === null) {
+      setLeyendaTipoFallaValue("");
+      setErrorTipoFallaValue(false);
+      setLeyendaDescripcionTarjeta("Campo requerido");
+      setErrorDescripcionTarjeta(true);
+
+    } else {
+      axios
       .post("/notices", data, {
         headers: { auth: localStorage.getItem("token") },
       })
@@ -145,6 +228,8 @@ const Step2 = () => {
           showConfirmButton: false,
         });
       });
+    }
+
   };
 
   const btnBckStyle = {
@@ -236,6 +321,7 @@ const Step2 = () => {
   const handleListItemClick = (event, index) => {
     setTipoEquipoValue(index.id);
     setGroupCode(index.groupCode);
+    setKeyword(index.name)  //  -------- Para que llenar el campo Equipo (Solo es de prueba) - Yefri.
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -372,17 +458,25 @@ const Step2 = () => {
     if (departamentoValue !== "") {
       return (
         <div style={gnrStyle}>
-          <Typography>SubArea</Typography>
+          <Typography>SubArea *</Typography>
           <Select
             id="tipoEquipo"
             variant="outlined"
             fullWidth
             required
+            error={errorLineValue}
+            helperText={leyendaLineValue}
             size="small"
             style={gnrStyle}
             value={lineValue}
-            onChange={(e) => setLineValue(e.target.value)}
-            //TODO: setear el parametro para recibir lineas por lineas
+            onChange={(e) => {
+              setLineValue(e.target.value)
+              if (e.target.value !== "null") {
+                setErrorLineValue(false);
+                setLeyendaLineValue("")
+              }
+            }}
+          //TODO: setear el parametro para recibir lineas por lineas
           >
             {lines.map((elemento) => (
               <MenuItem key={elemento.id} value={elemento.id}>
@@ -390,6 +484,8 @@ const Step2 = () => {
               </MenuItem>
             ))}
           </Select>
+          {leyendaLineValue ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
+
           <Typography>Equipo</Typography>
           {loading ? (
             <Backdrop className={classes.backdrop} open>
@@ -411,8 +507,16 @@ const Step2 = () => {
                 <TextField
                   type="text"
                   size="small"
+                  error={errorTipoEquipo}
+                  helperText={leyendaTipoEquipo}
                   value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
+                  onChange={(e) => {
+                    setKeyword(e.target.value)
+                    if (e.target.value !== null) {
+                      setErrorTipoEquipo(false);
+                      setLeyendaTipoEquipo("")
+                    }
+                  }}
                   placeholder="Seleccione el campo"
                   fullWidth
                   InputProps={{
@@ -487,6 +591,7 @@ const Step2 = () => {
               size="small"
               required
               style={gnrStyle}
+              inputProps={{ min: 15 }}
               label="Cual a sido la duracion de la falla en minutos"
               type="number"
             ></TextField>
@@ -503,7 +608,14 @@ const Step2 = () => {
               fullWidth
               required
               value={departamentoValue}
-              onChange={(e) => setDepartamentoValue(e.target.value)}
+              error={errorDepartment}
+              onChange={(e) => {
+                setDepartamentoValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorDepartment(false);
+                  setLeyendaDepartment("")
+                }
+              }}
               size="small"
               style={gnrStyle}
             >
@@ -513,6 +625,7 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
+            {leyendaDepartment ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
             {renderCodigoEquipo()}
           </section>
         )}
@@ -597,17 +710,25 @@ const Step2 = () => {
           <section style={formStep === 3 ? {} : { display: "none" }} id="6">
             <Typography style={gnrStyle}>
               {" "}
-              Codificacion / Tipo de tarjeta{" "}
+              Codificacion / Tipo de tarjeta *{" "}
             </Typography>
             <Select
               id="tarjetaTipo"
               variant="outlined"
               fullWidth
               required
+              error={errorTarjetaTipo}
+              helperText={leyendaTarjetaTipo}
               size="small"
               style={gnrStyle}
               value={tarjetaTipoValue}
-              onChange={(e) => setTarjetaTipoValue(e.target.value)}
+              onChange={(e) => {
+                setTarjetaTipoValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorTarjetaTipo(false);
+                  setLeyendaTarjetaTipo("")
+                }
+              }}
             >
               {tarjetaTipo.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
@@ -615,8 +736,10 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
+            {leyendaTarjetaTipo ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
+
             <Typography style={gnrStyle}>
-              Texto corto del aviso / Titulo de la tarjeta
+              Texto corto del aviso / Titulo de la tarjeta *
             </Typography>
             <TextField
               id="tarjetaTitulo"
@@ -624,19 +747,35 @@ const Step2 = () => {
               fullWidth
               style={gnrStyle}
               required
+              error={errorTituloCorto}
+              helperText={leyendaTituloCorto}
               size="small"
               value={tarjetaTitulo}
-              onChange={(e) => setTarjetaTitulo(e.target.value)}
+              onChange={(e) => {
+                setTarjetaTitulo(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorTituloCorto(false);
+                  setLeyendaTituloCorto("")
+                }
+              }}
             ></TextField>
-            <Typography style={gnrStyle}>Prioridad</Typography>
+            <Typography style={gnrStyle}>Prioridad *</Typography>
             <Select
               id="prioridad"
               variant="outlined"
               required
               fullWidth
+              error={errorPrioridadValue}
+              helperText={leyendaPrioridadValue}
               size="small"
               value={prioridadValue}
-              onChange={(e) => setPrioridadValue(e.target.value)}
+              onChange={(e) => {
+                setPrioridadValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorPrioridadValue(false);
+                  setLeyendaPrioridadValue("")
+                }
+              }}
               style={gnrStyle}
             >
               {prioridad.map((elemento) => (
@@ -645,16 +784,26 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Grupo planificador</Typography>
+            {leyendaPrioridadValue ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
+
+            <Typography style={gnrStyle}>Grupo planificador *</Typography>
             <Select
               id="tipoFalla"
               variant="outlined"
               fullWidth
               size="small"
+              error={errorTipoFallaValue}
+              helperText={leyendaTipoFallaValue}
               required
               style={gnrStyle}
               value={tipoFallaValue}
-              onChange={(e) => setTipoFallaValue(e.target.value)}
+              onChange={(e) => {
+                setTipoFallaValue(e.target.value)
+                if (e.target.value !== "null") {
+                  setLeyendaTipoFallaValue("");
+                  setErrorTipoFallaValue(false);
+                }
+              }}
             >
               {tipoFalla.map((elemento) => (
                 <MenuItem key={elemento.id} value={elemento.id}>
@@ -662,6 +811,8 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
+            {leyendaTipoFallaValue ? <span style={{ color: "#d32f2f", fontSize: "14px" }} >Campo Requerido</span> : null}
+
             <Typography style={gnrStyle}>Responsable</Typography>
             <Select
               id="responsable"
@@ -680,7 +831,7 @@ const Step2 = () => {
               ))}
             </Select>
             <Typography style={gnrStyle}>
-              Descripción del aviso / Descripción de la tarjeta
+              Descripción del aviso / Descripción de la tarjeta *
             </Typography>
             <TextField
               variant="outlined"
@@ -689,10 +840,18 @@ const Step2 = () => {
               size="small"
               style={gnrStyle}
               multiline
+              error={errorDescripcionTarjeta}
+              helperText={leyendaDescripcionTarjeta}
               rows="6"
               id={descripcionTarjeta}
               value={descripcionTarjeta}
-              onChange={(e) => setDescripcionTarjeta(e.target.value)}
+              onChange={(e) => {
+                setDescripcionTarjeta(e.target.value)
+                if (e.target.value !== "null") {
+                  setErrorDescripcionTarjeta(false);
+                  setLeyendaDescripcionTarjeta("")
+                }
+              }}
             ></TextField>
             <Typography style={gnrStyle}>Afecta a</Typography>
             <Select
