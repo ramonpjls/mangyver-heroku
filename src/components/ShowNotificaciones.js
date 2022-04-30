@@ -230,10 +230,12 @@ function ShowNotificaciones() {
                         <Typography>{row.date}</Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography>{row.startHour}</Typography>
+                        <Typography>
+                          {row.startHour.substring(11, 16)}
+                        </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography>{row.endHour}</Typography>
+                        <Typography>{row.endHour.substring(11, 16)}</Typography>
                       </TableCell>
                       <TableCell>
                         <Typography>{row.comments}</Typography>

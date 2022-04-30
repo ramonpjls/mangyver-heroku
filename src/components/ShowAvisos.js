@@ -217,13 +217,17 @@ function ShowAvisos() {
               <Typography variant="h6">Tipo de equipo:</Typography>
               {rowDetails.equipment}
             </Typography>
-            <Typography variant="body2">
-              <Typography variant="h6">Numero de OT:</Typography>
-              {rowDetails.otCode}
-            </Typography>
+            {rowDetails.otCode !== null ? (
+              <Typography variant="body2">
+                <Typography variant="h6">Numero de OT:</Typography>
+                {rowDetails.otCode}
+              </Typography>
+            ) : (
+              <></>
+            )}
             <Typography variant="body2">
               <Typography variant="h6">Linea:</Typography>
-              {rowDetails.lineId}
+              {rowDetails.line}
             </Typography>
             <Typography variant="body2">
               <Typography variant="h6">Prioridad:</Typography>

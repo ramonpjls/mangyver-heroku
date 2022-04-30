@@ -64,7 +64,7 @@ const Step3 = () => {
   const fetchData = (e) => {
     const files = e.target.files;
     const data = new FormData();
-    const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
+    const url = "https://mazappsupply.ab-inbev.com/fotos";
     data.append("image", files[0]);
 
     axios.post(url, data).then((res) => {

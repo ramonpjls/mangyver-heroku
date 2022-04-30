@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import {
   Container,
   Typography,
@@ -7,37 +6,23 @@ import {
   Select,
   Button,
   MenuItem,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-  ListSubheader,
-  InputAdornment,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../axiosinstance";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useSelector } from "react-redux";
 import CancelIcon from "@mui/icons-material/Cancel";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    color: "#fff",
-  },
-}));
+import MachineList from "../elements/machineList";
 
 const Step2 = () => {
   const noticeType = useSelector((state) => state.notice.noticeType);
-  const classes = useStyles();
+  const machine = useSelector((state) => state.machine.machine);
+  const groupCode = useSelector((state) => state.groupCode.groupCode);
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState("");
   const [departamentoValue, setDepartamentoValue] = useState(0);
   const [lineValue, setLineValue] = useState(0);
-  const [tipoEquipoValue, setTipoEquipoValue] = useState(null);
 
   const [tarjetaTipoValue, setTarjetaTipoValue] = useState(null);
   const [tarjetaTitulo, setTarjetaTitulo] = useState(null);
@@ -49,16 +34,11 @@ const Step2 = () => {
   const [departamento, setDepartamento] = useState([]);
   const [tarjetaTipo, setTarjetaTipo] = useState([]);
   const [lines, setLines] = useState([]);
-  const [tipoEquipo, setTipoEquipo] = useState([]);
   const [prioridad, setPrioridad] = useState([]);
   const [tipoFalla, setTipoFalla] = useState([]);
   const [afecta, setAfecta] = useState([]);
 
   const [disButton, setDisButton] = useState(true);
-
-  const [keyword, setKeyword] = useState("");
-
-  const [loading, setLoading] = useState(false);
 
   const [photoPath, setPhotoPath] = useState({});
 
@@ -70,7 +50,6 @@ const Step2 = () => {
   const [sintoma, setSintoma] = useState([]);
   const [txtCausa, setTxtCausa] = useState(null);
   const [txtSintoma, setTxtSintoma] = useState(null);
-  const [groupCode, setGroupCode] = useState("");
   const [responsable, setResponsable] = useState([]);
   const [responsableValue, setResponsableValue] = useState("");
 
@@ -81,7 +60,7 @@ const Step2 = () => {
     failureTime: failureTimes,
     departmentId: departamentoValue,
     lineId: lineValue,
-    equipmentId: tipoEquipoValue,
+    equipmentId: machine,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priorityId: prioridadValue,
@@ -103,7 +82,6 @@ const Step2 = () => {
       top: 0,
       behavior: "smooth",
     });
-    setTipoEquipo([]);
   };
 
   const backBtn = () => {
@@ -113,7 +91,7 @@ const Step2 = () => {
   const fetchData = async (e) => {
     const files = e.target.files;
     const data = new FormData();
-    const url = "https://photo-mangyver.herokuapp.com/api/v1/photos";
+    const url = "https://mazappsupply.ab-inbev.com/fotos";
     data.append("image", files[0]);
 
     axios.post(url, data).then((res) => {
@@ -233,11 +211,6 @@ const Step2 = () => {
     }
   };
 
-  const handleListItemClick = (event, index) => {
-    setTipoEquipoValue(index.id);
-    setGroupCode(index.groupCode);
-  };
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     await axios
@@ -259,28 +232,9 @@ const Step2 = () => {
         })
         .then((response) => {
           setLines(response.data);
-          setLoading(false);
         });
     }
   }, [departamentoValue]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    if (lineValue !== 0) {
-      setLoading(true);
-      await axios
-        .get("/machines", {
-          params: {
-            lineId: lineValue,
-          },
-          headers: { auth: localStorage.getItem("token") },
-        })
-        .then((response) => {
-          setTipoEquipo(response.data);
-          setLoading(false);
-        });
-    }
-  }, [lineValue]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -321,7 +275,6 @@ const Step2 = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     if (formStep === 3) {
-      setLoading(true);
       await axios
         .get("/cards", {
           params: {
@@ -352,7 +305,6 @@ const Step2 = () => {
         })
         .then((response) => {
           setAfecta(response.data);
-          setLoading(false);
         });
       await axios
         .get("/responsables", {
@@ -390,67 +342,7 @@ const Step2 = () => {
               </MenuItem>
             ))}
           </Select>
-          <Typography>Equipo</Typography>
-          {loading ? (
-            <Backdrop className={classes.backdrop} open>
-              <CircularProgress color="inherit" />
-            </Backdrop>
-          ) : (
-            <List
-              style={gnrStyle}
-              sx={{
-                width: "100%",
-                maxWidth: 500,
-                bgcolor: "background.paper",
-                position: "relative",
-                overflow: "auto",
-                maxHeight: 300,
-              }}
-            >
-              <ListSubheader>
-                <TextField
-                  type="text"
-                  size="small"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  placeholder="Seleccione el campo"
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="large" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </ListSubheader>
-              {tipoEquipo
-                // eslint-disable-next-line array-callback-return
-                .filter((item) => {
-                  if (keyword === "") {
-                    return item;
-                  } else if (
-                    item.name.toLowerCase().includes(keyword.toLowerCase())
-                  ) {
-                    return item;
-                  }
-                })
-                .map((item) => (
-                  <ListItemButton
-                    dense
-                    divider
-                    key={item.id}
-                    disableGutters
-                    selected={tipoEquipoValue === item.id}
-                    onClick={(event) => handleListItemClick(event, item)}
-                  >
-                    <ListItem key={item.id}>
-                      <ListItemText primary={item.name} />
-                    </ListItem>
-                  </ListItemButton>
-                ))}
-            </List>
-          )}
+          {lineValue !== 0 ? <MachineList lineId={lineValue} /> : <></>}
         </div>
       );
     }

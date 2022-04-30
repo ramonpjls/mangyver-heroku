@@ -3,4 +3,6 @@ export const types = {
   LOGOUT: "LOGOUT",
   NOTICE: "NOTICE",
   NOTICETYPE: "NOTICETYPE",
+  MACHINE: "MACHINE",
+  GROUPCODE: "GROUPCODE",
 };
