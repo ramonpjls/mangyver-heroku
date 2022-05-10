@@ -17,8 +17,11 @@ import MachineList from "../elements/machineList";
 
 const Step2 = () => {
   const noticeType = useSelector((state) => state.notice.noticeType);
-  const machine = useSelector((state) => state.machine.machine);
+  const equipmentId = useSelector((state) => state.machine.machine);
   const groupCode = useSelector((state) => state.groupCode.groupCode);
+  const objectId = useSelector((state) => state.object.object);
+  const causeId = useSelector((state) => state.cause.cause);
+  const symptomId = useSelector((state) => state.symtom.symtom);
   const [formStep, setFormStep] = useState(0);
   const [failureTimes, setFailureTimes] = useState("");
   const [departamentoValue, setDepartamentoValue] = useState(0);
@@ -42,12 +45,6 @@ const Step2 = () => {
 
   const [photoPath, setPhotoPath] = useState({});
 
-  const [objetoValue, setObjetoValue] = useState(null);
-  const [causaValue, setCausaValue] = useState(null);
-  const [sintomaValue, setSintomaValue] = useState(null);
-  const [objeto, setObjeto] = useState([]);
-  const [causa, setCausa] = useState([]);
-  const [sintoma, setSintoma] = useState([]);
   const [txtCausa, setTxtCausa] = useState(null);
   const [txtSintoma, setTxtSintoma] = useState(null);
   const [responsable, setResponsable] = useState([]);
@@ -60,16 +57,16 @@ const Step2 = () => {
     failureTime: failureTimes,
     departmentId: departamentoValue,
     lineId: lineValue,
-    equipmentId: machine,
+    equipmentId,
     cardTypeId: tarjetaTipoValue,
     cardTitle: tarjetaTitulo,
     priorityId: prioridadValue,
     failureTypeId: tipoFallaValue,
     cardDescription: descripcionTarjeta,
     affectsId: afectaValue,
-    objectId: objetoValue,
-    causeId: causaValue,
-    symptomId: sintomaValue,
+    objectId,
+    causeId,
+    symptomId,
     textCause: txtCausa,
     textSymptom: txtSintoma,
     urlPhoto: photoPath,
@@ -238,42 +235,6 @@ const Step2 = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    if (groupCode !== "") {
-      await axios
-        .get("/objects", {
-          params: {
-            groupCode: groupCode,
-          },
-          headers: { auth: localStorage.getItem("token") },
-        })
-        .then((response) => {
-          setObjeto(response.data);
-        });
-      await axios
-        .get("/causes", {
-          params: {
-            groupCode: groupCode,
-          },
-          headers: { auth: localStorage.getItem("token") },
-        })
-        .then((response) => {
-          setCausa(response.data);
-        });
-      await axios
-        .get("/symptoms", {
-          params: {
-            groupCode: groupCode,
-          },
-          headers: { auth: localStorage.getItem("token") },
-        })
-        .then((response) => {
-          setSintoma(response.data);
-        });
-    }
-  }, [groupCode]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
     if (formStep === 3) {
       await axios
         .get("/cards", {
@@ -342,7 +303,16 @@ const Step2 = () => {
               </MenuItem>
             ))}
           </Select>
-          {lineValue !== 0 ? <MachineList lineId={lineValue} /> : <></>}
+          {lineValue !== 0 ? (
+            <MachineList
+              param={lineValue}
+              endpoint={"machines"}
+              tittle={"Equipo"}
+              isMachine
+            />
+          ) : (
+            <></>
+          )}
         </div>
       );
     }
@@ -409,41 +379,19 @@ const Step2 = () => {
           </section>
         )}
         {formStep >= 2 && (
-          <section style={formStep === 2 ? {} : { display: "none" }} id="6">
-            <Typography>Parte Objeto | Componente dañado</Typography>
-            <Select
-              id="Linea"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={objetoValue}
-              onChange={(e) => setObjetoValue(e.target.value)}
-            >
-              {objeto.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography>Sintoma avería</Typography>
-            <Select
-              id="Linea"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={sintomaValue}
-              onChange={(e) => setSintomaValue(e.target.value)}
-            >
-              {sintoma.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+          <section style={formStep === 2 ? {} : { display: "none" }}>
+            <MachineList
+              param={groupCode}
+              endpoint={"objects"}
+              tittle={"Parte Objeto | Componente dañado"}
+              type={"OBJECT"}
+            />
+            <MachineList
+              param={groupCode}
+              endpoint={"symptoms"}
+              tittle={"sintoma avería"}
+              type={"SYMTOM"}
+            />
             <Typography>Texto sintoma</Typography>
             <TextField
               id="tarjetaTitulo"
@@ -455,23 +403,12 @@ const Step2 = () => {
               value={txtSintoma}
               onChange={(e) => setTxtSintoma(e.target.value)}
             ></TextField>
-            <Typography>Causa avería</Typography>
-            <Select
-              id="Linea"
-              variant="outlined"
-              fullWidth
-              required
-              size="small"
-              style={gnrStyle}
-              value={causaValue}
-              onChange={(e) => setCausaValue(e.target.value)}
-            >
-              {causa.map((elemento) => (
-                <MenuItem key={elemento.id} value={elemento.id}>
-                  {elemento.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <MachineList
+              param={groupCode}
+              endpoint={"causes"}
+              tittle={"Causa avería"}
+              type={"CAUSE"}
+            />
             <Typography>Texto causa</Typography>
             <TextField
               id="tarjetaTitulo"

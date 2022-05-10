@@ -26,7 +26,7 @@ const pgnStyle = {
   justifyContent: "end",
 };
 
-const MachineList = ({ lineId }) => {
+const MachineList = ({ param, endpoint, tittle, isMachine, type }) => {
   const [keyword, setKeyword] = useState("");
   const [machineArr, setMachineArr] = useState([]);
   const [machineLabel, setMachineLabel] = useState(""); // eslint-disable-next-line
@@ -38,14 +38,21 @@ const MachineList = ({ lineId }) => {
 
   const handleListItemClick = (event, index) => {
     setMachineLabel(index.label);
-    dispatch({
-      type: "MACHINE",
-      payload: index.id,
-    });
-    dispatch({
-      type: "GROUPCODE",
-      payload: index.groupCode,
-    });
+    if (isMachine) {
+      dispatch({
+        type: "MACHINE",
+        payload: index.id,
+      });
+      dispatch({
+        type: "GROUPCODE",
+        payload: index.groupCode,
+      });
+    } else {
+      dispatch({
+        type: `${type}`,
+        payload: index.id,
+      });
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,9 +74,9 @@ const MachineList = ({ lineId }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     axios
-      .get(`/machines`, {
+      .get(`/${endpoint}`, {
         params: {
-          lineId: lineId,
+          lineId: param,
           from: Number(skipBase),
           top: Number(elementsPerPage),
           name: String(debouncedSearchTerm),
@@ -97,7 +104,7 @@ const MachineList = ({ lineId }) => {
         }}
       >
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          Equipo:{" "}
+          {tittle}:
         </Typography>
         <Typography variant="body2">{machineLabel}</Typography>
       </div>
@@ -107,7 +114,6 @@ const MachineList = ({ lineId }) => {
           currentPage={currentPage}
           firstPage={firstPage}
           lastPage={lastPage}
-          Œ
           setElementsPerPage={setElementsPerPage}
           totalElementsInDB={totalElementsInDB}
           nextPage={nextPage}

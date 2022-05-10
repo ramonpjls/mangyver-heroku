@@ -231,11 +231,13 @@ function ShowNotificaciones() {
                       </TableCell>
                       <TableCell>
                         <Typography>
-                          {row.startHour.substring(11, 16)}
+                          {row?.startHour.substring(11, 16) || ""}
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography>{row.endHour.substring(11, 16)}</Typography>
+                        <Typography>
+                          {row?.endHour.substring(11, 16) || ""}
+                        </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography>{row.comments}</Typography>

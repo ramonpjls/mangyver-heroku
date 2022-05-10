@@ -4,5 +4,8 @@ export const types = {
   NOTICE: "NOTICE",
   NOTICETYPE: "NOTICETYPE",
   MACHINE: "MACHINE",
+  CAUSE: "CAUSE",
+  OBJECT: "OBJECT",
+  SYMTOM: "SYMTOM",
   GROUPCODE: "GROUPCODE",
 };
