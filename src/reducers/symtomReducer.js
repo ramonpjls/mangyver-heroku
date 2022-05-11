@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const initialState = {
-  symtom: "",
+  symtom: null,
 };
 
 export const symtomReducer = (state = initialState, action) => {

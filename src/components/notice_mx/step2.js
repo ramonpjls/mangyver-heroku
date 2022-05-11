@@ -73,6 +73,8 @@ const Step2 = () => {
     responsableId: responsableValue,
   };
 
+  console.log(data);
+
   const completeFormStep = () => {
     setFormStep((cur) => cur + 1);
     window.scrollTo({
@@ -491,7 +493,7 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Responsable</Typography>
+            <Typography style={gnrStyle}>Responsable | Revision</Typography>
             <Select
               id="responsable"
               variant="outlined"

@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const initialState = {
-  object: "",
+  object: null,
 };
 
 export const objectReducer = (state = initialState, action) => {

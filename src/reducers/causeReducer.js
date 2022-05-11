@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const initialState = {
-  cause: "",
+  cause: null,
 };
 
 export const causeReducer = (state = initialState, action) => {

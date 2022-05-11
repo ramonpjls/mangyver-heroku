@@ -328,7 +328,6 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-
             <Typography style={gnrStyle}>Grupo planificador</Typography>
             <Select
               id="tipoFalla"
@@ -346,7 +345,7 @@ const Step3 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Responsable</Typography>
+            <Typography style={gnrStyle}>Responsable | Revision</Typography>{" "}
             <Select
               id="responsable"
               variant="outlined"
