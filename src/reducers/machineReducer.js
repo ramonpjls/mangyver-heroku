@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const initialState = {
-  machine: "",
+  machine: null,
 };
 
 export const machineReducer = (state = initialState, action) => {
