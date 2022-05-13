@@ -22,6 +22,7 @@ const Notifications = () => {
   const [observation, setObservation] = useState("");
   const [noperacion, setNoperarion] = useState("");
   const [otCode, setOtCode] = useState("");
+  const [numPeople, setNumPeople] = useState("");
   const [disSelect, setDisSelect] = useState(true);
   const [redirect, setRedirect] = useState(false);
 
@@ -36,6 +37,7 @@ const Notifications = () => {
     endHour: horaFin,
     isDone: norden,
     comments: observation,
+    numPeople: numPeople,
   };
 
   const Header = {
@@ -259,6 +261,26 @@ const Notifications = () => {
                 size="small"
                 value={observation}
                 onChange={(e) => setObservation(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            item
+            alignItems="center"
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+          >
+            <Grid item xs={4}>
+              <InputLabel>Numero de Personas</InputLabel>
+              <TextField
+                size="small"
+                varian="outlined"
+                type="number"
+                fullWidth
+                value={numPeople}
+                onChange={(e) => setNumPeople(e.target.value)}
               />
             </Grid>
           </Grid>

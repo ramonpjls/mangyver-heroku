@@ -98,6 +98,8 @@ const Noticereport = () => {
     { label: "Responsable", key: "Responsable" },
     { label: "Estado Instalacion", key: "estadoInstalacion" },
     { label: "Revision", key: "Revision" },
+    { label: "Grupo de Codificacion", key: "codGroup" },
+    { label: "Clase de Actividad PM", key: "claseActividad" },
   ];
 
   const ReportSet = {

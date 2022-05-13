@@ -51,7 +51,9 @@ const Notificationsreport = () => {
     { label: "TEXTO3", key: "Text3" },
     { label: "TEXTO4", key: "Text4" },
     { label: "MOTIVO DESVIACION", key: "Deviation" },
-    { labe: "Centro", key: "Centro" },
+    { label: "Centro", key: "Centro" },
+    { label: "Numero de la notificaion", key: "NotificationID" },
+    { label: "SAP", key: "SAP" },
   ];
 
   const ReportSet = {
