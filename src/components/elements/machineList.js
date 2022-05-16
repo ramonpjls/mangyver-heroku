@@ -92,7 +92,7 @@ const MachineList = ({ param, endpoint, tittle, isMachine, type }) => {
       });
 
     // eslint-disable-next-line
-  }, [elementsPerPage, skipBase, debouncedSearchTerm]);
+  }, [elementsPerPage, skipBase, debouncedSearchTerm, param]);
 
   return (
     <div>

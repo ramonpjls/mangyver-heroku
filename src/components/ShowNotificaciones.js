@@ -98,23 +98,33 @@ function ShowNotificaciones() {
   // };
 
   let {
+    firstPage,
     previousPage,
     nextPage,
+    lastPage,
     skipBase,
     totalElementsInDB,
     setElementsPerPage,
     elementsPerPage,
     elements,
+    totalPages,
+    currentPage,
   } = usePagination(notifications, totalInDB);
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, {
+      .get(`/notifications?`, {
+        params: {
+          from: Number(skipBase),
+          top: Number(elementsPerPage),
+          totalRows: 1,
+        },
         headers: { auth: localStorage.getItem("token") },
       })
       .then((res) => {
         setNotifications(res.data);
+        setTotalInDB(res.data[0]?.totalRows);
         setLoading(false);
       })
       .catch((err) => {
@@ -126,7 +136,11 @@ function ShowNotificaciones() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/notifications?from=${skipBase}&top=${elementsPerPage}`, {
+      .get(`/notifications?`, {
+        params: {
+          from: Number(skipBase),
+          top: Number(elementsPerPage),
+        },
         headers: { auth: localStorage.getItem("token") },
       })
       .then((res) => {
@@ -138,6 +152,8 @@ function ShowNotificaciones() {
         window.location.reload();
       }); // eslint-disable-next-line
   }, [elementsPerPage, skipBase]);
+
+  // console.log(totalPages, totalElementsInDB, totalInDB);
 
   return (
     <div>
@@ -173,6 +189,10 @@ function ShowNotificaciones() {
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <Box sx={{ display: "flex", justifyContent: "end" }}>
             <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              firstPage={firstPage}
+              lastPage={lastPage}
               setElementsPerPage={setElementsPerPage}
               totalElementsInDB={totalElementsInDB}
               nextPage={nextPage}
