@@ -493,7 +493,7 @@ const Step2 = () => {
                 </MenuItem>
               ))}
             </Select>
-            <Typography style={gnrStyle}>Responsable | Revision</Typography>
+            <Typography style={gnrStyle}>Responsable / Revision</Typography>
             <Select
               id="responsable"
               variant="outlined"
