@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { types } from "../../types/types";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 
+//TODO: make components with de fields
+
 const Home = () => {
   const notice = useSelector((state) => state.notice.notice);
   const [processValue, setProcessValue] = useState("");

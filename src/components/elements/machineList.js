@@ -26,6 +26,8 @@ const pgnStyle = {
   justifyContent: "end",
 };
 
+//TODO: groupcode useEffect
+
 const MachineList = ({ param, endpoint, tittle, isMachine, type }) => {
   const [keyword, setKeyword] = useState("");
   const [machineArr, setMachineArr] = useState([]);
