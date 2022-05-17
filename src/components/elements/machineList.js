@@ -173,7 +173,6 @@ const MachineList = ({ param, endpoint, tittle, isMachine, type }) => {
               dense
               divider
               disableGutters
-              style={{}}
               key={item.id}
               onClick={(event) => handleListItemClick(event, item)}
             >
