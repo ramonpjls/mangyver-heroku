@@ -23,7 +23,6 @@ const Notifications = () => {
   const [noperacion, setNoperarion] = useState("");
   const [otCode, setOtCode] = useState("");
   const [numPeople, setNumPeople] = useState("");
-  const [disSelect, setDisSelect] = useState(true);
   const [redirect, setRedirect] = useState(false);
 
   const [deviationArr, setDeviationArr] = useState([]);
@@ -66,15 +65,6 @@ const Notifications = () => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    if (norden === false) {
-      setDisSelect(false);
-    } else {
-      setDeviation(null);
-      setDisSelect(true);
-    }
-  }, [norden]);
 
   // eslint-disable-next-line
   useEffect(async () => {
@@ -231,7 +221,6 @@ const Notifications = () => {
                 fullWidth
                 size="small"
                 required
-                disabled={disSelect}
                 value={deviation}
                 onChange={(e) => setDeviation(e.target.value)}
               >

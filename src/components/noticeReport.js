@@ -70,64 +70,36 @@ const Noticereport = () => {
 
   const headers = [
     { label: "ID del Aviso", key: "IDAviso" },
-
     { label: "Titulo del aviso (No mas de 30 caracteres)", key: "cardTitle" },
-
     { label: "Ubicacion Tecnica del equipo", key: "ubication_tecnica" },
-
     { label: "Codigo del equipo", key: "equipmentCode" },
-
     { label: "Codidificacion", key: "cardtype" },
-
     { label: "Descripcion del Problema", key: "cardDescription" },
-
     { label: "Autor del aviso", key: "autor" },
-
     { label: "Sintoma de averia", key: "component" },
-
     { label: "causa de averia", key: "breakdown" },
-
     { label: "PRIORIDAD", key: "priority" },
-
     { label: "hora", key: "failureTime" },
-
     { label: "fecha", key: "created" },
-
     { label: "Tipo de Aviso", key: "TipoAviso" },
-
     { label: "Numero de OT", key: "OT" },
-
     { label: "Si/No", key: "SiNo" },
-
     { label: "Puesto de trabajo", key: "PuestoTrabajo" },
-
     { label: "Grupo planificador", key: "GrupoPlanificador" },
-
     { label: "Centro", key: "Centro" },
-
     { label: "repercucion", key: "repercucion" },
-
     { label: "sintoma", key: "sintoma" },
-
     { label: "textoCausa", key: "textoCausa" },
-
     { label: "textoSintoma", key: "textoSintoma" },
-
     { label: "Grupo Parte Objeto", key: "grupoObjeto" },
-
     { label: "Parte Objeto", key: "parteObjeto" },
-
     { label: "Grupo Sintoma", key: "grupoSintoma" },
-
     { label: "Grupo Causa", key: "grupoCausa" },
-
     { label: "Responsable", key: "Responsable" },
-
     { label: "Estado Instalacion", key: "estadoInstalacion" },
-
     { label: "Revision", key: "Revision" },
-
     { label: "Grupo Codificacion", key: "codGroup" },
+    { label: "Clase Actividad", key: "activity" },
   ];
 
   const ReportSet = {
