@@ -28,7 +28,14 @@ const pgnStyle = {
 
 //TODO: groupcode useEffect
 
-const MachineList = ({ param, endpoint, tittle, isMachine, type }) => {
+const MachineList = ({
+  param,
+  endpoint,
+  tittle,
+  isMachine,
+  type,
+  parameters,
+}) => {
   const [keyword, setKeyword] = useState("");
   const [machineArr, setMachineArr] = useState([]);
   const [machineLabel, setMachineLabel] = useState(""); // eslint-disable-next-line
@@ -75,10 +82,13 @@ const MachineList = ({ param, endpoint, tittle, isMachine, type }) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    let c = {};
+    c[parameters] = param;
+
     axios
       .get(`/${endpoint}`, {
         params: {
-          lineId: param,
+          ...c,
           from: Number(skipBase),
           top: Number(elementsPerPage),
           name: String(debouncedSearchTerm),

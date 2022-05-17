@@ -356,6 +356,7 @@ const Step1 = () => {
               endpoint={"machines"}
               tittle={"Equipo"}
               isMachine
+              parameters={"lineId"}
             />
           ) : (
             <></>
@@ -432,12 +433,14 @@ const Step1 = () => {
               endpoint={"objects"}
               tittle={"Parte Objeto | Componente dañado"}
               type={"OBJECT"}
+              parameters={"groupCode"}
             />
             <MachineList
               param={groupCode}
               endpoint={"symptoms"}
               tittle={"sintoma avería"}
               type={"SYMTOM"}
+              parameters={"groupCode"}
             />
             <Typography>Texto sintoma</Typography>
             <TextField
@@ -455,6 +458,7 @@ const Step1 = () => {
               endpoint={"causes"}
               tittle={"Causa avería"}
               type={"CAUSE"}
+              parameters={"groupCode"}
             />
             <Typography>Texto causa</Typography>
             <TextField

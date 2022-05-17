@@ -308,6 +308,7 @@ const Step2 = () => {
           {lineValue !== 0 ? (
             <MachineList
               param={lineValue}
+              parameters={"lineId"}
               endpoint={"machines"}
               tittle={"Equipo"}
               isMachine
@@ -384,12 +385,14 @@ const Step2 = () => {
           <section style={formStep === 2 ? {} : { display: "none" }}>
             <MachineList
               param={groupCode}
+              parameters={"groupCode"}
               endpoint={"objects"}
               tittle={"Parte Objeto | Componente dañado"}
               type={"OBJECT"}
             />
             <MachineList
               param={groupCode}
+              parameters={"groupCode"}
               endpoint={"symptoms"}
               tittle={"sintoma avería"}
               type={"SYMTOM"}
@@ -408,6 +411,7 @@ const Step2 = () => {
             <MachineList
               param={groupCode}
               endpoint={"causes"}
+              parameters={"groupCode"}
               tittle={"Causa avería"}
               type={"CAUSE"}
             />
