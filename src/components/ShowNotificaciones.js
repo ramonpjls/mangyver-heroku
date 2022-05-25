@@ -116,6 +116,7 @@ function ShowNotificaciones() {
     axios
       .get(`/notifications?`, {
         params: {
+          isWeb: true,
           from: Number(skipBase),
           top: Number(elementsPerPage),
           totalRows: 1,
@@ -138,6 +139,7 @@ function ShowNotificaciones() {
     axios
       .get(`/notifications?`, {
         params: {
+          isWeb: true,
           from: Number(skipBase),
           top: Number(elementsPerPage),
         },
@@ -207,6 +209,9 @@ function ShowNotificaciones() {
               <TableHead>
                 <TableRow>
                   <TableCell className={classes.tableHeaderCell}>
+                    Autor
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
                     Numero de OT
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
@@ -224,9 +229,6 @@ function ShowNotificaciones() {
                   <TableCell className={classes.tableHeaderCell}>
                     ¿Se realizo la orden?
                   </TableCell>
-                  <TableCell className={classes.tableHeaderCell}>
-                    Autor
-                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -236,13 +238,22 @@ function ShowNotificaciones() {
                     if (keyword === "") {
                       return row;
                     } else if (
-                      row.otCode.toLowerCase().includes(keyword.toLowerCase())
+                      row.author
+                        .toLowerCase()
+                        .includes(keyword.toLowerCase()) ||
+                      row.comments
+                        .toLowerCase()
+                        .includes(keyword.toLowerCase()) ||
+                      row.date.toLowerCase().includes(keyword.toLowerCase())
                     ) {
                       return row;
                     }
                   })
                   .map((row) => (
-                    <TableRow key={row.id} hover3>
+                    <TableRow key={row.id} hover>
+                      <TableCell>
+                        <Typography>{row.author}</Typography>
+                      </TableCell>
                       <TableCell>
                         <Typography>{row.otCode}</Typography>
                       </TableCell>
@@ -273,9 +284,6 @@ function ShowNotificaciones() {
                         >
                           {row.isDone ? "Si" : "No"}
                         </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>{row.author}</Typography>
                       </TableCell>
                     </TableRow>
                   ))}

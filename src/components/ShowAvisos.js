@@ -332,6 +332,9 @@ function ShowAvisos() {
                     Descripción
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
+                    Responsable
+                  </TableCell>
+                  <TableCell className={classes.tableHeaderCell}>
                     Prioridad
                   </TableCell>
                   <TableCell className={classes.tableHeaderCell}>
@@ -373,6 +376,11 @@ function ShowAvisos() {
                       <TableCell>
                         <Typography style={{ maxWidth: "470px" }}>
                           {row.cardDescription}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography style={{ maxWidth: "470px" }}>
+                          {row.reponsable}
                         </Typography>
                       </TableCell>
                       <TableCell>
